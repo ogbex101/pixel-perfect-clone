@@ -119,8 +119,19 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        <nav style={{ display: "flex", gap: "1rem", padding: "1rem", borderBottom: "1px solid #ddd", flexWrap: "wrap" }}>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+          <Link to="/books">Books</Link>
+          <Link to="/press">Press</Link>
+          <Link to="/testimonials">Testimonials</Link>
+          <Link to="/contact">Contact</Link>
+        </nav>
+        <main style={{ flex: 1, padding: "2rem", maxWidth: 960, margin: "0 auto", width: "100%" }}>
+          <Outlet />
+        </main>
+      </div>
     </QueryClientProvider>
   );
 }
