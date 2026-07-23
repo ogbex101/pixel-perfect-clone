@@ -9,11 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as PressRouteImport } from './routes/press'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BooksRoute = BooksRouteImport.update({
   id: '/books',
   path: '/books',
@@ -39,12 +57,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/books': typeof BooksRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/press': typeof PressRoute
+  '/testimonials': typeof TestimonialsRoute
   '/books/$bookId': typeof BooksBookIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/books': typeof BooksRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/press': typeof PressRoute
+  '/testimonials': typeof TestimonialsRoute
   '/books/$bookId': typeof BooksBookIdRoute
 }
 export interface FileRoutesById {
@@ -52,24 +76,73 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/books': typeof BooksRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/press': typeof PressRoute
+  '/testimonials': typeof TestimonialsRoute
   '/books/$bookId': typeof BooksBookIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/books' | '/books/$bookId'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/books'
+    | '/contact'
+    | '/press'
+    | '/testimonials'
+    | '/books/$bookId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/books' | '/books/$bookId'
-  id: '__root__' | '/' | '/about' | '/books' | '/books/$bookId'
+  to:
+    | '/'
+    | '/about'
+    | '/books'
+    | '/contact'
+    | '/press'
+    | '/testimonials'
+    | '/books/$bookId'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/books'
+    | '/contact'
+    | '/press'
+    | '/testimonials'
+    | '/books/$bookId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BooksRoute: typeof BooksRouteWithChildren
+  ContactRoute: typeof ContactRoute
+  PressRoute: typeof PressRoute
+  TestimonialsRoute: typeof TestimonialsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/books': {
       id: '/books'
       path: '/books'
@@ -115,6 +188,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BooksRoute: BooksRouteWithChildren,
+  ContactRoute: ContactRoute,
+  PressRoute: PressRoute,
+  TestimonialsRoute: TestimonialsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
