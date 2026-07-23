@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as PressRouteImport } from './routes/press'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as BooksRouteImport } from './routes/books'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
@@ -32,11 +31,6 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BooksRoute = BooksRouteImport.update({
-  id: '/books',
-  path: '/books',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -48,15 +42,14 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
-  id: '/$bookId',
-  path: '/$bookId',
-  getParentRoute: () => BooksRoute,
+  id: '/books/$bookId',
+  path: '/books/$bookId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/books': typeof BooksRouteWithChildren
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
@@ -65,7 +58,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/books': typeof BooksRouteWithChildren
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
@@ -75,7 +67,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/books': typeof BooksRouteWithChildren
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
@@ -86,7 +77,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/books'
     | '/contact'
     | '/press'
     | '/testimonials'
@@ -95,7 +85,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/books'
     | '/contact'
     | '/press'
     | '/testimonials'
@@ -104,7 +93,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
-    | '/books'
     | '/contact'
     | '/press'
     | '/testimonials'
@@ -114,10 +102,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  BooksRoute: typeof BooksRouteWithChildren
   ContactRoute: typeof ContactRoute
   PressRoute: typeof PressRoute
   TestimonialsRoute: typeof TestimonialsRoute
+  BooksBookIdRoute: typeof BooksBookIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -143,13 +131,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/books': {
-      id: '/books'
-      path: '/books'
-      fullPath: '/books'
-      preLoaderRoute: typeof BooksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -166,31 +147,21 @@ declare module '@tanstack/react-router' {
     }
     '/books/$bookId': {
       id: '/books/$bookId'
-      path: '/$bookId'
+      path: '/books/$bookId'
       fullPath: '/books/$bookId'
       preLoaderRoute: typeof BooksBookIdRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface BooksRouteChildren {
-  BooksBookIdRoute: typeof BooksBookIdRoute
-}
-
-const BooksRouteChildren: BooksRouteChildren = {
-  BooksBookIdRoute: BooksBookIdRoute,
-}
-
-const BooksRouteWithChildren = BooksRoute._addFileChildren(BooksRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  BooksRoute: BooksRouteWithChildren,
   ContactRoute: ContactRoute,
   PressRoute: PressRoute,
   TestimonialsRoute: TestimonialsRoute,
+  BooksBookIdRoute: BooksBookIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
