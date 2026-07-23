@@ -15,20 +15,21 @@ const bookQuery = (bookId: string) =>
   });
 
 export const Route = createFileRoute("/books/$bookId")({
-  head: ({ loaderData }) => {
-    const title = loaderData?.book?.title ?? "Book";
+  head: (ctx: { loaderData?: { book: { title: string; short_description: string | null; cover_image_url: string | null } | null } }) => {
+    const book = ctx.loaderData?.book;
+    const title = book?.title ?? "Book";
     return {
       meta: [
         { title: `${title} — Nik Nanoski` },
-        { name: "description", content: loaderData?.book?.short_description ?? "A novel by Nik Nanoski." },
+        { name: "description", content: book?.short_description ?? "A novel by Nik Nanoski." },
         { property: "og:title", content: `${title} — Nik Nanoski` },
-        { property: "og:description", content: loaderData?.book?.short_description ?? "A novel by Nik Nanoski." },
+        { property: "og:description", content: book?.short_description ?? "A novel by Nik Nanoski." },
         { property: "og:type", content: "book" },
         { name: "twitter:card", content: "summary_large_image" },
-        ...(loaderData?.book?.cover_image_url
+        ...(book?.cover_image_url
           ? [
-              { property: "og:image", content: loaderData.book.cover_image_url },
-              { name: "twitter:image", content: loaderData.book.cover_image_url },
+              { property: "og:image", content: book.cover_image_url },
+              { name: "twitter:image", content: book.cover_image_url },
             ]
           : []),
       ],
