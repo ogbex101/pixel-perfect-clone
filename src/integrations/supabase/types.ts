@@ -14,7 +14,266 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      author_profile: {
+        Row: {
+          background_facts: string[]
+          bio: string | null
+          brand_accent_color: string | null
+          contact_email: string | null
+          created_at: string
+          hero_photo_url: string | null
+          id: string
+          location: string | null
+          name: string
+          quotes: string[]
+          tagline: string | null
+          updated_at: string
+        }
+        Insert: {
+          background_facts?: string[]
+          bio?: string | null
+          brand_accent_color?: string | null
+          contact_email?: string | null
+          created_at?: string
+          hero_photo_url?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          quotes?: string[]
+          tagline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          background_facts?: string[]
+          bio?: string | null
+          brand_accent_color?: string | null
+          contact_email?: string | null
+          created_at?: string
+          hero_photo_url?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          quotes?: string[]
+          tagline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      books: {
+        Row: {
+          cover_image_url: string | null
+          created_at: string
+          display_order: number
+          full_description: string | null
+          genre: string | null
+          id: string
+          is_featured: boolean
+          purchase_link: string | null
+          short_description: string | null
+          status: string
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          cover_image_url?: string | null
+          created_at?: string
+          display_order?: number
+          full_description?: string | null
+          genre?: string | null
+          id?: string
+          is_featured?: boolean
+          purchase_link?: string | null
+          short_description?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          cover_image_url?: string | null
+          created_at?: string
+          display_order?: number
+          full_description?: string | null
+          genre?: string | null
+          id?: string
+          is_featured?: boolean
+          purchase_link?: string | null
+          short_description?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      characters: {
+        Row: {
+          background: string | null
+          book_id: string
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string | null
+          name: string
+          quote: string | null
+          role: string | null
+          updated_at: string
+        }
+        Insert: {
+          background?: string | null
+          book_id: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          name: string
+          quote?: string | null
+          role?: string | null
+          updated_at?: string
+        }
+        Update: {
+          background?: string | null
+          book_id?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          name?: string
+          quote?: string | null
+          role?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "characters_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contact_links: {
+        Row: {
+          created_at: string
+          display_order: number
+          icon: string | null
+          id: string
+          platform_name: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          platform_name: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          platform_name?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      landing_page_sections: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          is_visible: boolean
+          section_key: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_visible?: boolean
+          section_key: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_visible?: boolean
+          section_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      press_mentions: {
+        Row: {
+          created_at: string
+          display_order: number
+          headline: string | null
+          id: string
+          link: string | null
+          logo_url: string | null
+          source_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          headline?: string | null
+          id?: string
+          link?: string | null
+          logo_url?: string | null
+          source_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          headline?: string | null
+          id?: string
+          link?: string | null
+          logo_url?: string | null
+          source_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          quote_text: string
+          rating: number | null
+          reviewer_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          quote_text: string
+          rating?: number | null
+          reviewer_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          quote_text?: string
+          rating?: number | null
+          reviewer_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
