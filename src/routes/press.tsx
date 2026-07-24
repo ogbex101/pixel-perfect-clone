@@ -30,19 +30,28 @@ export const Route = createFileRoute("/press")({
 function Press() {
   const { data } = useSuspenseQuery(pressQuery);
   return (
-    <div>
-      <h1>Press</h1>
-      {data.length === 0 ? <p>No press mentions yet.</p> : (
-        <ul>
+    <section className="mx-auto max-w-6xl px-6 py-20">
+      <header className="border-b border-border pb-6">
+        <p className="eyebrow">The Clippings</p>
+        <h1 className="mt-3 font-serif text-5xl md:text-6xl text-primary">Press</h1>
+      </header>
+      {data.length === 0 ? (
+        <p className="mt-10 text-muted-foreground">No press mentions yet.</p>
+      ) : (
+        <ul className="mt-12 divide-y divide-border">
           {data.map((p) => (
-            <li key={p.id}>
-              <strong>{p.source_name}</strong>
-              {p.headline ? `: ${p.headline}` : ""}
-              {p.link && <> — <a href={p.link} target="_blank" rel="noreferrer">Read</a></>}
+            <li key={p.id} className="py-6 grid md:grid-cols-[200px_minmax(0,1fr)_auto] gap-6 items-center">
+              <div className="font-serif text-xl text-primary">{p.source_name}</div>
+              <div className="min-w-0 font-serif italic text-foreground/80">{p.headline || "—"}</div>
+              {p.link && (
+                <a href={p.link} target="_blank" rel="noreferrer" className="eyebrow hover:text-accent border-b-2 border-accent pb-0.5 w-fit">
+                  Read →
+                </a>
+              )}
             </li>
           ))}
         </ul>
       )}
-    </div>
+    </section>
   );
 }
