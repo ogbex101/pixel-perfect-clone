@@ -4,13 +4,24 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { Menu } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+
+const NAV_LINKS = [
+  { to: "/about", label: "About" },
+  { to: "/books", label: "Books" },
+  { to: "/press", label: "Press" },
+  { to: "/testimonials", label: "Praise" },
+  { to: "/contact", label: "Contact" },
+] as const;
 
 function NotFoundComponent() {
   return (
@@ -108,7 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
@@ -122,30 +133,66 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen flex flex-col bg-background text-foreground">
-        <header className="border-b border-border bg-background/80 backdrop-blur">
+        <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
-            <Link to="/" className="font-serif text-xl tracking-tight text-primary">
+            <Link
+              to="/"
+              className="font-serif text-xl tracking-tight text-primary hover:text-[color:var(--brand-gold-bright)] transition-colors"
+            >
               Nik Nanoski
             </Link>
-            <nav className="flex flex-wrap items-center gap-6 text-sm font-medium text-muted-foreground">
-              <Link to="/about" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">About</Link>
-              <Link to="/books" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Books</Link>
-              <Link to="/press" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Press</Link>
-              <Link to="/testimonials" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Praise</Link>
-              <Link to="/contact" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Contact</Link>
+            <nav className="hidden md:flex flex-wrap items-center gap-8 text-sm font-medium text-muted-foreground">
+              {NAV_LINKS.map((l) => (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  activeProps={{ className: "text-primary" }}
+                  className="link-underline hover:text-primary transition-colors"
+                >
+                  {l.label}
+                </Link>
+              ))}
             </nav>
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <button
+                  className="md:hidden inline-flex items-center justify-center rounded-sm border border-border p-2 text-foreground hover:border-primary hover:text-primary transition-colors"
+                  aria-label="Open menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="texture-paper border-l border-border w-3/4">
+                <SheetTitle className="font-serif text-lg text-primary">Menu</SheetTitle>
+                <nav className="mt-8 flex flex-col gap-6 text-lg font-serif">
+                  {NAV_LINKS.map((l) => (
+                    <Link
+                      key={l.to}
+                      to={l.to}
+                      onClick={() => setMenuOpen(false)}
+                      activeProps={{ className: "text-primary" }}
+                      className="text-foreground/85 hover:text-primary transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </header>
-        <main className="flex-1">
+        <main key={pathname} className="flex-1 route-transition">
           <Outlet />
         </main>
-        <footer className="border-t border-border mt-24">
+        <footer className="border-t border-border texture-metal mt-24">
           <div className="mx-auto max-w-6xl px-6 py-10 flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
-            <span className="font-serif italic">Nik Nanoski</span>
+            <span className="font-serif italic text-foreground/80">Nik Nanoski</span>
             <span>© {new Date().getFullYear()} — Stories from after the end.</span>
           </div>
         </footer>
