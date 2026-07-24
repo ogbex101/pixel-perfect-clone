@@ -91,6 +91,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+      },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -119,18 +125,30 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-        <nav style={{ display: "flex", gap: "1rem", padding: "1rem", borderBottom: "1px solid #ddd", flexWrap: "wrap" }}>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/books">Books</Link>
-          <Link to="/press">Press</Link>
-          <Link to="/testimonials">Testimonials</Link>
-          <Link to="/contact">Contact</Link>
-        </nav>
-        <main style={{ flex: 1, padding: "2rem", maxWidth: 960, margin: "0 auto", width: "100%" }}>
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <header className="border-b border-border bg-background/80 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
+            <Link to="/" className="font-serif text-xl tracking-tight text-primary">
+              Nik Nanoski
+            </Link>
+            <nav className="flex flex-wrap items-center gap-6 text-sm font-medium text-muted-foreground">
+              <Link to="/about" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">About</Link>
+              <Link to="/books" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Books</Link>
+              <Link to="/press" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Press</Link>
+              <Link to="/testimonials" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Praise</Link>
+              <Link to="/contact" activeProps={{ className: "text-primary" }} className="hover:text-primary transition-colors">Contact</Link>
+            </nav>
+          </div>
+        </header>
+        <main className="flex-1">
           <Outlet />
         </main>
+        <footer className="border-t border-border mt-24">
+          <div className="mx-auto max-w-6xl px-6 py-10 flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
+            <span className="font-serif italic">Nik Nanoski</span>
+            <span>© {new Date().getFullYear()} — Stories from after the end.</span>
+          </div>
+        </footer>
       </div>
     </QueryClientProvider>
   );
