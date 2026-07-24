@@ -31,7 +31,13 @@ export function Reveal({ children, as: Tag = "div", className, delay = 0 }: Reve
       { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
     );
     observer.observe(node);
-    return () => observer.disconnect();
+    // Safety net: never leave content permanently invisible if the observer
+    // fails to fire (e.g. the element is already off-DOM-flow at mount).
+    const fallback = window.setTimeout(() => setVisible(true), 2000);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   return (
