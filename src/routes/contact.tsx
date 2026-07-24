@@ -33,18 +33,40 @@ export const Route = createFileRoute("/contact")({
 function Contact() {
   const { data } = useSuspenseQuery(contactQuery);
   return (
-    <div>
-      <h1>Contact</h1>
-      {data.email && <p><a href={`mailto:${data.email}`}>{data.email}</a></p>}
-      {data.links.length === 0 ? <p>No contact links yet.</p> : (
-        <ul>
-          {data.links.map((l) => (
-            <li key={l.id}>
-              <a href={l.url} target="_blank" rel="noreferrer">{l.platform_name}</a>
-            </li>
-          ))}
-        </ul>
+    <section className="mx-auto max-w-3xl px-6 py-24">
+      <p className="eyebrow">Correspondence</p>
+      <h1 className="mt-3 font-serif text-5xl md:text-6xl text-primary">Contact</h1>
+      <hr className="rule-gold mt-6" />
+      <p className="mt-8 font-serif italic text-xl text-foreground/80">
+        For interviews, appearances, and reader letters.
+      </p>
+      {data.email && (
+        <a
+          href={`mailto:${data.email}`}
+          className="mt-8 inline-block font-serif text-2xl md:text-3xl text-primary border-b-2 border-accent pb-1 hover:text-accent transition-colors"
+        >
+          {data.email}
+        </a>
       )}
-    </div>
+      {data.links.length > 0 && (
+        <div className="mt-12">
+          <p className="eyebrow">Elsewhere</p>
+          <ul className="mt-4 flex flex-wrap gap-3">
+            {data.links.map((l) => (
+              <li key={l.id}>
+                <a
+                  href={l.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                >
+                  {l.platform_name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }

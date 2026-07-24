@@ -30,21 +30,51 @@ export const Route = createFileRoute("/books/")({
 function BooksIndex() {
   const { data: books } = useSuspenseQuery(booksQuery);
   return (
-    <div>
-      <h1>Books</h1>
+    <section className="mx-auto max-w-6xl px-6 py-20">
+      <header className="border-b border-border pb-6">
+        <p className="eyebrow">The Catalogue</p>
+        <h1 className="mt-3 font-serif text-5xl md:text-6xl text-primary">Books</h1>
+      </header>
       {books.length === 0 ? (
-        <p>No books yet.</p>
+        <p className="mt-10 text-muted-foreground">No books yet.</p>
       ) : (
-        <ul>
+        <ul className="mt-12 grid gap-12 md:grid-cols-2">
           {books.map((b) => (
-            <li key={b.id}>
-              <Link to="/books/$bookId" params={{ bookId: b.id }}>{b.title}</Link>
-              {" — "}{b.status}
-              {b.short_description && <p>{b.short_description}</p>}
+            <li key={b.id} className="group grid grid-cols-[minmax(0,1fr)_2fr] gap-6">
+              <Link to="/books/$bookId" params={{ bookId: b.id }} className="block">
+                <div className="aspect-[2/3] bg-muted border border-border overflow-hidden">
+                  {b.cover_image_url ? (
+                    <img src={b.cover_image_url} alt={b.title} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center p-3 bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground">
+                      <span className="font-serif text-xl text-center">{b.title}</span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+              <div className="min-w-0">
+                <p className="eyebrow">{b.status.replace("_", " ")}</p>
+                <h2 className="mt-1 font-serif text-2xl md:text-3xl text-primary">
+                  <Link to="/books/$bookId" params={{ bookId: b.id }} className="hover:text-accent transition-colors">
+                    {b.title}
+                  </Link>
+                </h2>
+                {b.genre && <p className="mt-1 italic text-muted-foreground text-sm">{b.genre}</p>}
+                {b.short_description && (
+                  <p className="mt-3 text-foreground/80 line-clamp-5">{b.short_description}</p>
+                )}
+                <Link
+                  to="/books/$bookId"
+                  params={{ bookId: b.id }}
+                  className="mt-4 inline-block border-b-2 border-accent pb-0.5 text-sm font-medium text-primary hover:text-accent transition-colors"
+                >
+                  Read more →
+                </Link>
+              </div>
             </li>
           ))}
         </ul>
       )}
-    </div>
+    </section>
   );
 }
