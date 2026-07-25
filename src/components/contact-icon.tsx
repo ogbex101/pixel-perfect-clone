@@ -1,5 +1,6 @@
 import {
   AtSign,
+  BookOpen,
   Facebook,
   Github,
   Globe,
@@ -10,6 +11,7 @@ import {
   Music2,
   Phone,
   Rss,
+  ShoppingBag,
   Twitter,
   Youtube,
   type LucideIcon,
@@ -35,6 +37,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
   website: Globe,
   web: Globe,
   globe: Globe,
+  amazon: ShoppingBag,
+  goodreads: BookOpen,
 };
 
 export function resolveContactIcon(icon: string | null | undefined): LucideIcon {

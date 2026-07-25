@@ -14,10 +14,12 @@ import { Menu } from "lucide-react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Toaster } from "@/components/ui/sonner";
 
 const NAV_LINKS = [
   { to: "/about", label: "About" },
   { to: "/books", label: "Books" },
+  { to: "/cinematic", label: "Cinematic" },
   { to: "/press", label: "Press" },
   { to: "/testimonials", label: "Praise" },
   { to: "/contact", label: "Contact" },
@@ -135,6 +137,16 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [menuOpen, setMenuOpen] = useState(false);
+  const isAdmin = pathname.startsWith("/admin");
+
+  if (isAdmin) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        <Toaster />
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -197,6 +209,7 @@ function RootComponent() {
           </div>
         </footer>
       </div>
+      <Toaster />
     </QueryClientProvider>
   );
 }
