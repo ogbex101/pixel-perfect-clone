@@ -42,14 +42,11 @@ function PressSkeleton() {
         <Skeleton className="h-3 w-24" />
         <Skeleton className="h-14 w-1/3" />
       </header>
-      <div className="mt-12 divide-y divide-border">
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            className="py-6 grid md:grid-cols-[200px_minmax(0,1fr)_auto] gap-4 md:gap-6 items-center"
-          >
-            <Skeleton className="h-6 w-32" />
-            <Skeleton className="h-5 w-3/4" />
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="border border-border p-6 space-y-4">
+            <Skeleton className="h-8 w-24" />
+            <Skeleton className="h-5 w-full" />
             <Skeleton className="h-4 w-16" />
           </div>
         ))}
@@ -69,28 +66,41 @@ function Press() {
       {data.length === 0 ? (
         <p className="mt-10 text-muted-foreground">No press mentions yet.</p>
       ) : (
-        <ul className="mt-12 divide-y divide-border">
+        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {data.map((p, i) => (
             <Reveal
               as="li"
               key={p.id}
-              delay={Math.min(i, 4) * 60}
-              className="py-6 grid gap-2 md:grid-cols-[200px_minmax(0,1fr)_auto] md:gap-6 md:items-center transition-colors hover:bg-secondary/30 -mx-4 px-4 rounded-sm"
+              delay={Math.min(i, 5) * 80}
+              className="texture-paper border border-border p-6 card-lift flex flex-col"
             >
-              <div className="font-serif text-xl text-primary">{p.source_name}</div>
-              <div className="min-w-0 font-serif italic text-foreground/80">
-                {p.headline || "—"}
+              <div className="h-10 flex items-center">
+                {p.logo_url ? (
+                  <img
+                    src={p.logo_url}
+                    alt={p.source_name}
+                    className="max-h-10 max-w-[160px] object-contain"
+                  />
+                ) : (
+                  <span className="font-serif text-xl text-primary">{p.source_name}</span>
+                )}
               </div>
-              {p.link && (
-                <a
-                  href={p.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="eyebrow link-underline hover:text-[color:var(--brand-gold-bright)] border-b-2 border-accent pb-0.5 w-fit"
-                >
-                  Read →
-                </a>
-              )}
+              <p className="mt-4 flex-1 font-serif italic text-foreground/80">
+                {p.headline || "—"}
+              </p>
+              <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+                <p className="eyebrow">{p.source_name}</p>
+                {p.link && (
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="eyebrow link-underline hover:text-[color:var(--brand-gold-bright)]"
+                  >
+                    Read →
+                  </a>
+                )}
+              </div>
             </Reveal>
           ))}
         </ul>

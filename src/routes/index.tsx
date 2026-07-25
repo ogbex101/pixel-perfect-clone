@@ -3,6 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { QuoteRotator } from "@/components/quote-rotator";
 
 const homeQuery = queryOptions({
   queryKey: ["home"],
@@ -163,6 +164,55 @@ function Home() {
                     Purchase
                   </a>
                 )}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* Author intro */}
+      {profile?.bio && (
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-6xl px-6 py-16 md:py-20 grid gap-10 md:grid-cols-12 items-center">
+            <Reveal className="md:col-span-4">
+              <div className="aspect-square w-full max-w-xs mx-auto md:mx-0 rounded-full overflow-hidden border border-border bg-muted">
+                {profile.hero_photo_url ? (
+                  <img
+                    src={profile.hero_photo_url}
+                    alt={profile.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center font-serif text-5xl text-primary bg-accent/20">
+                    {profile.name?.charAt(0) ?? "N"}
+                  </div>
+                )}
+              </div>
+            </Reveal>
+            <Reveal delay={150} className="md:col-span-8">
+              <p className="eyebrow">The Author</p>
+              <p className="mt-4 font-serif text-xl md:text-2xl leading-relaxed text-foreground/85 line-clamp-6 drop-cap">
+                {profile.bio}
+              </p>
+              <Link
+                to="/about"
+                className="mt-6 inline-flex w-fit items-center gap-2 border-b-2 border-accent pb-1 font-medium text-primary hover:text-[color:var(--brand-gold-bright)] hover:gap-3 transition-all"
+              >
+                More about {profile.name} →
+              </Link>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* Quote rotator */}
+      {profile?.quotes && profile.quotes.length > 0 && (
+        <section className="border-b border-border bg-secondary/40 texture-paper">
+          <div className="mx-auto max-w-3xl px-6 py-16 md:py-20">
+            <Reveal className="flex flex-col items-center text-center">
+              <p className="eyebrow">In His Words</p>
+              <div className="mt-6 w-full">
+                <QuoteRotator quotes={profile.quotes} />
               </div>
             </Reveal>
           </div>

@@ -3,6 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { resolveContactIcon } from "@/components/contact-icon";
 
 const contactQuery = queryOptions({
   queryKey: ["contact"],
@@ -73,18 +74,22 @@ function Contact() {
         <Reveal delay={150} className="mt-12">
           <p className="eyebrow">Elsewhere</p>
           <ul className="mt-4 flex flex-wrap gap-3">
-            {data.links.map((l) => (
-              <li key={l.id}>
-                <a
-                  href={l.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                >
-                  {l.platform_name}
-                </a>
-              </li>
-            ))}
+            {data.links.map((l) => {
+              const Icon = resolveContactIcon(l.icon);
+              return (
+                <li key={l.id}>
+                  <a
+                    href={l.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    <Icon className="h-4 w-4" aria-hidden />
+                    {l.platform_name}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </Reveal>
       )}

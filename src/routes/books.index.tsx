@@ -1,8 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+
+const STATUS_FILTERS = [
+  { key: "all", label: "All" },
+  { key: "published", label: "Published" },
+  { key: "in_progress", label: "In Progress" },
+] as const;
+
+type StatusFilter = (typeof STATUS_FILTERS)[number]["key"];
 
 const booksQuery = queryOptions({
   queryKey: ["books"],
@@ -64,17 +74,42 @@ function BooksSkeleton() {
 
 function BooksIndex() {
   const { data: books } = useSuspenseQuery(booksQuery);
+  const [filter, setFilter] = useState<StatusFilter>("all");
+  const filtered = filter === "all" ? books : books.filter((b) => b.status === filter);
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
       <Reveal as="header" className="border-b border-border pb-6">
         <p className="eyebrow">The Catalogue</p>
         <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">Books</h1>
       </Reveal>
+      {books.length > 0 && (
+        <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter books by status">
+          {STATUS_FILTERS.map((f) => (
+            <button
+              key={f.key}
+              type="button"
+              onClick={() => setFilter(f.key)}
+              aria-pressed={filter === f.key}
+              className={cn(
+                "eyebrow px-4 py-2 border transition-colors",
+                filter === f.key
+                  ? "border-primary text-primary bg-primary/10"
+                  : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground",
+              )}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      )}
       {books.length === 0 ? (
         <p className="mt-10 text-muted-foreground">No books yet.</p>
+      ) : filtered.length === 0 ? (
+        <p className="mt-10 text-muted-foreground">No books match this filter.</p>
       ) : (
         <ul className="mt-12 grid gap-10 md:gap-12 md:grid-cols-2">
-          {books.map((b, i) => (
+          {filtered.map((b, i) => (
             <Reveal
               as="li"
               key={b.id}
