@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Nik Nanoski — Science Fiction Author" },
+      { name: "description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Nik Nanoski — Science Fiction Author" },
+      { property: "og:description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Nik Nanoski — Science Fiction Author" },
+      { name: "twitter:description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9bffbe67-534f-4a54-a7df-2b4bb6bffc5f/id-preview-3e0d4bf8--244f4434-b112-46fa-96bb-ad217080780b.lovable.app-1784835524505.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9bffbe67-534f-4a54-a7df-2b4bb6bffc5f/id-preview-3e0d4bf8--244f4434-b112-46fa-96bb-ad217080780b.lovable.app-1784835524505.png" },
     ],
     links: [
       {

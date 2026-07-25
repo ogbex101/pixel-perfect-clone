@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
       { title: "Nik Nanoski — Science Fiction Author" },
       { name: "description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
       { property: "og:title", content: "Nik Nanoski — Science Fiction Author" },
-      { property: "og:description", content: "Sci-fi author exploring what remains after civilization ends." },
+      { property: "og:description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
