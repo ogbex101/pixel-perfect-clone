@@ -9,27 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TestimonialsRouteImport } from './routes/testimonials'
-import { Route as PressRouteImport } from './routes/press'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as CinematicRouteImport } from './routes/cinematic'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PressRouteImport } from './routes/press'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminBooksRouteImport } from './routes/admin.books'
+import { Route as AdminCharactersRouteImport } from './routes/admin.characters'
+import { Route as AdminContactLinksRouteImport } from './routes/admin.contact-links'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminPressRouteImport } from './routes/admin.press'
+import { Route as AdminProfileRouteImport } from './routes/admin.profile'
+import { Route as AdminSetupRouteImport } from './routes/admin.setup'
+import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
+import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 
-const TestimonialsRoute = TestimonialsRouteImport.update({
-  id: '/testimonials',
-  path: '/testimonials',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PressRoute = PressRouteImport.update({
-  id: '/press',
-  path: '/press',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -37,9 +38,74 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CinematicRoute = CinematicRouteImport.update({
+  id: '/cinematic',
+  path: '/cinematic',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBooksRoute = AdminBooksRouteImport.update({
+  id: '/admin/books',
+  path: '/admin/books',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCharactersRoute = AdminCharactersRouteImport.update({
+  id: '/admin/characters',
+  path: '/admin/characters',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminContactLinksRoute = AdminContactLinksRouteImport.update({
+  id: '/admin/contact-links',
+  path: '/admin/contact-links',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPressRoute = AdminPressRouteImport.update({
+  id: '/admin/press',
+  path: '/admin/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProfileRoute = AdminProfileRouteImport.update({
+  id: '/admin/profile',
+  path: '/admin/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSetupRoute = AdminSetupRouteImport.update({
+  id: '/admin/setup',
+  path: '/admin/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
+  id: '/admin/testimonials',
+  path: '/admin/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVideosRoute = AdminVideosRouteImport.update({
+  id: '/admin/videos',
+  path: '/admin/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
@@ -56,29 +122,62 @@ const BooksBookIdRoute = BooksBookIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/characters': typeof AdminCharactersRoute
+  '/admin/contact-links': typeof AdminContactLinksRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/press': typeof AdminPressRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/setup': typeof AdminSetupRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/characters': typeof AdminCharactersRoute
+  '/admin/contact-links': typeof AdminContactLinksRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/press': typeof AdminPressRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/setup': typeof AdminSetupRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/admin': typeof AdminIndexRoute
   '/books': typeof BooksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/characters': typeof AdminCharactersRoute
+  '/admin/contact-links': typeof AdminContactLinksRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/press': typeof AdminPressRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/setup': typeof AdminSetupRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
 }
 export interface FileRouteTypes {
@@ -86,62 +185,92 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/cinematic'
     | '/contact'
     | '/press'
     | '/testimonials'
+    | '/admin/books'
+    | '/admin/characters'
+    | '/admin/contact-links'
+    | '/admin/login'
+    | '/admin/press'
+    | '/admin/profile'
+    | '/admin/setup'
+    | '/admin/testimonials'
+    | '/admin/videos'
     | '/books/$bookId'
+    | '/admin/'
     | '/books/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/cinematic'
     | '/contact'
     | '/press'
     | '/testimonials'
+    | '/admin/books'
+    | '/admin/characters'
+    | '/admin/contact-links'
+    | '/admin/login'
+    | '/admin/press'
+    | '/admin/profile'
+    | '/admin/setup'
+    | '/admin/testimonials'
+    | '/admin/videos'
     | '/books/$bookId'
+    | '/admin'
     | '/books'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/cinematic'
     | '/contact'
     | '/press'
     | '/testimonials'
+    | '/admin/books'
+    | '/admin/characters'
+    | '/admin/contact-links'
+    | '/admin/login'
+    | '/admin/press'
+    | '/admin/profile'
+    | '/admin/setup'
+    | '/admin/testimonials'
+    | '/admin/videos'
     | '/books/$bookId'
+    | '/admin/'
     | '/books/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CinematicRoute: typeof CinematicRoute
   ContactRoute: typeof ContactRoute
   PressRoute: typeof PressRoute
   TestimonialsRoute: typeof TestimonialsRoute
+  AdminBooksRoute: typeof AdminBooksRoute
+  AdminCharactersRoute: typeof AdminCharactersRoute
+  AdminContactLinksRoute: typeof AdminContactLinksRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminPressRoute: typeof AdminPressRoute
+  AdminProfileRoute: typeof AdminProfileRoute
+  AdminSetupRoute: typeof AdminSetupRoute
+  AdminTestimonialsRoute: typeof AdminTestimonialsRoute
+  AdminVideosRoute: typeof AdminVideosRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   BooksIndexRoute: typeof BooksIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/testimonials': {
-      id: '/testimonials'
-      path: '/testimonials'
-      fullPath: '/testimonials'
-      preLoaderRoute: typeof TestimonialsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/press': {
-      id: '/press'
-      path: '/press'
-      fullPath: '/press'
-      preLoaderRoute: typeof PressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -151,11 +280,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/cinematic': {
+      id: '/cinematic'
+      path: '/cinematic'
+      fullPath: '/cinematic'
+      preLoaderRoute: typeof CinematicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/books': {
+      id: '/admin/books'
+      path: '/admin/books'
+      fullPath: '/admin/books'
+      preLoaderRoute: typeof AdminBooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/characters': {
+      id: '/admin/characters'
+      path: '/admin/characters'
+      fullPath: '/admin/characters'
+      preLoaderRoute: typeof AdminCharactersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/contact-links': {
+      id: '/admin/contact-links'
+      path: '/admin/contact-links'
+      fullPath: '/admin/contact-links'
+      preLoaderRoute: typeof AdminContactLinksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/press': {
+      id: '/admin/press'
+      path: '/admin/press'
+      fullPath: '/admin/press'
+      preLoaderRoute: typeof AdminPressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/profile': {
+      id: '/admin/profile'
+      path: '/admin/profile'
+      fullPath: '/admin/profile'
+      preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/setup': {
+      id: '/admin/setup'
+      path: '/admin/setup'
+      fullPath: '/admin/setup'
+      preLoaderRoute: typeof AdminSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/testimonials': {
+      id: '/admin/testimonials'
+      path: '/admin/testimonials'
+      fullPath: '/admin/testimonials'
+      preLoaderRoute: typeof AdminTestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/videos': {
+      id: '/admin/videos'
+      path: '/admin/videos'
+      fullPath: '/admin/videos'
+      preLoaderRoute: typeof AdminVideosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/': {
@@ -178,12 +398,33 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CinematicRoute: CinematicRoute,
   ContactRoute: ContactRoute,
   PressRoute: PressRoute,
   TestimonialsRoute: TestimonialsRoute,
+  AdminBooksRoute: AdminBooksRoute,
+  AdminCharactersRoute: AdminCharactersRoute,
+  AdminContactLinksRoute: AdminContactLinksRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminPressRoute: AdminPressRoute,
+  AdminProfileRoute: AdminProfileRoute,
+  AdminSetupRoute: AdminSetupRoute,
+  AdminTestimonialsRoute: AdminTestimonialsRoute,
+  AdminVideosRoute: AdminVideosRoute,
   BooksBookIdRoute: BooksBookIdRoute,
+  AdminIndexRoute: AdminIndexRoute,
   BooksIndexRoute: BooksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
