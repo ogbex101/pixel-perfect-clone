@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as BreadStreetKitchenRouteImport } from './routes/bread-street-kitchen'
 import { Route as CinematicRouteImport } from './routes/cinematic'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PressRouteImport } from './routes/press'
@@ -36,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BreadStreetKitchenRoute = BreadStreetKitchenRouteImport.update({
+  id: '/bread-street-kitchen',
+  path: '/bread-street-kitchen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CinematicRoute = CinematicRouteImport.update({
@@ -122,6 +128,7 @@ const BooksBookIdRoute = BooksBookIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bread-street-kitchen': typeof BreadStreetKitchenRoute
   '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bread-street-kitchen': typeof BreadStreetKitchenRoute
   '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
@@ -163,6 +171,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bread-street-kitchen': typeof BreadStreetKitchenRoute
   '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
   '/press': typeof PressRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/bread-street-kitchen'
     | '/cinematic'
     | '/contact'
     | '/press'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/bread-street-kitchen'
     | '/cinematic'
     | '/contact'
     | '/press'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/bread-street-kitchen'
     | '/cinematic'
     | '/contact'
     | '/press'
@@ -246,6 +258,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BreadStreetKitchenRoute: typeof BreadStreetKitchenRoute
   CinematicRoute: typeof CinematicRoute
   ContactRoute: typeof ContactRoute
   PressRoute: typeof PressRoute
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bread-street-kitchen': {
+      id: '/bread-street-kitchen'
+      path: '/bread-street-kitchen'
+      fullPath: '/bread-street-kitchen'
+      preLoaderRoute: typeof BreadStreetKitchenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cinematic': {
@@ -398,6 +418,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BreadStreetKitchenRoute: BreadStreetKitchenRoute,
   CinematicRoute: CinematicRoute,
   ContactRoute: ContactRoute,
   PressRoute: PressRoute,

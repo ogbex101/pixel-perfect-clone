@@ -8,37 +8,30 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
-import { Menu } from "lucide-react";
+import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Toaster } from "@/components/ui/sonner";
+import { SiteHeader } from "@/components/gr/site-header";
+import { SiteFooter } from "@/components/gr/site-footer";
+import { SiteOverlays } from "@/components/gr/site-overlays";
 
-const NAV_LINKS = [
-  { to: "/about", label: "About" },
-  { to: "/books", label: "Books" },
-  { to: "/cinematic", label: "Cinematic" },
-  { to: "/press", label: "Press" },
-  { to: "/testimonials", label: "Praise" },
-  { to: "/contact", label: "Contact" },
-] as const;
+const SITE_TITLE = "Explore Gordon Ramsay Restaurants";
+const SITE_DESCRIPTION =
+  "Book a table at Gordon Ramsay Restaurants — Bread Street Kitchen & Bar, Petrus, Lucky Cat and more. Explore menus, private dining, masterclasses and gifting.";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="gr-page flex min-h-screen items-center justify-center bg-black px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <h1 className="text-7xl font-bold text-white">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-white">Page not found</h2>
+        <p className="mt-2 text-sm text-[#d0d0d0]">
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
+          <Link to="/" className="gr-btn gr-btn-light">
             Go home
           </Link>
         </div>
@@ -55,28 +48,23 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="gr-page flex min-h-screen items-center justify-center bg-black px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <h1 className="text-xl font-semibold tracking-tight text-white">This page didn't load</h1>
+        <p className="mt-2 text-sm text-[#d0d0d0]">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="gr-btn gr-btn-light"
           >
             Try again
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
+          <a href="/" className="gr-btn gr-btn-outline">
             Go home
           </a>
         </div>
@@ -90,18 +78,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nik Nanoski — Science Fiction Author" },
-      { name: "description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Nik Nanoski — Science Fiction Author" },
-      { property: "og:description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
+      { title: SITE_TITLE },
+      { name: "description", content: SITE_DESCRIPTION },
+      { property: "og:title", content: SITE_TITLE },
+      { property: "og:description", content: SITE_DESCRIPTION },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Nik Nanoski — Science Fiction Author" },
-      { name: "twitter:description", content: "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9bffbe67-534f-4a54-a7df-2b4bb6bffc5f/id-preview-3e0d4bf8--244f4434-b112-46fa-96bb-ad217080780b.lovable.app-1784835524505.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9bffbe67-534f-4a54-a7df-2b4bb6bffc5f/id-preview-3e0d4bf8--244f4434-b112-46fa-96bb-ad217080780b.lovable.app-1784835524505.png" },
+      { name: "twitter:title", content: SITE_TITLE },
+      { name: "twitter:description", content: SITE_DESCRIPTION },
     ],
     links: [
       {
@@ -112,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -140,7 +124,6 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [menuOpen, setMenuOpen] = useState(false);
   const isAdmin = pathname.startsWith("/admin");
 
   if (isAdmin) {
@@ -154,65 +137,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen flex flex-col bg-background text-foreground">
-        <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
-            <Link
-              to="/"
-              className="font-serif text-xl tracking-tight text-primary hover:text-[color:var(--brand-gold-bright)] transition-colors"
-            >
-              Nik Nanoski
-            </Link>
-            <nav className="hidden md:flex flex-wrap items-center gap-8 text-sm font-medium text-muted-foreground">
-              {NAV_LINKS.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  activeProps={{ className: "text-primary" }}
-                  className="link-underline hover:text-primary transition-colors"
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
-            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-              <SheetTrigger asChild>
-                <button
-                  className="md:hidden inline-flex items-center justify-center rounded-sm border border-border p-2 text-foreground hover:border-primary hover:text-primary transition-colors"
-                  aria-label="Open menu"
-                >
-                  <Menu className="h-5 w-5" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right" className="texture-paper border-l border-border w-3/4">
-                <SheetTitle className="font-serif text-lg text-primary">Menu</SheetTitle>
-                <nav className="mt-8 flex flex-col gap-6 text-lg font-serif">
-                  {NAV_LINKS.map((l) => (
-                    <Link
-                      key={l.to}
-                      to={l.to}
-                      onClick={() => setMenuOpen(false)}
-                      activeProps={{ className: "text-primary" }}
-                      className="text-foreground/85 hover:text-primary transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  ))}
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </header>
+      <div className="gr-page min-h-screen flex flex-col bg-black text-white">
+        <SiteHeader />
         <main key={pathname} className="flex-1 route-transition">
           <Outlet />
         </main>
-        <footer className="border-t border-border texture-metal mt-24">
-          <div className="mx-auto max-w-6xl px-6 py-10 flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
-            <span className="font-serif italic text-foreground/80">Nik Nanoski</span>
-            <span>© {new Date().getFullYear()} — Stories from after the end.</span>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
+      <SiteOverlays />
       <Toaster />
     </QueryClientProvider>
   );

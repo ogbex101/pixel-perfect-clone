@@ -326,3 +326,293 @@
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;
 }
+
+/* =====================================================================
+ * Gordon Ramsay Restaurants — dark luxury hospitality theme
+ * Explicit hex tokens are used here (rather than the oklch shadcn scale
+ * above) to keep 1:1 color fidelity with the scanned brand palette.
+ * ===================================================================== */
+
+:root {
+  --gr-bg-header: #1a1a1a;
+  --gr-bg-dark: #141414;
+  --gr-bg-black: #000000;
+  --gr-accent-gold: #e1d8bf;
+  --gr-btn-grey: #d2cece;
+  --gr-btn-dark: #1f1f1f;
+  --gr-text-white: #ffffff;
+  --gr-text-muted: #d0d0d0;
+  --gr-text-dark: #1d1d1b;
+  --gr-border: rgba(77, 77, 77, 0.8);
+  --font-gr: "Barlow", "Helvetica W01", "Helvetica Neue", Arial, sans-serif;
+}
+
+.gr-page {
+  font-family: var(--font-gr);
+  color: var(--gr-text-white);
+  background: var(--gr-bg-black);
+}
+
+.gr-page h1,
+.gr-page h2,
+.gr-page h3,
+.gr-page h4,
+.gr-page p,
+.gr-page a,
+.gr-page button,
+.gr-page span,
+.gr-page label,
+.gr-page input,
+.gr-page select {
+  font-family: var(--font-gr);
+  letter-spacing: normal;
+}
+
+.gr-h1 {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: 0.5px;
+}
+@media (min-width: 768px) {
+  .gr-h1 {
+    font-size: 50px;
+    line-height: 60px;
+  }
+}
+
+.gr-h2 {
+  font-size: 26px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+@media (min-width: 768px) {
+  .gr-h2 {
+    font-size: 36px;
+  }
+}
+
+.gr-underline {
+  width: 80px;
+  height: 3px;
+  background-color: var(--gr-text-white);
+  margin: 0 auto 15px;
+}
+
+/* --- Buttons ---------------------------------------------------------- */
+
+.gr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 4px;
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s linear, transform 0.15s ease;
+  white-space: nowrap;
+}
+.gr-btn:active {
+  transform: translateY(1px);
+}
+
+.gr-btn-light {
+  background-color: var(--gr-btn-grey);
+  color: var(--gr-text-dark);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 0px 0px;
+}
+.gr-btn-light:hover {
+  background-color: #e8e5e2;
+}
+
+.gr-btn-outline {
+  background: transparent;
+  color: var(--gr-text-white);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+.gr-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.gr-btn-ghost {
+  background-color: var(--gr-btn-dark);
+  color: var(--gr-text-white);
+  border: 2px solid rgba(77, 77, 77, 0.4);
+  font-size: 16px;
+  font-weight: 400;
+  padding: 15px 30px;
+  text-transform: uppercase;
+}
+.gr-btn-ghost:hover {
+  background-color: #303030;
+}
+
+.gr-btn-gold {
+  background-color: var(--gr-accent-gold);
+  color: var(--gr-text-dark);
+  font-family: "Helvetica W01", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--gr-text-dark);
+  padding: 15px 60px;
+}
+.gr-btn-gold:hover {
+  background-color: #ece5d2;
+}
+
+/* --- Category grid overlay cards --------------------------------------- */
+
+.chef-block-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 405px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.chef-block-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 16, 16, 0.7);
+  transition: background 0.3s ease;
+}
+
+.chef-block-card:hover .overlay {
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.chef-block-card .bg-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.chef-block-card:hover .bg-image {
+  transform: scale(1.03);
+}
+
+.chef-block-card .content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  max-width: 600px;
+}
+
+/* --- BSK hub location cards --------------------------------------------- */
+
+.bsk-tile-bg {
+  background-image: url("/images/asset_17_squared_metal_2X-yellow.webp");
+  background-repeat: repeat;
+  background-size: 264px 264px;
+}
+
+.bsk-tile-bg-grey {
+  background-image: url("/images/asset_21_squared_metal_2X-grey.webp");
+  background-repeat: repeat;
+  background-size: 264px 264px;
+}
+
+.bsk-hub-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  height: 579px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.bsk-hub-card .bg-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.bsk-hub-card:hover .bg-image {
+  transform: scale(1.05);
+}
+
+.bsk-hub-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 16, 16, 0.45);
+  background-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 80%);
+}
+
+.bsk-hub-card .content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* --- Hero carousel ------------------------------------------------------- */
+
+.gr-hero-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ffffff;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.gr-hero-dot.is-active {
+  opacity: 1;
+}
+
+@keyframes gr-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gr-fade-in {
+  animation: gr-fade-in 0.6s ease both;
+}
+
+/* --- Sticky elevation shadows -------------------------------------------- */
+
+.gr-shadow-elevated {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 30px 70px 0px;
+}
+
+.gr-shadow-nav {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 0px 0px;
+}
+
+/* Native date/time inputs draw their own picker icon; we render a custom one,
+   so hide the native indicator to avoid a doubled-up icon. */
+.gr-page input[type="date"]::-webkit-calendar-picker-indicator,
+.gr-page input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
