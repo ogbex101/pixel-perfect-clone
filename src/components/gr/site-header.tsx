@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
@@ -15,29 +15,47 @@ const NAV_LINKS = [
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const solid = !isHome || scrolled || menuOpen;
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#1a1a1a] gr-shadow-nav">
-      <div className="mx-auto flex h-[55px] md:h-[70px] max-w-[1440px] items-center justify-between px-4 md:px-8">
+    <header
+      className={`fixed top-0 z-40 w-full transition-all duration-500 ${
+        solid
+          ? "bg-[#12100d]/95 backdrop-blur-sm border-b border-[color:var(--gr-hairline-faint)]"
+          : "bg-gradient-to-b from-black/60 to-transparent border-b border-transparent"
+      }`}
+    >
+      <div className="mx-auto flex h-[60px] md:h-[76px] max-w-[1320px] items-center justify-between px-4 md:px-8">
         <Link
           to="/"
-          className="flex items-center shrink-0 max-w-[150px] md:max-w-[220px]"
+          className="flex items-center shrink-0 max-w-[150px] md:max-w-[210px]"
           aria-label="Gordon Ramsay Restaurants — home"
         >
           <img
             src="/images/asset_18_gr_LOGO.svg"
             alt="Gordon Ramsay Restaurants"
-            className="h-auto w-full max-h-8 md:max-h-[42px]"
+            className="h-auto w-full max-h-7 md:max-h-9"
           />
         </Link>
 
-        <nav className="hidden xl:flex items-center gap-0.5 h-full shrink-0">
+        <nav className="hidden xl:flex items-center h-full shrink-0">
           {NAV_LINKS.map((l) => (
             <Link
               key={l.label}
               to={l.to}
               hash={l.hash}
-              className="shrink-0 whitespace-nowrap px-3 h-[70px] flex items-center text-[15px] font-light text-white hover:bg-white/10 transition-colors duration-500"
+              className="gr-navlink shrink-0 whitespace-nowrap px-3 h-[76px] flex items-center text-[12px] font-medium uppercase tracking-[0.16em] text-[color:var(--gr-ivory)] hover:text-[color:var(--gr-gold-bright)] transition-colors duration-300"
             >
               {l.label}
             </Link>
@@ -47,15 +65,18 @@ export function SiteHeader() {
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>
             <button
-              className="xl:hidden inline-flex items-center justify-center p-2 text-white shrink-0"
+              className="xl:hidden inline-flex items-center justify-center p-2 text-[color:var(--gr-ivory)] shrink-0"
               aria-label="Open menu"
             >
               <Menu className="h-6 w-6" />
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="bg-[#303030] border-l border-white/10 w-4/5 p-0">
+          <SheetContent
+            side="right"
+            className="bg-[#14110e] border-l border-[color:var(--gr-hairline-faint)] w-4/5 p-0"
+          >
             <SheetTitle className="sr-only">Menu</SheetTitle>
-            <div className="flex items-center justify-between gap-3 px-5 h-[55px] border-b border-white/10">
+            <div className="flex items-center justify-between gap-3 px-5 h-[60px] border-b border-[color:var(--gr-hairline-faint)]">
               <img
                 src="/images/asset_18_gr_LOGO.svg"
                 alt="Gordon Ramsay Restaurants"
@@ -64,19 +85,19 @@ export function SiteHeader() {
               <button
                 onClick={() => setMenuOpen(false)}
                 aria-label="Close menu"
-                className="shrink-0 text-white"
+                className="shrink-0 text-[color:var(--gr-ivory)]"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="flex flex-col py-2">
+            <nav className="flex flex-col py-4">
               {NAV_LINKS.map((l) => (
                 <Link
                   key={l.label}
                   to={l.to}
                   hash={l.hash}
                   onClick={() => setMenuOpen(false)}
-                  className="px-5 py-4 text-[15px] font-light text-white border-b border-white/5 hover:bg-white/5 transition-colors"
+                  className="px-6 py-4 text-[13px] uppercase tracking-[0.18em] text-[color:var(--gr-ivory)] border-b border-white/5 hover:text-[color:var(--gr-gold-bright)] transition-colors"
                 >
                   {l.label}
                 </Link>

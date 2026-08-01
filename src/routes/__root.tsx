@@ -23,15 +23,16 @@ const SITE_DESCRIPTION =
 
 function NotFoundComponent() {
   return (
-    <div className="gr-page flex min-h-screen items-center justify-center bg-black px-4">
+    <div className="gr-page flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-white">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-white">Page not found</h2>
-        <p className="mt-2 text-sm text-[#d0d0d0]">
+        <h1 className="gr-h1 text-[color:var(--gr-gold)]">404</h1>
+        <h2 className="gr-h3 mt-4">Page not found</h2>
+        <div className="gr-rule-center my-5" />
+        <p className="text-sm text-[color:var(--gr-muted)]">
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <div className="mt-6">
-          <Link to="/" className="gr-btn gr-btn-light">
+        <div className="mt-8">
+          <Link to="/" className="gr-btn-ghost">
             Go home
           </Link>
         </div>
@@ -48,23 +49,24 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="gr-page flex min-h-screen items-center justify-center bg-black px-4">
+    <div className="gr-page flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-white">This page didn't load</h1>
-        <p className="mt-2 text-sm text-[#d0d0d0]">
+        <h1 className="gr-h3">This page didn't load</h1>
+        <div className="gr-rule-center my-5" />
+        <p className="text-sm text-[color:var(--gr-muted)]">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="gr-btn gr-btn-light"
+            className="gr-btn-solid"
           >
             Try again
           </button>
-          <a href="/" className="gr-btn gr-btn-outline">
+          <a href="/" className="gr-btn-ghost">
             Go home
           </a>
         </div>
@@ -96,7 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -135,10 +137,15 @@ function RootComponent() {
     );
   }
 
+  const isHome = pathname === "/";
+
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="gr-page min-h-screen flex flex-col bg-black text-white">
+      <div className="gr-page min-h-screen flex flex-col">
         <SiteHeader />
+        {/* The header is fixed; the homepage hero runs underneath it, all
+            other routes need a spacer so content clears it. */}
+        {!isHome && <div aria-hidden className="h-[60px] md:h-[76px]" />}
         <main key={pathname} className="flex-1 route-transition">
           <Outlet />
         </main>

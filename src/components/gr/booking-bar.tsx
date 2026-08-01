@@ -29,76 +29,95 @@ export function BookingBar() {
   };
 
   return (
-    <form
-      id="book"
-      onSubmit={handleSubmit}
-      className="w-full bg-[#141414] py-3"
-      aria-label="Book a table"
-    >
-      <div className="mx-auto flex max-w-[1440px] flex-col md:flex-row items-stretch gap-3 px-4 md:px-8 py-2">
-        <label className="sr-only" htmlFor="gr-restaurant">
-          Restaurant
-        </label>
-        <select
-          id="gr-restaurant"
-          value={restaurant}
-          onChange={(e) => setRestaurant(e.target.value)}
-          className="flex-[1.4] rounded-[4px] border border-[rgba(77,77,77,0.8)] bg-[#141414] px-5 py-[15px] text-[15px] text-[#d0d0d0] outline-none focus:border-white/60"
-        >
-          <option value="" disabled>
-            Select a Restaurant
-          </option>
-          {RESTAURANTS.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
-
-        <div className="relative flex-1">
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-[4px] border border-[rgba(77,77,77,0.8)] bg-[#141414] px-5 py-[15px] pr-10 text-[15px] text-[#d0d0d0] outline-none focus:border-white/60 [color-scheme:dark]"
-          />
-          <CalendarDays className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d0d0d0]" />
-        </div>
-
-        <div className="relative flex-1">
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full rounded-[4px] border border-[rgba(77,77,77,0.8)] bg-[#141414] px-5 py-[15px] pr-10 text-[15px] text-[#d0d0d0] outline-none focus:border-white/60 [color-scheme:dark]"
-          />
-          <Clock className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d0d0d0]" />
-        </div>
-
-        <div className="relative flex-1">
+    <div className="relative z-20 mx-auto -mt-14 max-w-[1240px] px-4 md:px-6">
+      <form
+        id="book"
+        onSubmit={handleSubmit}
+        aria-label="Book a table"
+        className="gr-booking-card grid grid-cols-1 gap-5 p-6 md:grid-cols-[1.5fr_1fr_1fr_1fr_auto] md:items-end md:gap-4 md:p-7"
+      >
+        <div>
+          <label className="gr-field-label" htmlFor="gr-restaurant">
+            Restaurant
+          </label>
           <select
-            value={guests}
-            onChange={(e) => setGuests(e.target.value)}
-            aria-label="Party size"
-            className="w-full appearance-none rounded-[4px] border border-[rgba(77,77,77,0.8)] bg-[#141414] px-5 py-[15px] pr-10 text-[15px] text-[#d0d0d0] outline-none focus:border-white/60"
+            id="gr-restaurant"
+            value={restaurant}
+            onChange={(e) => setRestaurant(e.target.value)}
+            className="gr-input"
           >
             <option value="" disabled>
-              Guests
+              Select a restaurant
             </option>
-            {GUEST_COUNTS.map((n) => (
-              <option key={n} value={n}>
-                {n}
-                {n === 12 ? "+" : ""} Guest{n > 1 ? "s" : ""}
+            {RESTAURANTS.map((r) => (
+              <option key={r} value={r}>
+                {r}
               </option>
             ))}
           </select>
-          <Users className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d0d0d0]" />
         </div>
 
-        <button type="submit" className="gr-btn gr-btn-light flex-1 md:flex-none">
+        <div>
+          <label className="gr-field-label" htmlFor="gr-date">
+            Date
+          </label>
+          <div className="relative">
+            <input
+              id="gr-date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="gr-input pr-10 [color-scheme:dark]"
+            />
+            <CalendarDays className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--gr-gold)]" />
+          </div>
+        </div>
+
+        <div>
+          <label className="gr-field-label" htmlFor="gr-time">
+            Time
+          </label>
+          <div className="relative">
+            <input
+              id="gr-time"
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="gr-input pr-10 [color-scheme:dark]"
+            />
+            <Clock className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--gr-gold)]" />
+          </div>
+        </div>
+
+        <div>
+          <label className="gr-field-label" htmlFor="gr-guests">
+            Guests
+          </label>
+          <div className="relative">
+            <select
+              id="gr-guests"
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
+              className="gr-input appearance-none pr-10"
+            >
+              <option value="" disabled>
+                Party size
+              </option>
+              {GUEST_COUNTS.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                  {n === 12 ? "+" : ""} Guest{n > 1 ? "s" : ""}
+                </option>
+              ))}
+            </select>
+            <Users className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--gr-gold)]" />
+          </div>
+        </div>
+
+        <button type="submit" className="gr-btn-solid w-full md:w-auto">
           Book a Table
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }

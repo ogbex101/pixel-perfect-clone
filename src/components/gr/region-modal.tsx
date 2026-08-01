@@ -22,27 +22,21 @@ export function RegionModal({ onDismiss }: { onDismiss?: () => void }) {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4">
-      <div className="gr-shadow-elevated w-full max-w-[560px] rounded-[6px] bg-[#1a1a1a] p-8 md:p-10 text-center">
-        <h2 className="text-[22px] md:text-[27.2px] font-bold leading-tight text-white">
-          IT LOOKS LIKE YOU'RE IN NORTH AMERICA
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 px-4 backdrop-blur-[2px]">
+      <div className="gr-shadow-elevated gr-fade-in w-full max-w-[560px] border border-[color:var(--gr-hairline-faint)] bg-[color:var(--gr-surface)] p-9 text-center md:p-12">
+        <p className="gr-eyebrow">Welcome</p>
+        <h2 className="gr-h2 mt-4 text-[color:var(--gr-ivory)]">
+          It looks like you're in North America
         </h2>
-        <p className="mt-4 text-[18px] md:text-[25.6px] font-bold leading-tight text-[#d0d0d0]">
-          DO YOU WANT TO VISIT THE US SITE?
+        <div className="gr-rule-center my-6" />
+        <p className="text-[15px] text-[color:var(--gr-muted)]">
+          Would you like to visit the US site instead?
         </p>
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            type="button"
-            onClick={dismiss}
-            className="gr-btn gr-btn-light w-full sm:w-auto whitespace-nowrap"
-          >
+        <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <button type="button" onClick={dismiss} className="gr-btn-solid w-full sm:w-auto">
             Go to US Site
           </button>
-          <button
-            type="button"
-            onClick={dismiss}
-            className="w-full sm:w-auto whitespace-nowrap rounded-[4px] border-2 border-[rgba(77,77,77,0.4)] bg-[#1f1f1f] px-6 py-[15px] text-[16px] md:text-[18px] font-bold uppercase text-[#d0d0d0] transition-colors hover:bg-[#303030]"
-          >
+          <button type="button" onClick={dismiss} className="gr-btn-ghost w-full sm:w-auto">
             Continue to UK Site
           </button>
         </div>

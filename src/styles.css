@@ -327,36 +327,44 @@
   animation: shimmer 1.8s ease-in-out infinite;
 }
 
+
 /* =====================================================================
- * Gordon Ramsay Restaurants — dark luxury hospitality theme
- * Explicit hex tokens are used here (rather than the oklch shadcn scale
- * above) to keep 1:1 color fidelity with the scanned brand palette.
+ * Gordon Ramsay Restaurants — "Michelin editorial" design system.
+ * Warm near-black layered palette, champagne-gold accents, serif display
+ * type. Explicit hex tokens are kept for brand color fidelity.
  * ===================================================================== */
 
 :root {
-  --gr-bg-header: #1a1a1a;
-  --gr-bg-dark: #141414;
-  --gr-bg-black: #000000;
-  --gr-accent-gold: #e1d8bf;
-  --gr-btn-grey: #d2cece;
-  --gr-btn-dark: #1f1f1f;
-  --gr-text-white: #ffffff;
-  --gr-text-muted: #d0d0d0;
-  --gr-text-dark: #1d1d1b;
-  --gr-border: rgba(77, 77, 77, 0.8);
-  --font-gr: "Barlow", "Helvetica W01", "Helvetica Neue", Arial, sans-serif;
+  --gr-ink: #0f0e0c;
+  --gr-surface: #161310;
+  --gr-surface-2: #1d1915;
+  --gr-ivory: #f4efe6;
+  --gr-muted: #a99f8c;
+  --gr-gold: #c9a96a;
+  --gr-gold-bright: #ddc088;
+  --gr-gold-soft: #e1d8bf;
+  --gr-hairline: rgba(201, 169, 106, 0.28);
+  --gr-hairline-faint: rgba(201, 169, 106, 0.14);
+  --font-gr-serif: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  --font-gr-sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --gr-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gr-page {
-  font-family: var(--font-gr);
-  color: var(--gr-text-white);
-  background: var(--gr-bg-black);
+  font-family: var(--font-gr-sans);
+  color: var(--gr-ivory);
+  background: var(--gr-ink);
 }
 
 .gr-page h1,
 .gr-page h2,
 .gr-page h3,
-.gr-page h4,
+.gr-page h4 {
+  font-family: var(--font-gr-serif);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
 .gr-page p,
 .gr-page a,
 .gr-page button,
@@ -364,153 +372,368 @@
 .gr-page label,
 .gr-page input,
 .gr-page select {
-  font-family: var(--font-gr);
-  letter-spacing: normal;
+  font-family: var(--font-gr-sans);
+}
+
+.gr-page [id] {
+  scroll-margin-top: 90px;
+}
+
+/* --- Type scale ------------------------------------------------------- */
+
+.gr-serif {
+  font-family: var(--font-gr-serif);
 }
 
 .gr-h1 {
-  font-size: 25px;
-  font-weight: 700;
-  line-height: 30px;
-  letter-spacing: 0.5px;
-}
-@media (min-width: 768px) {
-  .gr-h1 {
-    font-size: 50px;
-    line-height: 60px;
-  }
+  font-family: var(--font-gr-serif);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+  line-height: 1.04;
+  letter-spacing: 0.01em;
 }
 
 .gr-h2 {
-  font-size: 26px;
+  font-family: var(--font-gr-serif);
   font-weight: 400;
+  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  line-height: 1.12;
+}
+
+.gr-h3 {
+  font-family: var(--font-gr-serif);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  line-height: 1.2;
+}
+
+.gr-eyebrow {
+  font-family: var(--font-gr-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  letter-spacing: 2px;
-}
-@media (min-width: 768px) {
-  .gr-h2 {
-    font-size: 36px;
-  }
+  color: var(--gr-gold);
 }
 
-.gr-underline {
-  width: 80px;
-  height: 3px;
-  background-color: var(--gr-text-white);
-  margin: 0 auto 15px;
+.gr-num {
+  font-family: var(--font-gr-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--gr-gold);
+  letter-spacing: 0.08em;
 }
 
-/* --- Buttons ---------------------------------------------------------- */
+.gr-rule {
+  height: 1px;
+  width: 56px;
+  border: 0;
+  background: linear-gradient(90deg, var(--gr-gold), rgba(201, 169, 106, 0.15));
+}
 
-.gr-btn {
+.gr-rule-center {
+  height: 1px;
+  width: 56px;
+  border: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(
+    90deg,
+    rgba(201, 169, 106, 0.1),
+    var(--gr-gold),
+    rgba(201, 169, 106, 0.1)
+  );
+}
+
+/* --- Buttons & links --------------------------------------------------- */
+
+.gr-btn-solid {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border-radius: 4px;
-  padding: 15px 40px;
-  font-size: 18px;
-  font-weight: 700;
+  background: var(--gr-gold);
+  color: #171410;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  padding: 17px 38px;
+  border: 1px solid var(--gr-gold);
   cursor: pointer;
-  transition: background 0.2s linear, transform 0.15s ease;
   white-space: nowrap;
+  transition:
+    background 0.4s var(--gr-ease),
+    border-color 0.4s var(--gr-ease),
+    transform 0.2s var(--gr-ease);
 }
-.gr-btn:active {
+
+.gr-btn-solid:hover {
+  background: var(--gr-gold-bright);
+  border-color: var(--gr-gold-bright);
+}
+
+.gr-btn-solid:active {
   transform: translateY(1px);
 }
 
-.gr-btn-light {
-  background-color: var(--gr-btn-grey);
-  color: var(--gr-text-dark);
-  background-image: linear-gradient(rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 0px 0px;
-}
-.gr-btn-light:hover {
-  background-color: #e8e5e2;
-}
-
-.gr-btn-outline {
-  background: transparent;
-  color: var(--gr-text-white);
-  border: 2px solid rgba(255, 255, 255, 0.6);
-}
-.gr-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
 .gr-btn-ghost {
-  background-color: var(--gr-btn-dark);
-  color: var(--gr-text-white);
-  border: 2px solid rgba(77, 77, 77, 0.4);
-  font-size: 16px;
-  font-weight: 400;
-  padding: 15px 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--gr-ivory);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  padding: 16px 36px;
+  border: 1px solid rgba(244, 239, 230, 0.35);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color 0.4s var(--gr-ease),
+    color 0.4s var(--gr-ease),
+    background 0.4s var(--gr-ease);
 }
+
 .gr-btn-ghost:hover {
-  background-color: #303030;
+  border-color: var(--gr-gold);
+  color: var(--gr-gold-bright);
+  background: rgba(201, 169, 106, 0.06);
+}
+
+.gr-btn-sm {
+  padding: 12px 22px;
+  font-size: 11px;
 }
 
 .gr-btn-gold {
-  background-color: var(--gr-accent-gold);
-  color: var(--gr-text-dark);
-  font-family: "Helvetica W01", "Helvetica Neue", Arial, sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid var(--gr-text-dark);
-  padding: 15px 60px;
-}
-.gr-btn-gold:hover {
-  background-color: #ece5d2;
-}
-
-/* --- Category grid overlay cards --------------------------------------- */
-
-.chef-block-card {
-  position: relative;
-  overflow: hidden;
-  min-height: 405px;
-  background-size: cover;
-  background-position: center;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  background: var(--gr-gold-soft);
+  color: #1d1b16;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 14px 52px;
+  border: 1px solid rgba(29, 27, 22, 0.6);
+  border-radius: 2px;
+  cursor: pointer;
+  transition:
+    background 0.4s var(--gr-ease),
+    transform 0.2s var(--gr-ease);
 }
 
-.chef-block-card .overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(16, 16, 16, 0.7);
-  transition: background 0.3s ease;
+.gr-btn-gold:hover {
+  background: #ece5d2;
 }
 
-.chef-block-card:hover .overlay {
-  background: rgba(0, 0, 0, 0.78);
-}
-
-.chef-block-card .bg-image {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.5s ease;
-}
-
-.chef-block-card:hover .bg-image {
-  transform: scale(1.03);
-}
-
-.chef-block-card .content {
+.gr-link-arrow {
   position: relative;
-  z-index: 2;
-  padding: 20px;
-  max-width: 600px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gr-gold);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  transition: color 0.4s var(--gr-ease);
 }
 
-/* --- BSK hub location cards --------------------------------------------- */
+.gr-link-arrow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--gr-gold);
+  transform: scaleX(0.35);
+  transform-origin: left;
+  transition: transform 0.5s var(--gr-ease);
+}
+
+.gr-link-arrow:hover {
+  color: var(--gr-gold-bright);
+}
+
+.gr-link-arrow:hover::after {
+  transform: scaleX(1);
+}
+
+.gr-link-arrow .arrow {
+  transition: transform 0.4s var(--gr-ease);
+}
+
+.gr-link-arrow:hover .arrow {
+  transform: translateX(5px);
+}
+
+.gr-navlink {
+  position: relative;
+}
+
+.gr-navlink::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 20px;
+  height: 1px;
+  background: var(--gr-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--gr-ease);
+}
+
+.gr-navlink:hover::after {
+  transform: scaleX(1);
+}
+
+/* --- Hero carousel ------------------------------------------------------ */
+
+.gr-hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+
+.gr-hero-slide.is-active {
+  opacity: 1;
+}
+
+@keyframes gr-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+.gr-kenburns {
+  animation: gr-kenburns 9s var(--gr-ease) forwards;
+}
+
+@keyframes gr-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.gr-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--gr-gold);
+  animation: gr-fill 7.5s linear forwards;
+}
+
+@keyframes gr-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gr-fade-in {
+  animation: gr-fade-in 0.9s var(--gr-ease) both;
+}
+
+.gr-fade-in-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.gr-fade-in-delay-2 {
+  animation-delay: 0.3s;
+}
+
+/* --- Booking card ------------------------------------------------------- */
+
+.gr-booking-card {
+  background: rgba(22, 19, 16, 0.96);
+  border: 1px solid var(--gr-hairline-faint);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+.gr-field-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gr-muted);
+  margin-bottom: 8px;
+}
+
+.gr-input {
+  width: 100%;
+  background: var(--gr-ink);
+  border: 1px solid rgba(244, 239, 230, 0.12);
+  color: var(--gr-ivory);
+  font-size: 14px;
+  padding: 13px 16px;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.4s var(--gr-ease);
+}
+
+.gr-input:focus {
+  border-color: var(--gr-gold);
+}
+
+.gr-page input[type="date"]::-webkit-calendar-picker-indicator,
+.gr-page input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+/* --- Editorial imagery -------------------------------------------------- */
+
+.gr-img-zoom {
+  overflow: hidden;
+}
+
+.gr-img-zoom img {
+  transition: transform 1.4s var(--gr-ease);
+}
+
+.gr-img-zoom:hover img {
+  transform: scale(1.05);
+}
+
+.gr-frame {
+  position: relative;
+}
+
+.gr-frame::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(225, 216, 191, 0.35);
+  pointer-events: none;
+  transition: border-color 0.5s var(--gr-ease);
+}
+
+.gr-frame:hover::after {
+  border-color: rgba(225, 216, 191, 0.7);
+}
+
+/* --- BSK hub textures --------------------------------------------------- */
 
 .bsk-tile-bg {
   background-image: url("/images/asset_17_squared_metal_2X-yellow.webp");
@@ -527,16 +750,18 @@
 .bsk-hub-card {
   position: relative;
   overflow: hidden;
-  border-radius: 6px;
-  height: 579px;
-  background-size: cover;
-  background-position: center;
+  height: 560px;
+  border-radius: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
+  justify-content: flex-end;
   text-align: center;
+  transition: transform 0.6s var(--gr-ease);
+}
+
+.bsk-hub-card:hover {
+  transform: translateY(-6px);
 }
 
 .bsk-hub-card .bg-image {
@@ -544,18 +769,22 @@
   inset: 0;
   background-size: cover;
   background-position: center;
-  transition: transform 0.5s ease;
+  transition: transform 1.4s var(--gr-ease);
 }
 
 .bsk-hub-card:hover .bg-image {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .bsk-hub-card .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(16, 16, 16, 0.45);
-  background-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 80%);
+  background-image: linear-gradient(
+    to top,
+    rgba(10, 9, 7, 0.95) 0%,
+    rgba(10, 9, 7, 0.45) 45%,
+    rgba(10, 9, 7, 0.1) 75%
+  );
 }
 
 .bsk-hub-card .content {
@@ -564,55 +793,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
+  padding-bottom: 48px;
 }
 
-/* --- Hero carousel ------------------------------------------------------- */
-
-.gr-hero-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #ffffff;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-}
-
-.gr-hero-dot.is-active {
-  opacity: 1;
-}
-
-@keyframes gr-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.gr-fade-in {
-  animation: gr-fade-in 0.6s ease both;
-}
-
-/* --- Sticky elevation shadows -------------------------------------------- */
+/* --- Elevation ---------------------------------------------------------- */
 
 .gr-shadow-elevated {
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 30px 70px 0px;
-}
-
-.gr-shadow-nav {
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 0px 0px;
-}
-
-/* Native date/time inputs draw their own picker icon; we render a custom one,
-   so hide the native indicator to avoid a doubled-up icon. */
-.gr-page input[type="date"]::-webkit-calendar-picker-indicator,
-.gr-page input[type="time"]::-webkit-calendar-picker-indicator {
-  opacity: 0;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 30px 70px 0px;
 }
