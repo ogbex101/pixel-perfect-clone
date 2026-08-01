@@ -5,9 +5,15 @@ interface QuoteRotatorProps {
   quotes: string[];
   intervalMs?: number;
   className?: string;
+  size?: "default" | "display";
 }
 
-export function QuoteRotator({ quotes, intervalMs = 6000, className }: QuoteRotatorProps) {
+export function QuoteRotator({
+  quotes,
+  intervalMs = 6000,
+  className,
+  size = "default",
+}: QuoteRotatorProps) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const reducedMotionRef = useRef(false);
@@ -34,7 +40,12 @@ export function QuoteRotator({ quotes, intervalMs = 6000, className }: QuoteRota
     >
       <blockquote
         key={index}
-        className="route-transition font-serif italic text-2xl md:text-3xl leading-snug text-foreground/85 max-w-2xl"
+        className={cn(
+          "route-transition font-serif italic leading-[1.1] text-foreground/90",
+          size === "display"
+            ? "text-3xl sm:text-5xl md:text-6xl lg:text-7xl max-w-5xl"
+            : "text-2xl md:text-3xl leading-snug text-foreground/85 max-w-2xl",
+        )}
       >
         “{quotes[index]}”
       </blockquote>

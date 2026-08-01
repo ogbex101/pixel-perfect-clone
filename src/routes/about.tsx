@@ -37,20 +37,24 @@ export const Route = createFileRoute("/about")({
 
 function AboutSkeleton() {
   return (
-    <article className="mx-auto max-w-6xl px-6 py-20 grid gap-12 md:grid-cols-12">
-      <header className="md:col-span-12 border-b border-border pb-8 space-y-4">
-        <Skeleton className="h-3 w-24" />
-        <Skeleton className="h-14 w-2/3" />
+    <article>
+      <header className="border-b border-border px-6 py-16 md:px-14 md:py-24">
+        <div className="max-w-3xl space-y-4">
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-14 w-2/3" />
+        </div>
       </header>
-      <div className="md:col-span-8 space-y-3">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-4/5" />
+      <div className="mx-auto max-w-6xl px-6 py-16 grid gap-12 md:grid-cols-12">
+        <div className="md:col-span-7 space-y-3">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-4/5" />
+        </div>
+        <div className="md:col-span-5 space-y-3">
+          <Skeleton className="h-4 w-1/2" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
       </div>
-      <aside className="md:col-span-4 space-y-3">
-        <Skeleton className="h-4 w-1/2" />
-        <Skeleton className="h-4 w-3/4" />
-      </aside>
     </article>
   );
 }
@@ -61,65 +65,84 @@ function About() {
     return (
       <p className="mx-auto max-w-6xl px-6 py-20 text-muted-foreground">No author profile yet.</p>
     );
+
   return (
-    <article className="mx-auto max-w-6xl px-6 py-16 md:py-20 grid gap-12 md:grid-cols-12">
-      <Reveal as="header" className="md:col-span-12 border-b border-border pb-8">
-        <p className="eyebrow">The Profile</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">
-          About {data.name}
-        </h1>
-        {data.tagline && (
-          <p className="mt-4 font-serif italic text-xl md:text-2xl text-foreground/75 max-w-3xl">
-            “{data.tagline}”
-          </p>
-        )}
+    <article>
+      {/* Asymmetric masthead */}
+      <Reveal as="header" className="border-b border-border texture-paper">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:px-14 md:py-24">
+          <p className="eyebrow">The Profile</p>
+          <h1 className="mt-3 max-w-3xl font-serif text-5xl text-primary sm:text-6xl md:text-7xl">
+            About {data.name}
+          </h1>
+          {data.tagline && (
+            <p className="mt-6 max-w-2xl font-serif text-xl italic text-foreground/75 md:text-2xl">
+              “{data.tagline}”
+            </p>
+          )}
+        </div>
       </Reveal>
-      <Reveal as="div" className="md:col-span-8">
-        {data.bio && (
-          <div className="font-serif text-lg leading-relaxed text-foreground/85 whitespace-pre-wrap drop-cap">
-            {data.bio}
-          </div>
-        )}
-      </Reveal>
-      <Reveal
-        as="aside"
-        delay={150}
-        className="md:col-span-4 md:border-l md:border-border md:pl-8 space-y-8"
-      >
+
+      {/* Bio: text carries the weight, location tucked beside it */}
+      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-12 md:py-20">
+        <Reveal as="div" className="md:col-span-8">
+          {data.bio && (
+            <div className="font-serif text-lg leading-relaxed text-foreground/85 whitespace-pre-wrap drop-cap">
+              {data.bio}
+            </div>
+          )}
+        </Reveal>
         {data.location && (
-          <div>
+          <Reveal delay={100} className="md:col-span-4 md:border-l md:border-border md:pl-8">
             <p className="eyebrow">Based in</p>
             <p className="mt-1 text-foreground">{data.location}</p>
-          </div>
+          </Reveal>
         )}
-        {data.background_facts.length > 0 && (
-          <div>
-            <p className="eyebrow">Background</p>
-            <ul className="mt-3 space-y-2 text-sm text-foreground/80">
+      </div>
+
+      {/* Background facts: staggered timeline, not a bullet list */}
+      {data.background_facts.length > 0 && (
+        <section className="border-t border-border bg-secondary/30 texture-metal">
+          <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+            <Reveal as="p" className="eyebrow mb-10">
+              Background
+            </Reveal>
+            <ol className="space-y-10 md:space-y-14">
               {data.background_facts.map((f, i) => (
-                <li key={i} className="pl-4 border-l-2 border-accent">
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {data.quotes.length > 0 && (
-          <div>
-            <p className="eyebrow">In his words</p>
-            <div className="mt-3 space-y-4">
-              {data.quotes.slice(0, 3).map((q, i) => (
-                <blockquote
+                <Reveal
+                  as="li"
                   key={i}
-                  className="font-serif italic text-foreground/80 border-l-2 border-primary pl-4"
+                  delay={(i % 3) * 100}
+                  className={`flex flex-col gap-3 md:flex-row md:items-baseline md:gap-8 ${
+                    i % 2 === 1 ? "md:pl-16" : ""
+                  }`}
                 >
+                  <span className="font-serif text-5xl leading-none text-primary/30 md:text-6xl">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="max-w-xl text-lg text-foreground/85 md:text-xl">{f}</p>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {/* In his words: the largest, most prominent voice on the page */}
+      {data.quotes.length > 0 && (
+        <section className="border-t border-border py-16 md:py-24">
+          <div className="mx-auto max-w-5xl px-6 space-y-14 md:space-y-20">
+            {data.quotes.slice(0, 3).map((q, i) => (
+              <Reveal key={i} delay={(i % 3) * 100} className="text-center md:text-left">
+                {i === 0 && <p className="eyebrow mb-4 text-center md:text-left">In His Words</p>}
+                <blockquote className="font-serif text-3xl italic leading-[1.15] text-primary sm:text-4xl md:text-5xl">
                   “{q}”
                 </blockquote>
-              ))}
-            </div>
+              </Reveal>
+            ))}
           </div>
-        )}
-      </Reveal>
+        </section>
+      )}
     </article>
   );
 }

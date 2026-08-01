@@ -64,20 +64,14 @@ export const Route = createFileRoute("/books/$bookId")({
 function BookDetailSkeleton() {
   return (
     <article>
-      <section className="border-b border-border bg-secondary/40">
-        <div className="mx-auto max-w-6xl px-6 py-16 grid gap-12 md:grid-cols-12 items-start">
-          <div className="md:col-span-5 space-y-4">
-            <Skeleton className="h-3 w-20" />
-            <Skeleton className="aspect-[2/3] w-full" />
-          </div>
-          <div className="md:col-span-7 space-y-4">
-            <Skeleton className="h-3 w-28" />
-            <Skeleton className="h-16 w-2/3" />
-            <Skeleton className="h-6 w-1/3" />
-            <Skeleton className="h-24 w-full" />
-          </div>
-        </div>
-      </section>
+      <div className="min-h-[60vh] md:min-h-[80vh] border-b border-border">
+        <Skeleton className="h-full w-full rounded-none" />
+      </div>
+      <div className="mx-auto max-w-3xl px-6 py-16 space-y-4">
+        <Skeleton className="h-3 w-28" />
+        <Skeleton className="h-16 w-2/3" />
+        <Skeleton className="h-24 w-full" />
+      </div>
     </article>
   );
 }
@@ -102,64 +96,76 @@ function BookDetail() {
   const { book, characters } = data;
   return (
     <article>
-      <section className="border-b border-border bg-secondary/40 texture-metal">
-        <div className="mx-auto max-w-6xl px-6 py-16 grid gap-12 md:grid-cols-12 items-start">
-          <Reveal className="md:col-span-5">
-            <Link
-              to="/books"
-              className="eyebrow hover:text-[color:var(--brand-gold-bright)] link-underline"
-            >
-              ← All books
-            </Link>
-            {book.cover_image_url ? (
-              <img
-                src={book.cover_image_url}
-                alt={`${book.title} cover`}
-                className="mt-4 w-full shadow-2xl rounded-sm border border-border/60"
-              />
-            ) : (
-              <div className="mt-4 aspect-[2/3] bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground flex items-center justify-center p-10">
-                <span className="font-serif text-4xl text-center">{book.title}</span>
-              </div>
-            )}
-          </Reveal>
-          <Reveal delay={150} className="md:col-span-7">
-            <p className="eyebrow">Volume · {book.status.replace("_", " ")}</p>
-            <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">
-              {book.title}
-            </h1>
-            {book.genre && <p className="mt-2 italic text-muted-foreground">{book.genre}</p>}
-            <hr className="rule-gold mt-6" />
-            {book.short_description && (
-              <p className="mt-6 font-serif italic text-xl text-foreground/80">
-                {book.short_description}
-              </p>
-            )}
-            <div className="mt-8 flex flex-wrap gap-4">
-              {book.purchase_link && (
-                <a
-                  href={book.purchase_link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="bg-primary text-primary-foreground px-6 py-3 font-medium hover:bg-[color:var(--brand-gold-bright)] transition-colors"
-                >
-                  Purchase
-                </a>
-              )}
-              {book.video_url && (
-                <a
-                  href={book.video_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="border border-primary text-primary px-6 py-3 font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
-                >
-                  Watch trailer
-                </a>
-              )}
+      {/* Cover dominates the top of the page: full-bleed hero */}
+      <section className="relative border-b border-border texture-metal">
+        <div className="relative min-h-[65vh] md:min-h-[92vh]">
+          {book.cover_image_url ? (
+            <img
+              src={book.cover_image_url}
+              alt={`${book.title} cover`}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary to-[color:var(--brand-rust)] p-10">
+              <span className="font-serif text-4xl md:text-6xl text-primary-foreground text-center">
+                {book.title}
+              </span>
             </div>
-          </Reveal>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+
+          <div className="absolute inset-x-0 bottom-0">
+            <div className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
+              <Reveal>
+                <Link
+                  to="/books"
+                  className="eyebrow hover:text-[color:var(--brand-gold-bright)] link-underline"
+                >
+                  ← All books
+                </Link>
+                <p className="eyebrow mt-4">Volume · {book.status.replace("_", " ")}</p>
+                <h1 className="mt-3 max-w-3xl font-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-primary">
+                  {book.title}
+                </h1>
+                {book.genre && (
+                  <p className="mt-3 italic text-foreground/80 md:text-lg">{book.genre}</p>
+                )}
+                <div className="mt-8 flex flex-wrap gap-4">
+                  {book.purchase_link && (
+                    <a
+                      href={book.purchase_link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-primary text-primary-foreground px-7 py-3.5 font-medium hover:bg-[color:var(--brand-gold-bright)] transition-colors"
+                    >
+                      Purchase
+                    </a>
+                  )}
+                  {book.video_url && (
+                    <a
+                      href={book.video_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="border border-primary text-primary px-7 py-3.5 font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
+                      Watch trailer
+                    </a>
+                  )}
+                </div>
+              </Reveal>
+            </div>
+          </div>
         </div>
       </section>
+
+      {book.short_description && (
+        <Reveal as="section" className="border-b border-border py-14 md:py-20 texture-paper">
+          <p className="mx-auto max-w-3xl px-6 font-serif text-xl italic text-foreground/80 md:text-2xl">
+            “{book.short_description}”
+          </p>
+        </Reveal>
+      )}
+
       {book.full_description && (
         <Reveal as="section" className="mx-auto max-w-3xl px-6 py-16 md:py-20">
           <p className="eyebrow">The Story</p>
@@ -168,6 +174,7 @@ function BookDetail() {
           </div>
         </Reveal>
       )}
+
       {characters.length > 0 && (
         <section className="border-t border-border bg-secondary/30 texture-paper">
           <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
@@ -175,38 +182,64 @@ function BookDetail() {
               <p className="eyebrow">The Cast</p>
               <h2 className="mt-2 font-serif text-3xl sm:text-4xl text-primary">Characters</h2>
             </Reveal>
-            <ul className="mt-10 grid gap-10 sm:grid-cols-2">
+            <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-6">
               {characters.map((c, i) => (
                 <Reveal
                   as="li"
                   key={c.id}
-                  delay={(i % 2) * 100}
-                  className="grid grid-cols-[64px_minmax(0,1fr)] sm:grid-cols-[80px_minmax(0,1fr)] gap-5 group"
+                  delay={(i % 4) * 80}
+                  className="group relative aspect-[3/4] overflow-hidden border border-border bg-muted card-lift"
                 >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-muted border border-border shrink-0 transition-[border-color,box-shadow] duration-300 group-hover:border-primary group-hover:shadow-[0_0_0_3px_oklch(0.78_0.11_84_/_20%)]">
-                    {c.image_url ? (
-                      <img src={c.image_url} alt={c.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center font-serif text-2xl text-primary bg-accent/25">
-                        {c.name.charAt(0)}
-                      </div>
+                  {c.image_url ? (
+                    <img
+                      src={c.image_url}
+                      alt={c.name}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-accent/20 font-serif text-4xl text-primary">
+                      {c.name.charAt(0)}
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+
+                  <div className="absolute inset-x-0 bottom-0 p-3 md:p-4">
+                    <h3 className="font-serif text-base leading-tight text-primary md:text-lg">
+                      {c.name}
+                    </h3>
+                    {c.role && (
+                      <p className="mt-0.5 text-xs italic text-foreground/75 md:text-sm">
+                        {c.role}
+                      </p>
                     )}
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-serif text-xl text-primary">{c.name}</h3>
-                    {c.role && <p className="italic text-sm text-muted-foreground">{c.role}</p>}
-                    {c.background && (
-                      <p className="mt-2 text-sm text-foreground/80">{c.background}</p>
-                    )}
-                    {c.quote && (
-                      <blockquote className="mt-3 border-l-2 border-accent pl-3 font-serif italic text-foreground/75">
+
+                  {c.quote && (
+                    <div className="absolute inset-0 flex items-center bg-background/95 p-4 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                      <blockquote className="font-serif text-sm italic leading-snug text-foreground/90 md:text-base">
                         “{c.quote}”
                       </blockquote>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </Reveal>
               ))}
             </ul>
+            {characters.some((c) => c.background) && (
+              <div className="mt-16 grid gap-10 sm:grid-cols-2">
+                {characters
+                  .filter((c) => c.background)
+                  .map((c, i) => (
+                    <Reveal
+                      key={c.id}
+                      delay={(i % 2) * 100}
+                      className="border-l-2 border-accent pl-4"
+                    >
+                      <p className="eyebrow">{c.name}</p>
+                      <p className="mt-2 text-sm text-foreground/80">{c.background}</p>
+                    </Reveal>
+                  ))}
+              </div>
+            )}
           </div>
         </section>
       )}

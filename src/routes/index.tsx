@@ -8,15 +8,19 @@ import { QuoteRotator } from "@/components/quote-rotator";
 const homeQuery = queryOptions({
   queryKey: ["home"],
   queryFn: async () => {
-    const [profile, featured, books] = await Promise.all([
+    const [profile, featured, books, featuredVideo, press] = await Promise.all([
       supabase.from("author_profile").select("*").maybeSingle(),
       supabase.from("books").select("*").eq("is_featured", true).maybeSingle(),
       supabase.from("books").select("*").order("display_order", { ascending: true }),
+      supabase.from("videos").select("*").eq("is_featured", true).maybeSingle(),
+      supabase.from("press_mentions").select("*").order("display_order", { ascending: true }),
     ]);
     return {
       profile: profile.data,
       featured: featured.data,
       books: books.data ?? [],
+      featuredVideo: featuredVideo.data,
+      press: press.data ?? [],
     };
   },
 });
@@ -52,23 +56,22 @@ export const Route = createFileRoute("/")({
 function HomeSkeleton() {
   return (
     <>
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-6xl px-6 py-16 md:py-24 grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-8 space-y-5">
+      <div className="grid md:grid-cols-12 border-b border-border">
+        <div className="md:col-span-7 min-h-[50vh] md:min-h-[85vh]">
+          <Skeleton className="h-full w-full rounded-none" />
+        </div>
+        <div className="md:col-span-5 flex items-center px-6 py-16 md:px-14">
+          <div className="w-full space-y-5">
             <Skeleton className="h-3 w-32" />
-            <Skeleton className="h-16 w-full max-w-md" />
+            <Skeleton className="h-16 w-full" />
             <Skeleton className="h-6 w-2/3" />
           </div>
         </div>
-      </section>
+      </div>
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="flex gap-8 overflow-hidden">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="space-y-4">
-              <Skeleton className="aspect-[3/4] w-full" />
-              <Skeleton className="h-3 w-16" />
-              <Skeleton className="h-5 w-3/4" />
-            </div>
+            <Skeleton key={i} className="aspect-[2/3] w-72 shrink-0" />
           ))}
         </div>
       </section>
@@ -78,193 +81,284 @@ function HomeSkeleton() {
 
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
-  const { profile, featured, books } = data;
+  const { profile, featured, books, featuredVideo, press } = data;
   return (
     <>
-      {/* Magazine masthead */}
-      <section className="border-b border-border texture-paper">
-        <div className="mx-auto max-w-6xl px-6 py-16 md:py-24 grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-8">
-            <Reveal>
-              <p className="eyebrow">Issue Nº 01 · Science Fiction</p>
-              <h1 className="mt-4 font-serif text-4xl sm:text-5xl md:text-7xl leading-[1.02] text-primary">
-                {profile?.name ?? "Nik Nanoski"}
+      {/* Hero: full-bleed asymmetric split — featured book cover dominant */}
+      <section className="border-b border-border">
+        <div className="grid md:grid-cols-12 md:min-h-[85vh]">
+          <Reveal className="md:col-span-7 order-1 relative min-h-[55vh] md:min-h-0">
+            {featured?.cover_image_url ? (
+              <img
+                src={featured.cover_image_url}
+                alt={`${featured.title} cover`}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : profile?.hero_photo_url ? (
+              <img
+                src={profile.hero_photo_url}
+                alt={profile.name}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary to-[color:var(--brand-rust)] texture-metal p-10">
+                <span className="font-serif text-4xl md:text-5xl text-primary-foreground text-center">
+                  {featured?.title ?? profile?.name ?? "Nik Nanoski"}
+                </span>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-background/30" />
+          </Reveal>
+
+          <div className="md:col-span-5 order-2 flex items-center texture-paper">
+            <Reveal delay={150} className="w-full px-6 py-16 md:px-14 md:py-0">
+              <p className="eyebrow">{featured ? "The Feature" : "Science Fiction Author"}</p>
+              <h1 className="mt-4 font-serif text-4xl sm:text-5xl md:text-6xl leading-[1.03] text-primary">
+                {featured?.title ?? profile?.name ?? "Nik Nanoski"}
               </h1>
-              {profile?.tagline && (
-                <p className="mt-6 font-serif italic text-xl md:text-3xl text-foreground/80 max-w-2xl">
-                  “{profile.tagline}”
+              {(featured?.short_description || profile?.tagline) && (
+                <p className="mt-6 font-serif italic text-lg md:text-xl text-foreground/80">
+                  “{featured?.short_description ?? profile?.tagline}”
                 </p>
               )}
               <hr className="rule-gold mt-8" />
+              <div className="mt-8 flex flex-wrap gap-4">
+                {featured ? (
+                  <>
+                    <Link
+                      to="/books/$bookId"
+                      params={{ bookId: featured.id }}
+                      className="inline-flex items-center bg-primary px-7 py-3.5 text-primary-foreground font-medium hover:bg-[color:var(--brand-gold-bright)] transition-colors"
+                    >
+                      Read {featured.title} →
+                    </Link>
+                    {featured.purchase_link && (
+                      <a
+                        href={featured.purchase_link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center border border-primary px-7 py-3.5 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                      >
+                        Purchase
+                      </a>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    to="/about"
+                    className="inline-flex items-center bg-primary px-7 py-3.5 text-primary-foreground font-medium hover:bg-[color:var(--brand-gold-bright)] transition-colors"
+                  >
+                    Read the profile →
+                  </Link>
+                )}
+              </div>
             </Reveal>
           </div>
-          <aside className="md:col-span-4 md:border-l md:border-border md:pl-8 flex flex-col justify-end">
-            <Reveal delay={150}>
-              {profile?.location && (
-                <p className="text-sm text-muted-foreground">
-                  <span className="eyebrow block mb-1">Dispatch from</span>
-                  {profile.location}
-                </p>
-              )}
-              <Link
-                to="/about"
-                className="mt-6 inline-flex w-fit items-center gap-2 border-b-2 border-accent pb-1 font-medium text-primary hover:text-[color:var(--brand-gold-bright)] hover:gap-3 transition-all"
-              >
-                Read the profile →
-              </Link>
-            </Reveal>
-          </aside>
         </div>
       </section>
 
-      {/* Featured book: editorial spread */}
-      {featured && (
-        <section className="border-b border-border bg-secondary/40 texture-metal vignette">
-          <div className="relative mx-auto max-w-6xl px-6 py-16 md:py-20 grid gap-12 md:grid-cols-12 items-center">
-            <Reveal className="md:col-span-5 order-2 md:order-1">
-              {featured.cover_image_url ? (
-                <img
-                  src={featured.cover_image_url}
-                  alt={`${featured.title} cover`}
-                  className="w-full max-w-sm mx-auto shadow-2xl rounded-sm border border-border/60"
-                />
-              ) : (
-                <div className="aspect-[2/3] max-w-sm mx-auto bg-primary text-primary-foreground flex items-center justify-center p-8 border border-border/60">
-                  <span className="font-serif text-3xl text-center">{featured.title}</span>
-                </div>
-              )}
-            </Reveal>
-            <Reveal delay={150} className="md:col-span-7 order-1 md:order-2">
-              <p className="eyebrow">The Feature</p>
-              <h2 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl text-primary">
-                {featured.title}
-              </h2>
-              {featured.genre && (
-                <p className="mt-2 italic text-muted-foreground">{featured.genre}</p>
-              )}
-              {featured.short_description && (
-                <p className="mt-6 text-lg leading-relaxed text-foreground/85 drop-cap">
-                  {featured.short_description}
-                </p>
-              )}
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  to="/books/$bookId"
-                  params={{ bookId: featured.id }}
-                  className="inline-flex items-center bg-primary px-6 py-3 text-primary-foreground font-medium hover:bg-[color:var(--brand-gold-bright)] transition-colors"
-                >
-                  Read more
-                </Link>
-                {featured.purchase_link && (
-                  <a
-                    href={featured.purchase_link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center border border-primary px-6 py-3 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    Purchase
-                  </a>
-                )}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      )}
-
-      {/* Author intro */}
+      {/* Author intro — asymmetric, text carries more visual weight */}
       {profile?.bio && (
         <section className="border-b border-border">
-          <div className="mx-auto max-w-6xl px-6 py-16 md:py-20 grid gap-10 md:grid-cols-12 items-center">
-            <Reveal className="md:col-span-4">
-              <div className="aspect-square w-full max-w-xs mx-auto md:mx-0 rounded-full overflow-hidden border border-border bg-muted">
-                {profile.hero_photo_url ? (
-                  <img
-                    src={profile.hero_photo_url}
-                    alt={profile.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center font-serif text-5xl text-primary bg-accent/20">
-                    {profile.name?.charAt(0) ?? "N"}
-                  </div>
-                )}
+          <div className="grid md:grid-cols-12">
+            <Reveal className="md:col-span-5 relative min-h-[360px] md:min-h-[560px] order-1">
+              {profile.hero_photo_url ? (
+                <img
+                  src={profile.hero_photo_url}
+                  alt={profile.name}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center font-serif text-8xl text-primary bg-accent/15 texture-paper">
+                  {profile.name?.charAt(0) ?? "N"}
+                </div>
+              )}
+            </Reveal>
+            <Reveal delay={150} className="md:col-span-7 order-2 flex items-center">
+              <div className="px-6 py-16 md:px-16 md:py-20 max-w-2xl">
+                <p className="eyebrow">The Author</p>
+                <p className="mt-4 font-serif text-2xl md:text-3xl leading-relaxed text-foreground/90 drop-cap">
+                  {profile.bio}
+                </p>
+                <Link
+                  to="/about"
+                  className="mt-8 inline-flex w-fit items-center gap-2 border-b-2 border-accent pb-1 font-medium text-primary hover:text-[color:var(--brand-gold-bright)] hover:gap-3 transition-all"
+                >
+                  More about {profile.name} →
+                </Link>
               </div>
             </Reveal>
-            <Reveal delay={150} className="md:col-span-8">
-              <p className="eyebrow">The Author</p>
-              <p className="mt-4 font-serif text-xl md:text-2xl leading-relaxed text-foreground/85 line-clamp-6 drop-cap">
-                {profile.bio}
-              </p>
+          </div>
+        </section>
+      )}
+
+      {/* Full-bleed pull-quote: a deliberate pause between blocks */}
+      {profile?.quotes && profile.quotes.length > 0 && (
+        <section className="border-b border-border bg-secondary/40 texture-metal py-20 md:py-32">
+          <Reveal className="px-6 md:px-16 text-center">
+            <p className="eyebrow mb-8">In His Words</p>
+            <QuoteRotator quotes={profile.quotes} size="display" />
+          </Reveal>
+        </section>
+      )}
+
+      {/* Books preview: horizontal showcase, large covers */}
+      {books.length > 0 && (
+        <section className="border-b border-border py-16 md:py-24">
+          <div className="max-w-6xl mx-auto px-6">
+            <Reveal className="flex items-baseline justify-between border-b border-border pb-4">
+              <h2 className="font-serif text-3xl md:text-4xl text-primary">The Library</h2>
               <Link
-                to="/about"
-                className="mt-6 inline-flex w-fit items-center gap-2 border-b-2 border-accent pb-1 font-medium text-primary hover:text-[color:var(--brand-gold-bright)] hover:gap-3 transition-all"
+                to="/books"
+                className="text-sm eyebrow link-underline hover:text-[color:var(--brand-gold-bright)]"
               >
-                More about {profile.name} →
+                All books →
               </Link>
             </Reveal>
           </div>
-        </section>
-      )}
-
-      {/* Quote rotator */}
-      {profile?.quotes && profile.quotes.length > 0 && (
-        <section className="border-b border-border bg-secondary/40 texture-paper">
-          <div className="mx-auto max-w-3xl px-6 py-16 md:py-20">
-            <Reveal className="flex flex-col items-center text-center">
-              <p className="eyebrow">In His Words</p>
-              <div className="mt-6 w-full">
-                <QuoteRotator quotes={profile.quotes} />
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      )}
-
-      {/* Grid of remaining works */}
-      <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-        <Reveal className="flex items-baseline justify-between border-b border-border pb-4">
-          <h2 className="font-serif text-2xl sm:text-3xl text-primary">The Library</h2>
-          <Link
-            to="/books"
-            className="text-sm eyebrow link-underline hover:text-[color:var(--brand-gold-bright)]"
-          >
-            All books →
-          </Link>
-        </Reveal>
-        <ul className="mt-10 grid gap-10 sm:grid-cols-2 md:grid-cols-3">
-          {books.map((b, i) => (
-            <Reveal as="li" key={b.id} delay={(i % 3) * 100} className="group">
-              <Link
-                to="/books/$bookId"
-                params={{ bookId: b.id }}
-                className="block card-lift border border-transparent p-2 -m-2 rounded-sm"
+          <ul className="mt-10 flex gap-6 md:gap-8 overflow-x-auto px-6 md:px-14 pb-4 snap-x snap-mandatory">
+            {books.map((b, i) => (
+              <Reveal
+                as="li"
+                key={b.id}
+                delay={(i % 3) * 80}
+                className="shrink-0 snap-start w-60 sm:w-72 md:w-80"
               >
-                <div className="aspect-[3/4] bg-muted overflow-hidden mb-4 border border-border">
-                  {b.cover_image_url ? (
-                    <img
-                      src={b.cover_image_url}
-                      alt={b.title}
-                      className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center p-4 bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground">
-                      <span className="font-serif text-2xl text-center">{b.title}</span>
-                    </div>
-                  )}
-                </div>
-                <p className="eyebrow">{b.status.replace("_", " ")}</p>
-                <h3 className="mt-1 font-serif text-xl text-primary group-hover:text-[color:var(--brand-gold-bright)] transition-colors">
-                  {b.title}
-                </h3>
-                {b.short_description && (
-                  <p className="mt-2 text-sm text-muted-foreground line-clamp-3">
-                    {b.short_description}
+                <Link to="/books/$bookId" params={{ bookId: b.id }} className="group block">
+                  <div className="relative aspect-[2/3] overflow-hidden border border-border bg-muted card-lift">
+                    {b.cover_image_url ? (
+                      <img
+                        src={b.cover_image_url}
+                        alt={b.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center p-4 bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground">
+                        <span className="font-serif text-2xl text-center">{b.title}</span>
+                      </div>
+                    )}
+                    {b.short_description && (
+                      <div className="absolute inset-x-0 bottom-0 translate-y-full border-t border-border bg-background/95 p-4 backdrop-blur-sm transition-transform duration-400 group-hover:translate-y-0">
+                        <p className="line-clamp-4 text-xs text-foreground/85">
+                          {b.short_description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                  <p className="mt-4 eyebrow">{b.status.replace("_", " ")}</p>
+                  <h3 className="mt-1 font-serif text-xl text-primary group-hover:text-[color:var(--brand-gold-bright)] transition-colors">
+                    {b.title}
+                  </h3>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Cinematic preview: featured video, large and prominent */}
+      {featuredVideo && (
+        <section className="border-b border-border">
+          <div className="grid md:grid-cols-12">
+            <Reveal
+              delay={100}
+              className="md:col-span-5 order-2 md:order-1 flex items-center bg-secondary/30"
+            >
+              <div className="px-6 py-16 md:px-14">
+                <p className="eyebrow">Cinematic</p>
+                <h2 className="mt-3 font-serif text-3xl md:text-4xl text-primary">
+                  {featuredVideo.title}
+                </h2>
+                {featuredVideo.description && (
+                  <p className="mt-4 text-foreground/80 leading-relaxed">
+                    {featuredVideo.description}
                   </p>
                 )}
-              </Link>
+                <Link
+                  to="/cinematic"
+                  className="mt-8 inline-flex w-fit items-center gap-2 border-b-2 border-accent pb-1 font-medium text-primary hover:text-[color:var(--brand-gold-bright)] hover:gap-3 transition-all"
+                >
+                  Watch on Cinematic →
+                </Link>
+              </div>
             </Reveal>
-          ))}
-        </ul>
+            <Reveal className="md:col-span-7 order-1 md:order-2 relative min-h-[320px] md:min-h-[520px] texture-metal">
+              {featuredVideo.thumbnail_url ? (
+                <img
+                  src={featuredVideo.thumbnail_url}
+                  alt={featuredVideo.title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center px-6">
+                  <span className="font-serif text-3xl text-primary text-center">
+                    {featuredVideo.title}
+                  </span>
+                </div>
+              )}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full border border-primary/60 bg-background/70 backdrop-blur">
+                  <div className="ml-1 h-0 w-0 border-y-[10px] border-y-transparent border-l-[16px] border-l-primary" />
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* Press: clean horizontal row of logos */}
+      {press.length > 0 && (
+        <section className="border-b border-border py-16 md:py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <Reveal as="p" className="eyebrow text-center md:text-left">
+              As Seen In
+            </Reveal>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:justify-between">
+              {press.map((p) =>
+                p.logo_url ? (
+                  <a
+                    key={p.id}
+                    href={p.link ?? undefined}
+                    target={p.link ? "_blank" : undefined}
+                    rel="noreferrer"
+                    className="opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+                  >
+                    <img
+                      src={p.logo_url}
+                      alt={p.source_name}
+                      className="h-8 w-auto object-contain md:h-10"
+                    />
+                  </a>
+                ) : (
+                  <span
+                    key={p.id}
+                    className="font-serif text-lg text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    {p.source_name}
+                  </span>
+                ),
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Close: confident contact CTA */}
+      <section className="texture-paper py-20 md:py-28">
+        <Reveal className="mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="eyebrow">Get in touch</p>
+            <h2 className="mt-3 max-w-xl font-serif text-3xl text-primary sm:text-4xl md:text-5xl">
+              For interviews, appearances, and reader letters.
+            </h2>
+          </div>
+          <Link
+            to="/contact"
+            className="inline-flex w-fit shrink-0 items-center bg-primary px-8 py-4 font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
+          >
+            Contact →
+          </Link>
+        </Reveal>
       </section>
     </>
   );
