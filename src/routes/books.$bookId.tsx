@@ -97,13 +97,13 @@ function BookDetail() {
   return (
     <article>
       {/* Cover dominates the top of the page: full-bleed hero */}
-      <section className="relative border-b border-border texture-metal">
+      <section className="relative border-b border-border texture-metal overflow-hidden">
         <div className="relative min-h-[65vh] md:min-h-[92vh]">
           {book.cover_image_url ? (
             <img
               src={book.cover_image_url}
               alt={`${book.title} cover`}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="kenburns absolute inset-0 h-full w-full object-cover"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary to-[color:var(--brand-rust)] p-10">
@@ -116,7 +116,7 @@ function BookDetail() {
 
           <div className="absolute inset-x-0 bottom-0">
             <div className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
-              <Reveal>
+              <Reveal variant="blur">
                 <Link
                   to="/books"
                   className="eyebrow hover:text-[color:var(--brand-gold-bright)] link-underline"
@@ -124,9 +124,13 @@ function BookDetail() {
                   ← All books
                 </Link>
                 <p className="eyebrow mt-4">Volume · {book.status.replace("_", " ")}</p>
-                <h1 className="mt-3 max-w-3xl font-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-primary">
+              </Reveal>
+              <Reveal variant="blur" delay={140}>
+                <h1 className="text-gradient-gold mt-3 max-w-3xl font-serif text-5xl sm:text-6xl md:text-7xl leading-[1.06] pb-2">
                   {book.title}
                 </h1>
+              </Reveal>
+              <Reveal variant="blur" delay={260}>
                 {book.genre && (
                   <p className="mt-3 italic text-foreground/80 md:text-lg">{book.genre}</p>
                 )}
@@ -136,7 +140,7 @@ function BookDetail() {
                       href={book.purchase_link}
                       target="_blank"
                       rel="noreferrer"
-                      className="bg-primary text-primary-foreground px-7 py-3.5 font-medium hover:bg-[color:var(--brand-gold-bright)] transition-colors"
+                      className="btn-sheen bg-primary text-primary-foreground px-7 py-3.5 font-medium hover:bg-[color:var(--brand-gold-bright)] transition-colors"
                     >
                       Purchase
                     </a>
@@ -146,7 +150,7 @@ function BookDetail() {
                       href={book.video_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="border border-primary text-primary px-7 py-3.5 font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="btn-sheen border border-primary text-primary px-7 py-3.5 font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
                     >
                       Watch trailer
                     </a>
@@ -159,7 +163,11 @@ function BookDetail() {
       </section>
 
       {book.short_description && (
-        <Reveal as="section" className="border-b border-border py-14 md:py-20 texture-paper">
+        <Reveal
+          as="section"
+          variant="zoom"
+          className="border-b border-border py-14 md:py-20 texture-paper"
+        >
           <p className="mx-auto max-w-3xl px-6 font-serif text-xl italic text-foreground/80 md:text-2xl">
             “{book.short_description}”
           </p>
@@ -167,34 +175,39 @@ function BookDetail() {
       )}
 
       {book.full_description && (
-        <Reveal as="section" className="mx-auto max-w-3xl px-6 py-16 md:py-20">
-          <p className="eyebrow">The Story</p>
-          <div className="mt-4 font-serif text-lg leading-relaxed text-foreground/85 whitespace-pre-wrap drop-cap">
+        <Reveal as="section" variant="blur" className="mx-auto max-w-3xl px-6 py-16 md:py-20">
+          <div className="ornament mb-8">
+            <span className="eyebrow">The Story</span>
+          </div>
+          <div className="font-serif text-lg leading-relaxed text-foreground/85 whitespace-pre-wrap drop-cap">
             {book.full_description}
           </div>
         </Reveal>
       )}
 
       {characters.length > 0 && (
-        <section className="border-t border-border bg-secondary/30 texture-paper">
+        <section className="border-t border-border bg-secondary/30 texture-paper overflow-hidden">
           <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
             <Reveal className="border-b border-border pb-4">
               <p className="eyebrow">The Cast</p>
-              <h2 className="mt-2 font-serif text-3xl sm:text-4xl text-primary">Characters</h2>
+              <h2 className="text-gradient-gold mt-2 font-serif text-3xl sm:text-4xl pb-1">
+                Characters
+              </h2>
             </Reveal>
             <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-6">
               {characters.map((c, i) => (
                 <Reveal
                   as="li"
                   key={c.id}
-                  delay={(i % 4) * 80}
-                  className="group relative aspect-[3/4] overflow-hidden border border-border bg-muted card-lift"
+                  variant="zoom"
+                  delay={(i % 4) * 90}
+                  className="card-premium img-shine group relative aspect-[3/4] overflow-hidden"
                 >
                   {c.image_url ? (
                     <img
                       src={c.image_url}
                       alt={c.name}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center bg-accent/20 font-serif text-4xl text-primary">
@@ -215,7 +228,7 @@ function BookDetail() {
                   </div>
 
                   {c.quote && (
-                    <div className="absolute inset-0 flex items-center bg-background/95 p-4 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                    <div className="absolute inset-0 flex items-center bg-background/95 p-4 opacity-0 backdrop-blur-sm transition-all duration-500 translate-y-3 group-hover:translate-y-0 group-hover:opacity-100">
                       <blockquote className="font-serif text-sm italic leading-snug text-foreground/90 md:text-base">
                         “{c.quote}”
                       </blockquote>
@@ -231,6 +244,7 @@ function BookDetail() {
                   .map((c, i) => (
                     <Reveal
                       key={c.id}
+                      variant={i % 2 === 0 ? "left" : "right"}
                       delay={(i % 2) * 100}
                       className="border-l-2 border-accent pl-4"
                     >

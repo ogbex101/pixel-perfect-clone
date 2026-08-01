@@ -59,9 +59,11 @@ function Press() {
   const { data } = useSuspenseQuery(pressQuery);
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" className="border-b border-border pb-6">
+      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
         <p className="eyebrow">The Clippings</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">Press</h1>
+        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
+          Press
+        </h1>
       </Reveal>
       {data.length === 0 ? (
         <p className="mt-10 text-muted-foreground">No press mentions yet.</p>
@@ -71,15 +73,16 @@ function Press() {
             <Reveal
               as="li"
               key={p.id}
-              delay={Math.min(i, 5) * 80}
-              className="texture-paper border border-border p-6 card-lift flex flex-col"
+              variant="zoom"
+              delay={Math.min(i, 5) * 90}
+              className="card-premium texture-paper group p-6 flex flex-col"
             >
               <div className="h-10 flex items-center">
                 {p.logo_url ? (
                   <img
                     src={p.logo_url}
                     alt={p.source_name}
-                    className="max-h-10 max-w-[160px] object-contain"
+                    className="max-h-10 max-w-[160px] object-contain opacity-80 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
                   />
                 ) : (
                   <span className="font-serif text-xl text-primary">{p.source_name}</span>

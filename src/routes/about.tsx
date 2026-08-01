@@ -69,23 +69,32 @@ function About() {
   return (
     <article>
       {/* Asymmetric masthead */}
-      <Reveal as="header" className="border-b border-border texture-paper">
+      <header className="border-b border-border texture-paper overflow-hidden">
         <div className="mx-auto max-w-6xl px-6 py-16 md:px-14 md:py-24">
-          <p className="eyebrow">The Profile</p>
-          <h1 className="mt-3 max-w-3xl font-serif text-5xl text-primary sm:text-6xl md:text-7xl">
-            About {data.name}
-          </h1>
+          <Reveal variant="blur">
+            <p className="eyebrow">The Profile</p>
+          </Reveal>
+          <Reveal variant="blur" delay={120}>
+            <h1 className="text-gradient-gold mt-3 max-w-3xl font-serif text-5xl sm:text-6xl md:text-7xl pb-2">
+              About {data.name}
+            </h1>
+          </Reveal>
           {data.tagline && (
-            <p className="mt-6 max-w-2xl font-serif text-xl italic text-foreground/75 md:text-2xl">
-              “{data.tagline}”
-            </p>
+            <Reveal variant="blur" delay={260}>
+              <p className="mt-6 max-w-2xl font-serif text-xl italic text-foreground/75 md:text-2xl">
+                “{data.tagline}”
+              </p>
+            </Reveal>
           )}
+          <Reveal delay={380}>
+            <hr className="rule-gold rule-draw mt-10" />
+          </Reveal>
         </div>
-      </Reveal>
+      </header>
 
       {/* Bio: text carries the weight, location tucked beside it */}
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-12 md:py-20">
-        <Reveal as="div" className="md:col-span-8">
+      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-12 md:py-20 overflow-hidden">
+        <Reveal variant="left" as="div" className="md:col-span-8">
           {data.bio && (
             <div className="font-serif text-lg leading-relaxed text-foreground/85 whitespace-pre-wrap drop-cap">
               {data.bio}
@@ -93,7 +102,11 @@ function About() {
           )}
         </Reveal>
         {data.location && (
-          <Reveal delay={100} className="md:col-span-4 md:border-l md:border-border md:pl-8">
+          <Reveal
+            variant="right"
+            delay={150}
+            className="md:col-span-4 md:border-l md:border-border md:pl-8"
+          >
             <p className="eyebrow">Based in</p>
             <p className="mt-1 text-foreground">{data.location}</p>
           </Reveal>
@@ -102,22 +115,23 @@ function About() {
 
       {/* Background facts: staggered timeline, not a bullet list */}
       {data.background_facts.length > 0 && (
-        <section className="border-t border-border bg-secondary/30 texture-metal">
+        <section className="border-t border-border bg-secondary/30 texture-metal overflow-hidden">
           <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-            <Reveal as="p" className="eyebrow mb-10">
-              Background
+            <Reveal className="ornament mb-12">
+              <span className="eyebrow">Background</span>
             </Reveal>
             <ol className="space-y-10 md:space-y-14">
               {data.background_facts.map((f, i) => (
                 <Reveal
                   as="li"
                   key={i}
+                  variant={i % 2 === 1 ? "right" : "left"}
                   delay={(i % 3) * 100}
                   className={`flex flex-col gap-3 md:flex-row md:items-baseline md:gap-8 ${
                     i % 2 === 1 ? "md:pl-16" : ""
                   }`}
                 >
-                  <span className="font-serif text-5xl leading-none text-primary/30 md:text-6xl">
+                  <span className="text-gradient-gold font-serif text-5xl leading-none opacity-60 md:text-6xl">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <p className="max-w-xl text-lg text-foreground/85 md:text-xl">{f}</p>
@@ -130,16 +144,26 @@ function About() {
 
       {/* In his words: the largest, most prominent voice on the page */}
       {data.quotes.length > 0 && (
-        <section className="border-t border-border py-16 md:py-24">
-          <div className="mx-auto max-w-5xl px-6 space-y-14 md:space-y-20">
+        <section className="border-t border-border py-16 md:py-24 overflow-hidden">
+          <div className="mx-auto max-w-5xl space-y-16 px-6 md:space-y-24">
             {data.quotes.slice(0, 3).map((q, i) => (
-              <Reveal key={i} delay={(i % 3) * 100} className="text-center md:text-left">
-                {i === 0 && <p className="eyebrow mb-4 text-center md:text-left">In His Words</p>}
-                <blockquote className="font-serif text-3xl italic leading-[1.15] text-primary sm:text-4xl md:text-5xl">
+              <Reveal
+                key={i}
+                variant="blur"
+                delay={(i % 3) * 100}
+                className="text-center md:text-left"
+              >
+                {i === 0 && <p className="eyebrow mb-6 text-center md:text-left">In His Words</p>}
+                <blockquote className="text-gradient-gold pb-1 font-serif text-3xl italic leading-[1.18] sm:text-4xl md:text-5xl">
                   “{q}”
                 </blockquote>
               </Reveal>
             ))}
+            <Reveal className="ornament">
+              <span aria-hidden className="text-xs tracking-[0.3em]">
+                ✦
+              </span>
+            </Reveal>
           </div>
         </section>
       )}

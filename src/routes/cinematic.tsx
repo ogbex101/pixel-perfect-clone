@@ -59,9 +59,11 @@ function Cinematic() {
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" className="border-b border-border pb-6">
+      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
         <p className="eyebrow">The Cinematic</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">Cinematic</h1>
+        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
+          Cinematic
+        </h1>
       </Reveal>
 
       {data.length === 0 ? (
@@ -69,9 +71,9 @@ function Cinematic() {
       ) : (
         <>
           {featured && (
-            <Reveal className="mt-12">
+            <Reveal variant="zoom" className="mt-14">
               <p className="eyebrow">Featured</p>
-              <div className="mt-3 aspect-video w-full overflow-hidden border border-border bg-muted texture-metal">
+              <div className="frame-gold mt-5 aspect-video w-full overflow-hidden bg-muted texture-metal">
                 {featured.video_url ? (
                   <video
                     src={featured.video_url}
@@ -91,7 +93,7 @@ function Cinematic() {
                   </div>
                 )}
               </div>
-              <h2 className="mt-4 font-serif text-2xl md:text-3xl text-primary">
+              <h2 className="text-gradient-gold mt-6 font-serif text-2xl md:text-3xl pb-1">
                 {featured.title}
               </h2>
               {featured.description && (
@@ -101,19 +103,20 @@ function Cinematic() {
           )}
 
           {rest.length > 0 && (
-            <div className="mt-16">
-              <Reveal as="p" className="eyebrow border-b border-border pb-4">
-                {featured ? "More" : "All videos"}
+            <div className="mt-20">
+              <Reveal className="ornament pb-4">
+                <span className="eyebrow">{featured ? "More" : "All videos"}</span>
               </Reveal>
               <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {rest.map((v, i) => (
                   <Reveal
                     as="li"
                     key={v.id}
-                    delay={(i % 3) * 100}
-                    className="group card-lift border border-transparent"
+                    variant="zoom"
+                    delay={(i % 3) * 110}
+                    className="group card-premium overflow-hidden"
                   >
-                    <div className="aspect-video w-full overflow-hidden border border-border bg-muted">
+                    <div className="aspect-video w-full overflow-hidden border-b border-border bg-muted">
                       {v.video_url ? (
                         <video
                           src={v.video_url}
@@ -135,14 +138,16 @@ function Cinematic() {
                         </div>
                       )}
                     </div>
-                    <h3 className="mt-3 font-serif text-lg text-primary group-hover:text-[color:var(--brand-gold-bright)] transition-colors">
-                      {v.title}
-                    </h3>
-                    {v.description && (
-                      <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                        {v.description}
-                      </p>
-                    )}
+                    <div className="p-4">
+                      <h3 className="font-serif text-lg text-primary group-hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300">
+                        {v.title}
+                      </h3>
+                      {v.description && (
+                        <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                          {v.description}
+                        </p>
+                      )}
+                    </div>
                   </Reveal>
                 ))}
               </ul>

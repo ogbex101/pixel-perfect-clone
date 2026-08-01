@@ -36,21 +36,29 @@ export function QuoteRotator({
     <div
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      className={cn("flex flex-col items-center text-center", className)}
+      className={cn("relative flex flex-col items-center text-center", className)}
     >
+      {size === "display" && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -top-14 left-1/2 -translate-x-1/2 font-serif text-[10rem] leading-none text-primary/10 select-none md:-top-20 md:text-[16rem]"
+        >
+          “
+        </span>
+      )}
       <blockquote
         key={index}
         className={cn(
-          "route-transition font-serif italic leading-[1.1] text-foreground/90",
+          "quote-swap relative font-serif italic leading-[1.1]",
           size === "display"
-            ? "text-3xl sm:text-5xl md:text-6xl lg:text-7xl max-w-5xl"
-            : "text-2xl md:text-3xl leading-snug text-foreground/85 max-w-2xl",
+            ? "text-gradient-gold max-w-5xl pb-2 text-3xl sm:text-5xl md:text-6xl lg:text-7xl"
+            : "max-w-2xl text-2xl leading-snug text-foreground/85 md:text-3xl",
         )}
       >
         “{quotes[index]}”
       </blockquote>
       {quotes.length > 1 && (
-        <div className="mt-6 flex items-center gap-2">
+        <div className="mt-8 flex items-center gap-2.5">
           {quotes.map((_, i) => (
             <button
               key={i}
@@ -59,9 +67,9 @@ export function QuoteRotator({
               aria-current={i === index}
               onClick={() => setIndex(i)}
               className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
+                "h-1.5 rounded-full transition-all duration-500",
                 i === index
-                  ? "w-6 bg-[color:var(--brand-gold)]"
+                  ? "w-8 bg-gradient-to-r from-[color:var(--brand-gold-bright)] to-[color:var(--brand-gold-deep)]"
                   : "w-1.5 bg-border hover:bg-muted-foreground",
               )}
             />

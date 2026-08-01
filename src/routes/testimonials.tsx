@@ -59,9 +59,9 @@ function Testimonials() {
   const { data } = useSuspenseQuery(testimonialsQuery);
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" className="border-b border-border pb-6">
+      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
         <p className="eyebrow">Reader Praise</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">
+        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
           Testimonials
         </h1>
       </Reveal>
@@ -73,12 +73,13 @@ function Testimonials() {
             <Reveal
               as="li"
               key={t.id}
+              variant={i % 2 === 0 ? "left" : "right"}
               delay={(i % 2) * 100}
-              className="texture-paper border border-border p-8 relative card-lift"
+              className="card-premium texture-paper relative p-8"
             >
               <span
                 aria-hidden
-                className="absolute -top-4 left-6 font-serif text-6xl text-accent leading-none"
+                className="text-gradient-gold absolute -top-5 left-6 font-serif text-7xl leading-none opacity-80"
               >
                 “
               </span>

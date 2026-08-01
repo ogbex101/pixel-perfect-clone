@@ -54,40 +54,44 @@ function Contact() {
   const { data } = useSuspenseQuery(contactQuery);
   return (
     <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
-      <Reveal>
+      <Reveal variant="blur">
         <p className="eyebrow">Correspondence</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">Contact</h1>
-        <hr className="rule-gold mt-6" />
+        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
+          Contact
+        </h1>
+        <hr className="rule-gold rule-draw mt-6" />
         <p className="mt-8 font-serif italic text-xl text-foreground/80">
           For interviews, appearances, and reader letters.
         </p>
         {data.email && (
           <a
             href={`mailto:${data.email}`}
-            className="mt-8 inline-block font-serif text-xl sm:text-2xl md:text-3xl text-primary border-b-2 border-accent pb-1 hover:text-[color:var(--brand-gold-bright)] transition-colors break-all"
+            className="mt-8 inline-block font-serif text-xl sm:text-2xl md:text-3xl text-primary border-b-2 border-accent pb-1 hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300 break-all"
           >
             {data.email}
           </a>
         )}
       </Reveal>
       {data.links.length > 0 && (
-        <Reveal delay={150} className="mt-12">
-          <p className="eyebrow">Elsewhere</p>
-          <ul className="mt-4 flex flex-wrap gap-3">
-            {data.links.map((l) => {
+        <Reveal variant="blur" delay={200} className="mt-14">
+          <div className="ornament mb-6">
+            <span className="eyebrow">Elsewhere</span>
+          </div>
+          <ul className="flex flex-wrap gap-3">
+            {data.links.map((l, i) => {
               const Icon = resolveContactIcon(l.icon);
               return (
-                <li key={l.id}>
+                <Reveal as="li" key={l.id} variant="zoom" delay={250 + i * 80}>
                   <a
                     href={l.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="btn-sheen inline-flex items-center gap-2 border border-primary px-5 py-2.5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     <Icon className="h-4 w-4" aria-hidden />
                     {l.platform_name}
                   </a>
-                </li>
+                </Reveal>
               );
             })}
           </ul>

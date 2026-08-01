@@ -79,12 +79,19 @@ function BooksIndex() {
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" className="border-b border-border pb-6">
+      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
         <p className="eyebrow">The Catalogue</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl md:text-6xl text-primary">Books</h1>
+        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
+          Books
+        </h1>
       </Reveal>
       {books.length > 0 && (
-        <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter books by status">
+        <Reveal
+          delay={150}
+          className="mt-8 flex flex-wrap gap-2"
+          role="group"
+          aria-label="Filter books by status"
+        >
           {STATUS_FILTERS.map((f) => (
             <button
               key={f.key}
@@ -92,16 +99,16 @@ function BooksIndex() {
               onClick={() => setFilter(f.key)}
               aria-pressed={filter === f.key}
               className={cn(
-                "eyebrow px-4 py-2 border transition-colors",
+                "eyebrow btn-sheen rounded-full px-5 py-2 border transition-all duration-300",
                 filter === f.key
-                  ? "border-primary text-primary bg-primary/10"
+                  ? "border-primary text-primary bg-primary/10 shadow-[0_0_18px_-6px_oklch(0.79_0.115_85/0.5)]"
                   : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground",
               )}
             >
               {f.label}
             </button>
           ))}
-        </div>
+        </Reveal>
       )}
       {books.length === 0 ? (
         <p className="mt-10 text-muted-foreground">No books yet.</p>
@@ -113,20 +120,21 @@ function BooksIndex() {
             <Reveal
               as="li"
               key={b.id}
+              variant={i % 2 === 0 ? "left" : "right"}
               delay={(i % 2) * 100}
               className="group grid grid-cols-[minmax(0,120px)_1fr] sm:grid-cols-[minmax(0,1fr)_2fr] gap-5 sm:gap-6"
             >
               <Link
                 to="/books/$bookId"
                 params={{ bookId: b.id }}
-                className="block card-lift border border-transparent"
+                className="card-premium img-shine block overflow-hidden"
               >
-                <div className="aspect-[2/3] bg-muted border border-border overflow-hidden">
+                <div className="aspect-[2/3] bg-muted overflow-hidden">
                   {b.cover_image_url ? (
                     <img
                       src={b.cover_image_url}
                       alt={b.title}
-                      className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700 ease-out"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center p-3 bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground">
@@ -141,7 +149,7 @@ function BooksIndex() {
                   <Link
                     to="/books/$bookId"
                     params={{ bookId: b.id }}
-                    className="hover:text-[color:var(--brand-gold-bright)] transition-colors"
+                    className="hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300"
                   >
                     {b.title}
                   </Link>
