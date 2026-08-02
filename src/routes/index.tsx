@@ -331,6 +331,22 @@ function AuthorIntroSection({
           </div>
         </Reveal>
       </div>
+
+      {/* DUMB 31 key art: the world behind the words, full-bleed under the bio */}
+      <Reveal
+        variant="clip"
+        className="img-shine group relative overflow-hidden border-t border-border"
+      >
+        <img
+          src={SITE_ART.cover}
+          alt="DUMB 31 key art — a flooded facility corridor with the Operations Manual"
+          className="h-[42vh] w-full object-cover transition-transform duration-[2s] ease-out group-hover:scale-[1.04] md:h-[58vh]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
+        <p className="absolute inset-x-0 bottom-0 px-6 pb-6 font-serif text-lg italic text-foreground/90 md:px-14 md:pb-10 md:text-2xl">
+          “Some doors were never meant to be opened.”
+        </p>
+      </Reveal>
     </section>
   );
 }
