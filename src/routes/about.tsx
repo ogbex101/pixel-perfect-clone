@@ -3,6 +3,9 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageHero } from "@/components/page-hero";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const aboutQuery = queryOptions({
   queryKey: ["author_profile"],
@@ -28,6 +31,7 @@ export const Route = createFileRoute("/about")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(aboutQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("about"));
   },
   pendingComponent: AboutSkeleton,
   pendingMs: 200,
@@ -61,36 +65,38 @@ function AboutSkeleton() {
 
 function About() {
   const { data } = useSuspenseQuery(aboutQuery);
+  const { data: media } = useSuspenseQuery(pageMediaQuery("about"));
   if (!data)
     return (
       <p className="mx-auto max-w-6xl px-6 py-20 text-muted-foreground">No author profile yet.</p>
     );
 
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    ...(data.hero_photo_url
+      ? [
+          {
+            id: "portrait",
+            type: "image" as const,
+            src: data.hero_photo_url,
+            caption: data.name,
+          },
+        ]
+      : []),
+    { id: "art-door", type: "image", src: SITE_ART.door, caption: data.tagline ?? "DUMB 31" },
+    { id: "art-opie", type: "image", src: SITE_ART.opie, caption: "Inside the facility" },
+    { id: "art-betterauds", type: "image", src: SITE_ART.betterauds, caption: "The field manual" },
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
+
   return (
     <article>
-      {/* Asymmetric masthead */}
-      <header className="border-b border-border texture-paper overflow-hidden">
-        <div className="mx-auto max-w-6xl px-6 py-16 md:px-14 md:py-24">
-          <Reveal variant="blur">
-            <p className="eyebrow">The Profile</p>
-          </Reveal>
-          <Reveal variant="blur" delay={120}>
-            <h1 className="text-gradient-gold mt-3 max-w-3xl font-serif text-5xl sm:text-6xl md:text-7xl pb-2">
-              About {data.name}
-            </h1>
-          </Reveal>
-          {data.tagline && (
-            <Reveal variant="blur" delay={260}>
-              <p className="mt-6 max-w-2xl font-serif text-xl italic text-foreground/75 md:text-2xl">
-                “{data.tagline}”
-              </p>
-            </Reveal>
-          )}
-          <Reveal delay={380}>
-            <hr className="rule-gold rule-draw mt-10" />
-          </Reveal>
-        </div>
-      </header>
+      <PageHero
+        eyebrow="The Profile"
+        title={`About ${data.name}`}
+        subtitle={data.tagline ? `“${data.tagline}”` : null}
+        imageUrl={SITE_ART.door}
+      />
 
       {/* Bio: text carries the weight, location tucked beside it */}
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-12 md:py-20 overflow-hidden">
@@ -167,6 +173,8 @@ function About() {
           </div>
         </section>
       )}
+
+      <CinematicSlideshow slides={slides} eyebrow="Visuals" title="The World He Writes" />
     </article>
   );
 }
