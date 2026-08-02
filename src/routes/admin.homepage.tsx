@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -23,42 +23,63 @@ const sectionsQueryKey = ["admin", "landing_page_sections"];
  * (using the raw key) so a section added directly in SQL never disappears
  * from this manager.
  */
-const SECTION_META: Record<string, { label: string; description: string }> = {
+const SECTION_META: Record<
+  string,
+  { label: string; description: string; editTo?: string; editLabel?: string }
+> = {
   hero: {
     label: "Hero",
     description: "Full-screen cinematic video (or fallback) with the headline and main buttons.",
+    editTo: "/admin/profile",
+    editLabel: "Edit hero video & headline",
   },
   featured_book: {
     label: "Featured Book",
     description: "The spotlighted book — cover, description, and purchase links.",
+    editTo: "/admin/books",
+    editLabel: "Edit books",
   },
   author_intro: {
     label: "Author Introduction",
     description: "Your photo alongside the short bio and a link to the About page.",
+    editTo: "/admin/profile",
+    editLabel: "Edit bio & photo",
   },
   quote_rotator: {
     label: "Pull Quote",
     description: "Large rotating quotes in your own words.",
+    editTo: "/admin/profile",
+    editLabel: "Edit quotes",
   },
   books_preview_grid: {
     label: "The Library",
     description: "Horizontal showcase of all your books.",
+    editTo: "/admin/books",
+    editLabel: "Edit books",
   },
   cinematic_preview: {
     label: "Cinematic Preview",
     description: "Your featured video with a link to the Cinematic page.",
+    editTo: "/admin/videos",
+    editLabel: "Edit videos",
   },
   testimonials_preview: {
     label: "Reader Praise",
     description: "A few reader testimonials.",
+    editTo: "/admin/testimonials",
+    editLabel: "Edit testimonials",
   },
   press_preview: {
     label: "Press Logos",
     description: "Scrolling row of publication logos.",
+    editTo: "/admin/press",
+    editLabel: "Edit press mentions",
   },
   contact_cta: {
     label: "Contact Call-to-Action",
     description: "Closing invitation to get in touch.",
+    editTo: "/admin/contact-links",
+    editLabel: "Edit contact links",
   },
 };
 
@@ -153,8 +174,9 @@ function HomepageManager() {
     <div className="max-w-3xl">
       <p className="mb-6 text-sm text-muted-foreground">
         Drag to reorder how sections appear on the homepage, and use the eye button to show or hide
-        any section. Changes go live immediately. A section with no content of its own stays hidden
-        automatically even when switched on.
+        any section. To change the words, photos, or videos inside a section, use its “Edit content”
+        link — that opens the screen where you can add, edit, and delete that content. Changes go
+        live immediately.
       </p>
 
       <SortableList
@@ -172,6 +194,14 @@ function HomepageManager() {
                   </span>
                 </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">{meta.description}</p>
+                {meta.editTo && (
+                  <Link
+                    to={meta.editTo}
+                    className="mt-2 inline-block text-xs text-primary hover:text-[color:var(--brand-gold-bright)]"
+                  >
+                    {meta.editLabel ?? "Edit content"} →
+                  </Link>
+                )}
               </div>
               <button
                 type="button"
