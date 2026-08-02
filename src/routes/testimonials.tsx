@@ -3,6 +3,9 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageHero } from "@/components/page-hero";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const testimonialsQuery = queryOptions({
   queryKey: ["testimonials"],
@@ -28,6 +31,7 @@ export const Route = createFileRoute("/testimonials")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(testimonialsQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("testimonials"));
   },
   pendingComponent: TestimonialsSkeleton,
   pendingMs: 200,
@@ -57,18 +61,27 @@ function TestimonialsSkeleton() {
 
 function Testimonials() {
   const { data } = useSuspenseQuery(testimonialsQuery);
+  const { data: media } = useSuspenseQuery(pageMediaQuery("testimonials"));
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    { id: "art-opie", type: "image", src: SITE_ART.opie, caption: data[0]?.quote_text ?? null },
+    { id: "art-door", type: "image", src: SITE_ART.door, caption: data[1]?.quote_text ?? null },
+    { id: "art-cover", type: "image", src: SITE_ART.cover, caption: "DUMB 31" },
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
-        <p className="eyebrow">Reader Praise</p>
-        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
-          Testimonials
-        </h1>
-      </Reveal>
+    <>
+      <PageHero
+        eyebrow="Reader Praise"
+        title="Testimonials"
+        subtitle="What readers carry out of the facility."
+        imageUrl={SITE_ART.opie}
+      />
+      <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
       {data.length === 0 ? (
-        <p className="mt-10 text-muted-foreground">No testimonials yet.</p>
+        <p className="text-muted-foreground">No testimonials yet.</p>
       ) : (
-        <ul className="mt-12 grid gap-8 md:grid-cols-2">
+        <ul className="grid gap-8 md:grid-cols-2">
           {data.map((t, i) => (
             <Reveal
               as="li"
@@ -101,6 +114,8 @@ function Testimonials() {
           ))}
         </ul>
       )}
-    </section>
+      </section>
+      <CinematicSlideshow slides={slides} eyebrow="In Frame" title="Scenes Readers Remember" />
+    </>
   );
 }
