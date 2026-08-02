@@ -9,9 +9,14 @@ export const Route = createFileRoute("/admin/")({
 
 const RESOURCES = [
   {
+    to: "/admin/homepage",
+    label: "Homepage",
+    description: "Show, hide, and reorder every section of the homepage.",
+  },
+  {
     to: "/admin/profile",
     label: "Author Profile",
-    description: "Bio, tagline, photo, background facts, and quotes.",
+    description: "Hero video, bio, tagline, photo, background facts, and quotes.",
   },
   {
     to: "/admin/books",

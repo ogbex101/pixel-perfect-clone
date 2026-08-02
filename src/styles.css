@@ -253,6 +253,15 @@
     repeating-linear-gradient(90deg, oklch(1 0 0 / 3%) 0px, transparent 1px, transparent 3px);
 }
 
+/* Deep ink panel — footer and other "close the page" surfaces. Darker than
+   the page background so the footer reads as a base, not a light slab. */
+@utility texture-ink {
+  background-color: var(--brand-ink);
+  background-image:
+    linear-gradient(180deg, oklch(0.79 0.115 85 / 7%), transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='i'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23i)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
 @utility vignette {
   position: relative;
   &::after {

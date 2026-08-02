@@ -4,6 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 const ADMIN_NAV = [
+  { to: "/admin/homepage", label: "Homepage" },
   { to: "/admin/profile", label: "Author Profile" },
   { to: "/admin/books", label: "Books" },
   { to: "/admin/characters", label: "Characters" },

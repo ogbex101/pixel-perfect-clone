@@ -49,6 +49,7 @@ function ProfileForm() {
     background_facts: [] as string[],
   });
   const [heroPhotoFile, setHeroPhotoFile] = useState<File | null | undefined>(undefined);
+  const [heroVideoFile, setHeroVideoFile] = useState<File | null | undefined>(undefined);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -80,6 +81,13 @@ function ProfileForm() {
         heroPhotoUrl = null;
       }
 
+      let heroVideoUrl = data?.hero_video_url ?? null;
+      if (heroVideoFile instanceof File) {
+        heroVideoUrl = await uploadMedia(heroVideoFile, "hero");
+      } else if (heroVideoFile === null) {
+        heroVideoUrl = null;
+      }
+
       const payload = {
         name: form.name.trim(),
         tagline: form.tagline.trim() || null,
@@ -90,6 +98,7 @@ function ProfileForm() {
         quotes: form.quotes.map((q) => q.trim()).filter(Boolean),
         background_facts: form.background_facts.map((f) => f.trim()).filter(Boolean),
         hero_photo_url: heroPhotoUrl,
+        hero_video_url: heroVideoUrl,
       };
 
       const { error } = data?.id
@@ -100,6 +109,7 @@ function ProfileForm() {
 
       toast.success("Author profile saved.");
       setHeroPhotoFile(undefined);
+      setHeroVideoFile(undefined);
       queryClient.invalidateQueries({ queryKey: profileQueryKey });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to save.");
@@ -114,6 +124,18 @@ function ProfileForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
+      <FileUploadField
+        label="Homepage hero video"
+        accept="video/*"
+        kind="video"
+        currentUrl={data?.hero_video_url}
+        onFileChange={setHeroVideoFile}
+      />
+      <p className="-mt-4 text-xs text-muted-foreground">
+        Plays full-screen behind the homepage headline (muted, looped, no controls). Leave empty and
+        the hero shows a clean dark gradient instead — no photo.
+      </p>
+
       <FileUploadField
         label="Author photo"
         accept="image/*"

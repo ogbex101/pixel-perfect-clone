@@ -16,6 +16,7 @@ export type Database = {
           contact_email: string | null;
           created_at: string;
           hero_photo_url: string | null;
+          hero_video_url: string | null;
           id: string;
           location: string | null;
           name: string;
@@ -30,6 +31,7 @@ export type Database = {
           contact_email?: string | null;
           created_at?: string;
           hero_photo_url?: string | null;
+          hero_video_url?: string | null;
           id?: string;
           location?: string | null;
           name: string;
@@ -44,6 +46,7 @@ export type Database = {
           contact_email?: string | null;
           created_at?: string;
           hero_photo_url?: string | null;
+          hero_video_url?: string | null;
           id?: string;
           location?: string | null;
           name?: string;

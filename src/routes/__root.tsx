@@ -301,7 +301,7 @@ function RootComponent() {
         <main key={pathname} className="flex-1 route-transition">
           <Outlet />
         </main>
-        <footer className="texture-metal mt-24 border-t border-border">
+        <footer className="texture-ink relative mt-24 border-t border-[color:oklch(0.79_0.115_85_/_28%)]">
           <div className="mx-auto max-w-6xl px-6 py-14">
             <div className="ornament">
               <span aria-hidden className="text-sm tracking-[0.3em]">
