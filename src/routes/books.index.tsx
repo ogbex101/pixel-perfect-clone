@@ -5,6 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { PageHero } from "@/components/page-hero";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const STATUS_FILTERS = [
   { key: "all", label: "All" },
@@ -41,6 +44,7 @@ export const Route = createFileRoute("/books/")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(booksQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("books"));
   },
   pendingComponent: BooksSkeleton,
   pendingMs: 200,
@@ -74,21 +78,38 @@ function BooksSkeleton() {
 
 function BooksIndex() {
   const { data: books } = useSuspenseQuery(booksQuery);
+  const { data: media } = useSuspenseQuery(pageMediaQuery("books"));
   const [filter, setFilter] = useState<StatusFilter>("all");
   const filtered = filter === "all" ? books : books.filter((b) => b.status === filter);
 
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    ...books
+      .filter((b) => b.cover_image_url)
+      .map((b) => ({
+        id: `book-${b.id}`,
+        type: "image" as const,
+        src: b.cover_image_url as string,
+        caption: b.title,
+      })),
+    { id: "art-cover", type: "image", src: SITE_ART.cover, caption: "DUMB 31" },
+    { id: "art-betterauds", type: "image", src: SITE_ART.betterauds, caption: "Facility status" },
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
+
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
-        <p className="eyebrow">The Catalogue</p>
-        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
-          Books
-        </h1>
-      </Reveal>
+    <>
+      <PageHero
+        eyebrow="The Catalogue"
+        title="Books"
+        subtitle="Every volume, finished and in progress."
+        imageUrl={SITE_ART.betterauds}
+      />
+      <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
       {books.length > 0 && (
         <Reveal
           delay={150}
-          className="mt-8 flex flex-wrap gap-2"
+          className="flex flex-wrap gap-2"
           role="group"
           aria-label="Filter books by status"
         >
@@ -170,6 +191,8 @@ function BooksIndex() {
           ))}
         </ul>
       )}
-    </section>
+      </section>
+      <CinematicSlideshow slides={slides} eyebrow="Covers & Key Art" title="The Library in Frames" />
+    </>
   );
 }
