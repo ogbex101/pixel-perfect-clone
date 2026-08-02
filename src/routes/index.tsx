@@ -5,11 +5,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { QuoteRotator } from "@/components/quote-rotator";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const homeQuery = queryOptions({
   queryKey: ["home"],
   queryFn: async () => {
-    const [profile, featured, books, featuredVideo, press, testimonials, sections] =
+    const [profile, featured, books, featuredVideo, press, testimonials, sections, videos] =
       await Promise.all([
         supabase.from("author_profile").select("*").maybeSingle(),
         supabase.from("books").select("*").eq("is_featured", true).maybeSingle(),
@@ -21,6 +23,7 @@ const homeQuery = queryOptions({
           .from("landing_page_sections")
           .select("*")
           .order("display_order", { ascending: true }),
+        supabase.from("videos").select("*").order("display_order", { ascending: true }),
       ]);
     return {
       profile: profile.data,
@@ -30,6 +33,7 @@ const homeQuery = queryOptions({
       press: press.data ?? [],
       testimonials: testimonials.data ?? [],
       sections: sections.data ?? [],
+      videos: videos.data ?? [],
     };
   },
 });
@@ -55,6 +59,7 @@ export const Route = createFileRoute("/")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(homeQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("home"));
   },
   pendingComponent: HomeSkeleton,
   pendingMs: 200,
