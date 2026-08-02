@@ -640,7 +640,42 @@ const DEFAULT_SECTION_ORDER = [
 
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
-  const { profile, featured, books, featuredVideo, press, testimonials, sections } = data;
+  const { data: media } = useSuspenseQuery(pageMediaQuery("home"));
+  const { profile, featured, books, featuredVideo, press, testimonials, sections, videos } = data;
+
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    { id: "art-cover", type: "image", src: SITE_ART.cover, caption: "DUMB 31 — the facility" },
+    {
+      id: "art-door",
+      type: "image",
+      src: SITE_ART.door,
+      caption: "They said the surface was dead. It isn’t.",
+    },
+    {
+      id: "art-opie",
+      type: "image",
+      src: SITE_ART.opie,
+      caption: "“Knowledge is just data until it saves someone.”",
+    },
+    ...books
+      .filter((b) => b.cover_image_url)
+      .map((b) => ({
+        id: `book-${b.id}`,
+        type: "image" as const,
+        src: b.cover_image_url as string,
+        caption: b.title,
+      })),
+    ...videos
+      .filter((v) => v.thumbnail_url)
+      .map((v) => ({
+        id: `video-${v.id}`,
+        type: "image" as const,
+        src: v.thumbnail_url as string,
+        caption: v.title,
+      })),
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
 
   // Each section renders only when the admin has it visible AND it has content.
   const renderers: Record<string, () => ReactNode> = {
@@ -688,5 +723,15 @@ function Home() {
       ? sections.filter((s) => s.is_visible).map((s) => s.section_key)
       : DEFAULT_SECTION_ORDER;
 
-  return <>{order.map((key) => renderers[key]?.() ?? null)}</>;
+  return (
+    <>
+      {order.map((key) => renderers[key]?.() ?? null)}
+      <CinematicSlideshow
+        slides={slides}
+        eyebrow="The Gallery"
+        title="Inside DUMB 31"
+        className="border-b-0"
+      />
+    </>
+  );
 }
