@@ -3,6 +3,8 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, type Slide } from "@/lib/page-media";
 
 const bookQuery = (bookId: string) =>
   queryOptions({
@@ -94,6 +96,21 @@ function BookDetail() {
     );
   }
   const { book, characters } = data;
+  const slides: Slide[] = [
+    ...(book.cover_image_url
+      ? [{ id: "cover", type: "image" as const, src: book.cover_image_url, caption: book.title }]
+      : []),
+    ...characters
+      .filter((c) => c.image_url)
+      .map((c) => ({
+        id: `c-${c.id}`,
+        type: "image" as const,
+        src: c.image_url as string,
+        caption: c.quote ? `“${c.quote}” — ${c.name}` : c.name,
+      })),
+    { id: "art-cover", type: "image", src: SITE_ART.cover, caption: "The facility" },
+    { id: "art-opie", type: "image", src: SITE_ART.opie, caption: "The swarm" },
+  ];
   return (
     <article>
       {/* Cover dominates the top of the page: full-bleed hero */}
@@ -257,6 +274,8 @@ function BookDetail() {
           </div>
         </section>
       )}
+
+      <CinematicSlideshow slides={slides} eyebrow="In Frame" title="Scenes & Cast" />
     </article>
   );
 }
