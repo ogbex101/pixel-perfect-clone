@@ -55,17 +55,17 @@ export const pageMediaQuery = (pageKey: string) =>
   });
 
 export function toSlides(rows: PageMedia[]): Slide[] {
-  return rows
-    .map((r) => {
+  const slides: Slide[] = [];
+  for (const r of rows) {
       const isVideo = r.media_type === "video" && r.video_url;
       const src = isVideo ? r.video_url : r.image_url;
-      if (!src) return null;
-      return {
-        id: r.id,
-        type: isVideo ? ("video" as const) : ("image" as const),
-        src,
-        caption: r.caption,
-      };
-    })
-    .filter((s): s is Slide => s !== null);
+    if (!src) continue;
+    slides.push({
+      id: r.id,
+      type: isVideo ? "video" : "image",
+      src,
+      caption: r.caption,
+    });
+  }
+  return slides;
 }
