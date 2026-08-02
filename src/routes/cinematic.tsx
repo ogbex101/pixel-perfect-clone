@@ -3,6 +3,9 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageHero } from "@/components/page-hero";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const videosQuery = queryOptions({
   queryKey: ["videos"],
@@ -28,6 +31,7 @@ export const Route = createFileRoute("/cinematic")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(videosQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("cinematic"));
   },
   pendingComponent: CinematicSkeleton,
   pendingMs: 200,
@@ -54,24 +58,44 @@ function CinematicSkeleton() {
 
 function Cinematic() {
   const { data } = useSuspenseQuery(videosQuery);
+  const { data: media } = useSuspenseQuery(pageMediaQuery("cinematic"));
   const featured = data.find((v) => v.is_featured);
   const rest = data.filter((v) => v.id !== featured?.id);
 
-  return (
-    <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
-        <p className="eyebrow">The Cinematic</p>
-        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
-          Cinematic
-        </h1>
-      </Reveal>
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    ...data
+      .filter((v) => v.video_url || v.thumbnail_url)
+      .map((v) =>
+        v.video_url
+          ? { id: `v-${v.id}`, type: "video" as const, src: v.video_url, caption: v.title }
+          : {
+              id: `v-${v.id}`,
+              type: "image" as const,
+              src: v.thumbnail_url as string,
+              caption: v.title,
+            },
+      ),
+    { id: "art-corridor", type: "video", src: SITE_ART.corridorVideo, caption: "The corridor" },
+    { id: "art-book", type: "video", src: SITE_ART.bookOpensVideo, caption: "The manual opens" },
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
 
+  return (
+    <>
+      <PageHero
+        eyebrow="The Cinematic"
+        title="Cinematic"
+        subtitle="Trailers, scenes, and moving pieces of the world."
+        videoUrl={SITE_ART.corridorVideo}
+      />
+      <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
       {data.length === 0 ? (
-        <p className="mt-10 text-muted-foreground">No videos yet.</p>
+        <p className="text-muted-foreground">No videos yet.</p>
       ) : (
         <>
           {featured && (
-            <Reveal variant="zoom" className="mt-14">
+            <Reveal variant="zoom">
               <p className="eyebrow">Featured</p>
               <div className="frame-gold mt-5 aspect-video w-full overflow-hidden bg-muted texture-metal">
                 {featured.video_url ? (
@@ -155,6 +179,8 @@ function Cinematic() {
           )}
         </>
       )}
-    </section>
+      </section>
+      <CinematicSlideshow slides={slides} eyebrow="Reel" title="Continuous Play" />
+    </>
   );
 }
