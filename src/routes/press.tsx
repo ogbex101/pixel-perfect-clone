@@ -3,6 +3,9 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageHero } from "@/components/page-hero";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const pressQuery = queryOptions({
   queryKey: ["press_mentions"],
@@ -28,6 +31,7 @@ export const Route = createFileRoute("/press")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(pressQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("press"));
   },
   pendingComponent: PressSkeleton,
   pendingMs: 200,
@@ -57,18 +61,34 @@ function PressSkeleton() {
 
 function Press() {
   const { data } = useSuspenseQuery(pressQuery);
+  const { data: media } = useSuspenseQuery(pageMediaQuery("press"));
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    ...data
+      .filter((p) => p.logo_url)
+      .map((p) => ({
+        id: `press-${p.id}`,
+        type: "image" as const,
+        src: p.logo_url as string,
+        caption: p.headline ?? p.source_name,
+      })),
+    { id: "art-cover", type: "image", src: SITE_ART.cover, caption: "DUMB 31" },
+    { id: "art-betterauds", type: "image", src: SITE_ART.betterauds, caption: "Facility status" },
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      <Reveal as="header" variant="blur" className="border-b border-border pb-6">
-        <p className="eyebrow">The Clippings</p>
-        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
-          Press
-        </h1>
-      </Reveal>
+    <>
+      <PageHero
+        eyebrow="The Clippings"
+        title="Press"
+        subtitle="Coverage, reviews, and conversations."
+        imageUrl={SITE_ART.cover}
+      />
+      <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
       {data.length === 0 ? (
-        <p className="mt-10 text-muted-foreground">No press mentions yet.</p>
+        <p className="text-muted-foreground">No press mentions yet.</p>
       ) : (
-        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {data.map((p, i) => (
             <Reveal
               as="li"
@@ -108,6 +128,8 @@ function Press() {
           ))}
         </ul>
       )}
-    </section>
+      </section>
+      <CinematicSlideshow slides={slides} eyebrow="In Frame" title="Press & Key Art" />
+    </>
   );
 }

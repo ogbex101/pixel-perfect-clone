@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveContactIcon } from "@/components/contact-icon";
+import { PageHero } from "@/components/page-hero";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const contactQuery = queryOptions({
   queryKey: ["contact"],
@@ -32,6 +35,7 @@ export const Route = createFileRoute("/contact")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(contactQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("contact"));
   },
   pendingComponent: ContactSkeleton,
   pendingMs: 200,
@@ -52,21 +56,29 @@ function ContactSkeleton() {
 
 function Contact() {
   const { data } = useSuspenseQuery(contactQuery);
+  const { data: media } = useSuspenseQuery(pageMediaQuery("contact"));
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    { id: "art-door", type: "image", src: SITE_ART.door, caption: "Some doors open both ways." },
+    { id: "art-cover", type: "image", src: SITE_ART.cover, caption: "DUMB 31" },
+    { id: "art-opie", type: "image", src: SITE_ART.opie, caption: "Inside the facility" },
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
   return (
-    <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+    <>
+      <PageHero
+        eyebrow="Correspondence"
+        title="Contact"
+        subtitle="For interviews, appearances, and reader letters."
+        imageUrl={SITE_ART.door}
+      />
+      <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
       <Reveal variant="blur">
-        <p className="eyebrow">Correspondence</p>
-        <h1 className="text-gradient-gold mt-3 font-serif text-4xl sm:text-5xl md:text-6xl pb-1">
-          Contact
-        </h1>
-        <hr className="rule-gold rule-draw mt-6" />
-        <p className="mt-8 font-serif italic text-xl text-foreground/80">
-          For interviews, appearances, and reader letters.
-        </p>
+        <p className="eyebrow">Write to Nik</p>
         {data.email && (
           <a
             href={`mailto:${data.email}`}
-            className="mt-8 inline-block font-serif text-xl sm:text-2xl md:text-3xl text-primary border-b-2 border-accent pb-1 hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300 break-all"
+            className="mt-4 inline-block font-serif text-xl sm:text-2xl md:text-3xl text-primary border-b-2 border-accent pb-1 hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300 break-all"
           >
             {data.email}
           </a>
@@ -97,6 +109,8 @@ function Contact() {
           </ul>
         </Reveal>
       )}
-    </section>
+      </section>
+      <CinematicSlideshow slides={slides} eyebrow="In Frame" title="From the Facility" />
+    </>
   );
 }

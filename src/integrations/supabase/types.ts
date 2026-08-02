@@ -214,6 +214,45 @@ export type Database = {
         }
         Relationships: []
       }
+      page_media: {
+        Row: {
+          caption: string | null
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string | null
+          is_visible: boolean
+          media_type: string
+          page_key: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_visible?: boolean
+          media_type?: string
+          page_key: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_visible?: boolean
+          media_type?: string
+          page_key?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       press_mentions: {
         Row: {
           created_at: string

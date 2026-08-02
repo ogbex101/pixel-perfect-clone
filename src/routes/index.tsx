@@ -5,11 +5,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { QuoteRotator } from "@/components/quote-rotator";
+import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const homeQuery = queryOptions({
   queryKey: ["home"],
   queryFn: async () => {
-    const [profile, featured, books, featuredVideo, press, testimonials, sections] =
+    const [profile, featured, books, featuredVideo, press, testimonials, sections, videos] =
       await Promise.all([
         supabase.from("author_profile").select("*").maybeSingle(),
         supabase.from("books").select("*").eq("is_featured", true).maybeSingle(),
@@ -21,6 +23,7 @@ const homeQuery = queryOptions({
           .from("landing_page_sections")
           .select("*")
           .order("display_order", { ascending: true }),
+        supabase.from("videos").select("*").order("display_order", { ascending: true }),
       ]);
     return {
       profile: profile.data,
@@ -30,6 +33,7 @@ const homeQuery = queryOptions({
       press: press.data ?? [],
       testimonials: testimonials.data ?? [],
       sections: sections.data ?? [],
+      videos: videos.data ?? [],
     };
   },
 });
@@ -55,6 +59,7 @@ export const Route = createFileRoute("/")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(homeQuery);
+    context.queryClient.ensureQueryData(pageMediaQuery("home"));
   },
   pendingComponent: HomeSkeleton,
   pendingMs: 200,
@@ -326,6 +331,22 @@ function AuthorIntroSection({
           </div>
         </Reveal>
       </div>
+
+      {/* DUMB 31 key art: the world behind the words, full-bleed under the bio */}
+      <Reveal
+        variant="clip"
+        className="img-shine group relative overflow-hidden border-t border-border"
+      >
+        <img
+          src={SITE_ART.cover}
+          alt="DUMB 31 key art — a flooded facility corridor with the Operations Manual"
+          className="h-[42vh] w-full object-cover transition-transform duration-[2s] ease-out group-hover:scale-[1.04] md:h-[58vh]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
+        <p className="absolute inset-x-0 bottom-0 px-6 pb-6 font-serif text-lg italic text-foreground/90 md:px-14 md:pb-10 md:text-2xl">
+          “Some doors were never meant to be opened.”
+        </p>
+      </Reveal>
     </section>
   );
 }
@@ -619,7 +640,42 @@ const DEFAULT_SECTION_ORDER = [
 
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
-  const { profile, featured, books, featuredVideo, press, testimonials, sections } = data;
+  const { data: media } = useSuspenseQuery(pageMediaQuery("home"));
+  const { profile, featured, books, featuredVideo, press, testimonials, sections, videos } = data;
+
+  const managed = toSlides(media);
+  const fallback: Slide[] = [
+    { id: "art-cover", type: "image", src: SITE_ART.cover, caption: "DUMB 31 — the facility" },
+    {
+      id: "art-door",
+      type: "image",
+      src: SITE_ART.door,
+      caption: "They said the surface was dead. It isn’t.",
+    },
+    {
+      id: "art-opie",
+      type: "image",
+      src: SITE_ART.opie,
+      caption: "“Knowledge is just data until it saves someone.”",
+    },
+    ...books
+      .filter((b) => b.cover_image_url)
+      .map((b) => ({
+        id: `book-${b.id}`,
+        type: "image" as const,
+        src: b.cover_image_url as string,
+        caption: b.title,
+      })),
+    ...videos
+      .filter((v) => v.thumbnail_url)
+      .map((v) => ({
+        id: `video-${v.id}`,
+        type: "image" as const,
+        src: v.thumbnail_url as string,
+        caption: v.title,
+      })),
+  ];
+  const slides = managed.length > 0 ? managed : fallback;
 
   // Each section renders only when the admin has it visible AND it has content.
   const renderers: Record<string, () => ReactNode> = {
@@ -667,5 +723,15 @@ function Home() {
       ? sections.filter((s) => s.is_visible).map((s) => s.section_key)
       : DEFAULT_SECTION_ORDER;
 
-  return <>{order.map((key) => renderers[key]?.() ?? null)}</>;
+  return (
+    <>
+      {order.map((key) => renderers[key]?.() ?? null)}
+      <CinematicSlideshow
+        slides={slides}
+        eyebrow="The Gallery"
+        title="Inside DUMB 31"
+        className="border-b-0"
+      />
+    </>
+  );
 }

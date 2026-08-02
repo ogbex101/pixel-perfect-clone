@@ -14,6 +14,11 @@ const RESOURCES = [
     description: "Show, hide, and reorder every section of the homepage.",
   },
   {
+    to: "/admin/page-media",
+    label: "Page Media",
+    description: "Slideshow images and videos for every page of the site.",
+  },
+  {
     to: "/admin/profile",
     label: "Author Profile",
     description: "Hero video, bio, tagline, photo, background facts, and quotes.",
