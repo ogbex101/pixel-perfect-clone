@@ -15,6 +15,8 @@ const ADMIN_NAV = [
   { to: "/admin/videos", label: "Cinematic" },
   { to: "/admin/challenges", label: "Challenges" },
   { to: "/admin/members", label: "Members" },
+  { to: "/admin/debates", label: "Debates" },
+  { to: "/admin/news", label: "News" },
 ] as const;
 
 export function AdminShell({ children, title }: { children: ReactNode; title: string }) {

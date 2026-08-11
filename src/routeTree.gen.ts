@@ -20,9 +20,11 @@ import { Route as AdminBooksRouteImport } from './routes/admin.books'
 import { Route as AdminChallengesRouteImport } from './routes/admin.challenges'
 import { Route as AdminCharactersRouteImport } from './routes/admin.characters'
 import { Route as AdminContactLinksRouteImport } from './routes/admin.contact-links'
+import { Route as AdminDebatesRouteImport } from './routes/admin.debates'
 import { Route as AdminHomepageRouteImport } from './routes/admin.homepage'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminMembersRouteImport } from './routes/admin.members'
+import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminPageMediaRouteImport } from './routes/admin.page-media'
 import { Route as AdminPressRouteImport } from './routes/admin.press'
 import { Route as AdminProfileRouteImport } from './routes/admin.profile'
@@ -98,6 +100,11 @@ const AdminContactLinksRoute = AdminContactLinksRouteImport.update({
   path: '/admin/contact-links',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminDebatesRoute = AdminDebatesRouteImport.update({
+  id: '/admin/debates',
+  path: '/admin/debates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminHomepageRoute = AdminHomepageRouteImport.update({
   id: '/admin/homepage',
   path: '/admin/homepage',
@@ -111,6 +118,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
 const AdminMembersRoute = AdminMembersRouteImport.update({
   id: '/admin/members',
   path: '/admin/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsRoute = AdminNewsRouteImport.update({
+  id: '/admin/news',
+  path: '/admin/news',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPageMediaRoute = AdminPageMediaRouteImport.update({
@@ -221,9 +233,11 @@ export interface FileRoutesByFullPath {
   '/admin/challenges': typeof AdminChallengesRoute
   '/admin/characters': typeof AdminCharactersRoute
   '/admin/contact-links': typeof AdminContactLinksRoute
+  '/admin/debates': typeof AdminDebatesRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/members': typeof AdminMembersRoute
+  '/admin/news': typeof AdminNewsRoute
   '/admin/page-media': typeof AdminPageMediaRoute
   '/admin/press': typeof AdminPressRoute
   '/admin/profile': typeof AdminProfileRoute
@@ -256,9 +270,11 @@ export interface FileRoutesByTo {
   '/admin/challenges': typeof AdminChallengesRoute
   '/admin/characters': typeof AdminCharactersRoute
   '/admin/contact-links': typeof AdminContactLinksRoute
+  '/admin/debates': typeof AdminDebatesRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/members': typeof AdminMembersRoute
+  '/admin/news': typeof AdminNewsRoute
   '/admin/page-media': typeof AdminPageMediaRoute
   '/admin/press': typeof AdminPressRoute
   '/admin/profile': typeof AdminProfileRoute
@@ -292,9 +308,11 @@ export interface FileRoutesById {
   '/admin/challenges': typeof AdminChallengesRoute
   '/admin/characters': typeof AdminCharactersRoute
   '/admin/contact-links': typeof AdminContactLinksRoute
+  '/admin/debates': typeof AdminDebatesRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/members': typeof AdminMembersRoute
+  '/admin/news': typeof AdminNewsRoute
   '/admin/page-media': typeof AdminPageMediaRoute
   '/admin/press': typeof AdminPressRoute
   '/admin/profile': typeof AdminProfileRoute
@@ -329,9 +347,11 @@ export interface FileRouteTypes {
     | '/admin/challenges'
     | '/admin/characters'
     | '/admin/contact-links'
+    | '/admin/debates'
     | '/admin/homepage'
     | '/admin/login'
     | '/admin/members'
+    | '/admin/news'
     | '/admin/page-media'
     | '/admin/press'
     | '/admin/profile'
@@ -364,9 +384,11 @@ export interface FileRouteTypes {
     | '/admin/challenges'
     | '/admin/characters'
     | '/admin/contact-links'
+    | '/admin/debates'
     | '/admin/homepage'
     | '/admin/login'
     | '/admin/members'
+    | '/admin/news'
     | '/admin/page-media'
     | '/admin/press'
     | '/admin/profile'
@@ -399,9 +421,11 @@ export interface FileRouteTypes {
     | '/admin/challenges'
     | '/admin/characters'
     | '/admin/contact-links'
+    | '/admin/debates'
     | '/admin/homepage'
     | '/admin/login'
     | '/admin/members'
+    | '/admin/news'
     | '/admin/page-media'
     | '/admin/press'
     | '/admin/profile'
@@ -435,9 +459,11 @@ export interface RootRouteChildren {
   AdminChallengesRoute: typeof AdminChallengesRoute
   AdminCharactersRoute: typeof AdminCharactersRoute
   AdminContactLinksRoute: typeof AdminContactLinksRoute
+  AdminDebatesRoute: typeof AdminDebatesRoute
   AdminHomepageRoute: typeof AdminHomepageRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMembersRoute: typeof AdminMembersRoute
+  AdminNewsRoute: typeof AdminNewsRoute
   AdminPageMediaRoute: typeof AdminPageMediaRoute
   AdminPressRoute: typeof AdminPressRoute
   AdminProfileRoute: typeof AdminProfileRoute
@@ -539,6 +565,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminContactLinksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/debates': {
+      id: '/admin/debates'
+      path: '/admin/debates'
+      fullPath: '/admin/debates'
+      preLoaderRoute: typeof AdminDebatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/homepage': {
       id: '/admin/homepage'
       path: '/admin/homepage'
@@ -558,6 +591,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/members'
       fullPath: '/admin/members'
       preLoaderRoute: typeof AdminMembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/news': {
+      id: '/admin/news'
+      path: '/admin/news'
+      fullPath: '/admin/news'
+      preLoaderRoute: typeof AdminNewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/page-media': {
@@ -707,9 +747,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminChallengesRoute: AdminChallengesRoute,
   AdminCharactersRoute: AdminCharactersRoute,
   AdminContactLinksRoute: AdminContactLinksRoute,
+  AdminDebatesRoute: AdminDebatesRoute,
   AdminHomepageRoute: AdminHomepageRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminMembersRoute: AdminMembersRoute,
+  AdminNewsRoute: AdminNewsRoute,
   AdminPageMediaRoute: AdminPageMediaRoute,
   AdminPressRoute: AdminPressRoute,
   AdminProfileRoute: AdminProfileRoute,

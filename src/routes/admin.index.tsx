@@ -63,6 +63,16 @@ const RESOURCES = [
     label: "Members",
     description: "Registered members, their challenge progress, and account status.",
   },
+  {
+    to: "/admin/debates",
+    label: "Debates",
+    description: "Community debate topics and comment moderation.",
+  },
+  {
+    to: "/admin/news",
+    label: "News",
+    description: "News and updates, with drafts and scheduled posts.",
+  },
 ] as const;
 
 function AdminDashboard() {
