@@ -1,22 +1,39 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import type { Session } from "@supabase/supabase-js";
+import {
+  BookOpen,
+  Crown,
+  Drama,
+  Film,
+  Home,
+  Image,
+  Link2,
+  Megaphone,
+  MessageSquare,
+  Newspaper,
+  Quote,
+  Trophy,
+  User,
+  Users,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const ADMIN_NAV = [
-  { to: "/admin/homepage", label: "Homepage" },
-  { to: "/admin/page-media", label: "Page Media" },
-  { to: "/admin/profile", label: "Author Profile" },
-  { to: "/admin/books", label: "Books" },
-  { to: "/admin/characters", label: "Characters" },
-  { to: "/admin/press", label: "Press" },
-  { to: "/admin/testimonials", label: "Testimonials" },
-  { to: "/admin/contact-links", label: "Contact Links" },
-  { to: "/admin/videos", label: "Cinematic" },
-  { to: "/admin/challenges", label: "Challenges" },
-  { to: "/admin/members", label: "Members" },
-  { to: "/admin/debates", label: "Debates" },
-  { to: "/admin/news", label: "News" },
+  { to: "/admin/homepage", label: "Homepage", icon: Home },
+  { to: "/admin/page-media", label: "Page Media", icon: Image },
+  { to: "/admin/profile", label: "Author Profile", icon: User },
+  { to: "/admin/books", label: "Books", icon: BookOpen },
+  { to: "/admin/characters", label: "Characters", icon: Drama },
+  { to: "/admin/press", label: "Press", icon: Megaphone },
+  { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
+  { to: "/admin/contact-links", label: "Contact Links", icon: Link2 },
+  { to: "/admin/videos", label: "Cinematic", icon: Film },
+  { to: "/admin/challenges", label: "Challenges", icon: Trophy },
+  { to: "/admin/members", label: "Members", icon: Users },
+  { to: "/admin/debates", label: "Debates", icon: MessageSquare },
+  { to: "/admin/news", label: "News", icon: Newspaper },
+  { to: "/admin/winners", label: "Winners", icon: Crown },
 ] as const;
 
 export function AdminShell({ children, title }: { children: ReactNode; title: string }) {
@@ -67,8 +84,9 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
                   key={n.to}
                   to={n.to}
                   activeProps={{ className: "text-primary" }}
-                  className="hover:text-primary transition-colors"
+                  className="inline-flex items-center gap-1.5 hover:text-primary transition-colors"
                 >
+                  <n.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
                   {n.label}
                 </Link>
               ))}

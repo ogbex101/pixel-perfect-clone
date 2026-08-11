@@ -31,6 +31,7 @@ import { Route as AdminProfileRouteImport } from './routes/admin.profile'
 import { Route as AdminSetupRouteImport } from './routes/admin.setup'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
+import { Route as AdminWinnersRouteImport } from './routes/admin.winners'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 import { Route as DebateIndexRouteImport } from './routes/debate.index'
@@ -155,6 +156,11 @@ const AdminVideosRoute = AdminVideosRouteImport.update({
   path: '/admin/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminWinnersRoute = AdminWinnersRouteImport.update({
+  id: '/admin/winners',
+  path: '/admin/winners',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
   id: '/books/',
   path: '/books/',
@@ -244,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/admin/setup': typeof AdminSetupRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
+  '/admin/winners': typeof AdminWinnersRoute
   '/books/$bookId': typeof BooksBookIdRoute
   '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
@@ -281,6 +288,7 @@ export interface FileRoutesByTo {
   '/admin/setup': typeof AdminSetupRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
+  '/admin/winners': typeof AdminWinnersRoute
   '/books/$bookId': typeof BooksBookIdRoute
   '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/admin/setup': typeof AdminSetupRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
+  '/admin/winners': typeof AdminWinnersRoute
   '/books/$bookId': typeof BooksBookIdRoute
   '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
@@ -358,6 +367,7 @@ export interface FileRouteTypes {
     | '/admin/setup'
     | '/admin/testimonials'
     | '/admin/videos'
+    | '/admin/winners'
     | '/books/$bookId'
     | '/debate/$topicId'
     | '/member/challenge'
@@ -395,6 +405,7 @@ export interface FileRouteTypes {
     | '/admin/setup'
     | '/admin/testimonials'
     | '/admin/videos'
+    | '/admin/winners'
     | '/books/$bookId'
     | '/debate/$topicId'
     | '/member/challenge'
@@ -432,6 +443,7 @@ export interface FileRouteTypes {
     | '/admin/setup'
     | '/admin/testimonials'
     | '/admin/videos'
+    | '/admin/winners'
     | '/books/$bookId'
     | '/debate/$topicId'
     | '/member/challenge'
@@ -470,6 +482,7 @@ export interface RootRouteChildren {
   AdminSetupRoute: typeof AdminSetupRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
+  AdminWinnersRoute: typeof AdminWinnersRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
   DebateTopicIdRoute: typeof DebateTopicIdRoute
   MemberChallengeRoute: typeof MemberChallengeRoute
@@ -642,6 +655,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminVideosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/winners': {
+      id: '/admin/winners'
+      path: '/admin/winners'
+      fullPath: '/admin/winners'
+      preLoaderRoute: typeof AdminWinnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/books/': {
       id: '/books/'
       path: '/books'
@@ -758,6 +778,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSetupRoute: AdminSetupRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
+  AdminWinnersRoute: AdminWinnersRoute,
   BooksBookIdRoute: BooksBookIdRoute,
   DebateTopicIdRoute: DebateTopicIdRoute,
   MemberChallengeRoute: MemberChallengeRoute,
