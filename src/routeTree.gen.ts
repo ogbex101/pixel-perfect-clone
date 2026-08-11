@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as MemberSignupRouteImport } from './routes/member.signup'
+import { Route as MemberLoginRouteImport } from './routes/member.login'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
@@ -74,6 +75,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const MemberSignupRoute = MemberSignupRouteImport.update({
   id: '/member/signup',
   path: '/member/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberLoginRoute = MemberLoginRouteImport.update({
+  id: '/member/login',
+  path: '/member/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin': typeof AdminIndexRoute
   '/books': typeof BooksIndexRoute
@@ -203,6 +211,7 @@ export interface FileRoutesById {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/login'
     | '/member/signup'
     | '/admin/'
     | '/books/'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/login'
     | '/member/signup'
     | '/admin'
     | '/books'
@@ -274,6 +285,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/login'
     | '/member/signup'
     | '/admin/'
     | '/books/'
@@ -298,6 +310,7 @@ export interface RootRouteChildren {
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
+  MemberLoginRoute: typeof MemberLoginRoute
   MemberSignupRoute: typeof MemberSignupRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BooksIndexRoute: typeof BooksIndexRoute
@@ -366,6 +379,13 @@ declare module '@tanstack/react-router' {
       path: '/member/signup'
       fullPath: '/member/signup'
       preLoaderRoute: typeof MemberSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/login': {
+      id: '/member/login'
+      path: '/member/login'
+      fullPath: '/member/login'
+      preLoaderRoute: typeof MemberLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/$bookId': {
@@ -474,6 +494,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
   BooksBookIdRoute: BooksBookIdRoute,
+  MemberLoginRoute: MemberLoginRoute,
   MemberSignupRoute: MemberSignupRoute,
   AdminIndexRoute: AdminIndexRoute,
   BooksIndexRoute: BooksIndexRoute,
