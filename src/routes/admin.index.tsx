@@ -58,6 +58,11 @@ const RESOURCES = [
     label: "Challenges",
     description: "Manage DUMB 31 challenges, their dates, prizes, and questions.",
   },
+  {
+    to: "/admin/members",
+    label: "Members",
+    description: "Registered members, their challenge progress, and account status.",
+  },
 ] as const;
 
 function AdminDashboard() {

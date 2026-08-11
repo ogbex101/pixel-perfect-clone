@@ -22,6 +22,7 @@ import { Route as AdminCharactersRouteImport } from './routes/admin.characters'
 import { Route as AdminContactLinksRouteImport } from './routes/admin.contact-links'
 import { Route as AdminHomepageRouteImport } from './routes/admin.homepage'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminMembersRouteImport } from './routes/admin.members'
 import { Route as AdminPageMediaRouteImport } from './routes/admin.page-media'
 import { Route as AdminPressRouteImport } from './routes/admin.press'
 import { Route as AdminProfileRouteImport } from './routes/admin.profile'
@@ -105,6 +106,11 @@ const AdminHomepageRoute = AdminHomepageRouteImport.update({
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMembersRoute = AdminMembersRouteImport.update({
+  id: '/admin/members',
+  path: '/admin/members',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPageMediaRoute = AdminPageMediaRouteImport.update({
@@ -217,6 +223,7 @@ export interface FileRoutesByFullPath {
   '/admin/contact-links': typeof AdminContactLinksRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/members': typeof AdminMembersRoute
   '/admin/page-media': typeof AdminPageMediaRoute
   '/admin/press': typeof AdminPressRoute
   '/admin/profile': typeof AdminProfileRoute
@@ -251,6 +258,7 @@ export interface FileRoutesByTo {
   '/admin/contact-links': typeof AdminContactLinksRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/members': typeof AdminMembersRoute
   '/admin/page-media': typeof AdminPageMediaRoute
   '/admin/press': typeof AdminPressRoute
   '/admin/profile': typeof AdminProfileRoute
@@ -286,6 +294,7 @@ export interface FileRoutesById {
   '/admin/contact-links': typeof AdminContactLinksRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/members': typeof AdminMembersRoute
   '/admin/page-media': typeof AdminPageMediaRoute
   '/admin/press': typeof AdminPressRoute
   '/admin/profile': typeof AdminProfileRoute
@@ -322,6 +331,7 @@ export interface FileRouteTypes {
     | '/admin/contact-links'
     | '/admin/homepage'
     | '/admin/login'
+    | '/admin/members'
     | '/admin/page-media'
     | '/admin/press'
     | '/admin/profile'
@@ -356,6 +366,7 @@ export interface FileRouteTypes {
     | '/admin/contact-links'
     | '/admin/homepage'
     | '/admin/login'
+    | '/admin/members'
     | '/admin/page-media'
     | '/admin/press'
     | '/admin/profile'
@@ -390,6 +401,7 @@ export interface FileRouteTypes {
     | '/admin/contact-links'
     | '/admin/homepage'
     | '/admin/login'
+    | '/admin/members'
     | '/admin/page-media'
     | '/admin/press'
     | '/admin/profile'
@@ -425,6 +437,7 @@ export interface RootRouteChildren {
   AdminContactLinksRoute: typeof AdminContactLinksRoute
   AdminHomepageRoute: typeof AdminHomepageRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminMembersRoute: typeof AdminMembersRoute
   AdminPageMediaRoute: typeof AdminPageMediaRoute
   AdminPressRoute: typeof AdminPressRoute
   AdminProfileRoute: typeof AdminProfileRoute
@@ -538,6 +551,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/members': {
+      id: '/admin/members'
+      path: '/admin/members'
+      fullPath: '/admin/members'
+      preLoaderRoute: typeof AdminMembersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/page-media': {
@@ -689,6 +709,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminContactLinksRoute: AdminContactLinksRoute,
   AdminHomepageRoute: AdminHomepageRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminMembersRoute: AdminMembersRoute,
   AdminPageMediaRoute: AdminPageMediaRoute,
   AdminPressRoute: AdminPressRoute,
   AdminProfileRoute: AdminProfileRoute,
