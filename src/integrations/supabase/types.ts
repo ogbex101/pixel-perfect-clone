@@ -278,6 +278,7 @@ export type Database = {
           description: string | null
           end_date: string | null
           id: string
+          image_url: string | null
           is_active: boolean | null
           prize_description: string | null
           start_date: string | null
@@ -289,6 +290,7 @@ export type Database = {
           description?: string | null
           end_date?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
           prize_description?: string | null
           start_date?: string | null
@@ -300,6 +302,7 @@ export type Database = {
           description?: string | null
           end_date?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
           prize_description?: string | null
           start_date?: string | null

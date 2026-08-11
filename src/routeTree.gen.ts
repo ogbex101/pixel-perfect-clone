@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CinematicRouteImport } from './routes/cinematic'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as PressRouteImport } from './routes/press'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -64,6 +65,11 @@ const CinematicRoute = CinematicRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PressRoute = PressRouteImport.update({
@@ -233,6 +239,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
+  '/home': typeof HomeRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/books': typeof AdminBooksRoute
@@ -271,6 +278,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
+  '/home': typeof HomeRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/books': typeof AdminBooksRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/cinematic': typeof CinematicRoute
   '/contact': typeof ContactRoute
+  '/home': typeof HomeRoute
   '/press': typeof PressRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/books': typeof AdminBooksRoute
@@ -350,6 +359,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cinematic'
     | '/contact'
+    | '/home'
     | '/press'
     | '/testimonials'
     | '/admin/books'
@@ -388,6 +398,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cinematic'
     | '/contact'
+    | '/home'
     | '/press'
     | '/testimonials'
     | '/admin/books'
@@ -426,6 +437,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cinematic'
     | '/contact'
+    | '/home'
     | '/press'
     | '/testimonials'
     | '/admin/books'
@@ -465,6 +477,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CinematicRoute: typeof CinematicRoute
   ContactRoute: typeof ContactRoute
+  HomeRoute: typeof HomeRoute
   PressRoute: typeof PressRoute
   TestimonialsRoute: typeof TestimonialsRoute
   AdminBooksRoute: typeof AdminBooksRoute
@@ -527,6 +540,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/press': {
@@ -761,6 +781,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CinematicRoute: CinematicRoute,
   ContactRoute: ContactRoute,
+  HomeRoute: HomeRoute,
   PressRoute: PressRoute,
   TestimonialsRoute: TestimonialsRoute,
   AdminBooksRoute: AdminBooksRoute,

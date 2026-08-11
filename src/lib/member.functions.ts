@@ -402,3 +402,85 @@ export const markNotificationsRead = createServerFn({ method: "POST" })
       .eq("is_read", false);
     return { ok: true };
   });
+/**
+ * Everything the dashboard needs beyond the shared member context: where the
+ * member sits on the board, and how each day of the running challenge went.
+ */
+export const getMemberProgress = createServerFn({ method: "POST" })
+  .inputValidator((data) => z.object({ token: z.string().min(1) }).parse(data))
+  .handler(async ({ data }) => {
+    const member = await requireMember(data.token);
+    const db = await admin();
+    const challenge = await activeChallenge();
+    if (!challenge) {
+      return { challenge: null, day: 1, days: [], rank: null, totalPlayers: 0, streak: 0 };
+    }
+
+    const day = currentDayNumber(challenge.start_date);
+    const { data: questions } = await db
+      .from("questions")
+      .select("id, day_number")
+      .eq("challenge_id", challenge.id)
+      .order("day_number", { ascending: true });
+    const ids = (questions ?? []).map((q) => q.id);
+
+    const { data: answers } = ids.length
+      ? await db
+          .from("answers")
+          .select("member_id, question_id, is_correct, time_taken_seconds")
+          .in("question_id", ids)
+      : { data: [] };
+
+    const mine = (answers ?? []).filter((a) => a.member_id === member.id);
+    const byQuestion = new Map(mine.map((a) => [a.question_id, a]));
+
+    const days = (questions ?? []).map((q) => {
+      const answer = byQuestion.get(q.id);
+      return {
+        day_number: q.day_number,
+        status: answer
+          ? answer.is_correct
+            ? ("correct" as const)
+            : ("incorrect" as const)
+          : q.day_number <= day
+            ? ("missed" as const)
+            : ("locked" as const),
+      };
+    });
+
+    // Same ordering the public leaderboard uses: correct desc, avg time asc.
+    const tally = new Map<string, { correct: number; total: number; time: number }>();
+    for (const a of answers ?? []) {
+      if (!a.member_id) continue;
+      const e = tally.get(a.member_id) ?? { correct: 0, total: 0, time: 0 };
+      e.total += 1;
+      if (a.is_correct) e.correct += 1;
+      e.time += a.time_taken_seconds ?? 0;
+      tally.set(a.member_id, e);
+    }
+    const standings = [...tally.entries()]
+      .map(([id, e]) => ({ id, correct: e.correct, avg: e.total ? e.time / e.total : 0 }))
+      .sort((a, b) => b.correct - a.correct || a.avg - b.avg);
+    const index = standings.findIndex((s) => s.id === member.id);
+
+    // Longest run of consecutive correct days, counting from day 1.
+    let streak = 0;
+    let best = 0;
+    for (const d of days) {
+      if (d.status === "correct") {
+        streak += 1;
+        best = Math.max(best, streak);
+      } else if (d.status !== "locked") {
+        streak = 0;
+      }
+    }
+
+    return {
+      challenge,
+      day,
+      days,
+      rank: index >= 0 ? index + 1 : null,
+      totalPlayers: standings.length,
+      streak: best,
+    };
+  });

@@ -5,6 +5,7 @@ import { Reveal } from "@/components/reveal";
 import { supabase } from "@/integrations/supabase/client";
 import { getLeaderboard } from "@/lib/member.functions";
 import { MemberGate, type MemberCtx } from "@/lib/member-session";
+import { MemberShell } from "@/components/member/member-shell";
 
 export const Route = createFileRoute("/member/leaderboard")({
   ssr: false,
@@ -21,7 +22,13 @@ export const Route = createFileRoute("/member/leaderboard")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <MemberGate>{(ctx) => <LeaderboardPage ctx={ctx} />}</MemberGate>,
+  component: () => <MemberGate>
+      {(ctx) => (
+        <MemberShell ctx={ctx}>
+          <LeaderboardPage ctx={ctx} />
+        </MemberShell>
+      )}
+    </MemberGate>,
 });
 
 function LeaderboardPage({ ctx }: { ctx: MemberCtx }) {

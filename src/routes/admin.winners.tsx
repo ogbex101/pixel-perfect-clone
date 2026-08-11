@@ -310,17 +310,66 @@ function AnnounceDialog({
   const challenge = challenges.find((c) => c.id === challengeId) ?? null;
   const alreadyRecorded = existingWinners.filter((w) => w.challenge_id === challengeId);
 
+  // The standings are computed from answers, exactly the way the member-facing
+  // leaderboard does it: most correct wins, fastest average time breaks ties.
+  // The challenge_leaderboard table is never written to by anything, so reading
+  // it here would always come back empty.
   const { data: leaderboard, isLoading } = useQuery({
-    queryKey: ["admin", "challenge_leaderboard", challengeId],
+    queryKey: ["admin", "challenge_standings", challengeId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("challenge_leaderboard")
-        .select("*, member:member_id(id, full_name)")
-        .eq("challenge_id", challengeId)
-        .order("rank", { ascending: true })
-        .limit(3);
-      if (error) throw error;
-      return (data ?? []) as unknown as LeaderboardRow[];
+      const { data: questions, error: qError } = await supabase
+        .from("questions")
+        .select("id")
+        .eq("challenge_id", challengeId);
+      if (qError) throw qError;
+      const ids = (questions ?? []).map((q) => q.id);
+      if (ids.length === 0) return [] as LeaderboardRow[];
+
+      const { data: answers, error: aError } = await supabase
+        .from("answers")
+        .select("member_id, is_correct, time_taken_seconds, members(id, full_name)")
+        .in("question_id", ids);
+      if (aError) throw aError;
+
+      const tally = new Map<
+        string,
+        { name: string; correct: number; total: number; time: number }
+      >();
+      for (const a of answers ?? []) {
+        if (!a.member_id) continue;
+        const entry = tally.get(a.member_id) ?? {
+          name: a.members?.full_name ?? "Member",
+          correct: 0,
+          total: 0,
+          time: 0,
+        };
+        entry.total += 1;
+        if (a.is_correct) entry.correct += 1;
+        entry.time += a.time_taken_seconds ?? 0;
+        tally.set(a.member_id, entry);
+      }
+
+      return [...tally.entries()]
+        .map(([memberId, e]) => ({
+          memberId,
+          name: e.name,
+          correct: e.correct,
+          total: e.total,
+          average: e.total ? e.time / e.total : 0,
+        }))
+        .sort((a, b) => b.correct - a.correct || a.average - b.average)
+        .slice(0, 3)
+        .map((r, i) => ({
+          id: r.memberId,
+          challenge_id: challengeId,
+          member_id: r.memberId,
+          rank: i + 1,
+          correct_count: r.correct,
+          total_answered: r.total,
+          average_time: Math.round(r.average * 10) / 10,
+          assessed_at: null,
+          member: { id: r.memberId, full_name: r.name },
+        })) as LeaderboardRow[];
     },
     enabled: Boolean(challengeId),
   });

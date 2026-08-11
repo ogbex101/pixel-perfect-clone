@@ -3,13 +3,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { Reveal } from "@/components/reveal";
+import { MemberShell } from "@/components/member/member-shell";
 import { changeMemberPassword, updateMemberProfile } from "@/lib/member.functions";
-import {
-  MemberGate,
-  getMemberToken,
-  memberContextKey,
-  type MemberCtx,
-} from "@/lib/member-session";
+import { MemberGate, getMemberToken, memberContextKey, type MemberCtx } from "@/lib/member-session";
 
 export const Route = createFileRoute("/member/profile")({
   ssr: false,
@@ -26,17 +22,51 @@ export const Route = createFileRoute("/member/profile")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <MemberGate>{(ctx) => <ProfilePage ctx={ctx} />}</MemberGate>,
+  component: () => (
+    <MemberGate>
+      {(ctx) => (
+        <MemberShell ctx={ctx}>
+          <ProfilePage ctx={ctx} />
+        </MemberShell>
+      )}
+    </MemberGate>
+  ),
 });
 
 const inputClass =
   "w-full border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:border-primary";
 
+/**
+ * Downscales the picked image to a square-ish avatar before upload. Phone
+ * photos are routinely 4-6MB, and base64 inflates them by a third, which used
+ * to blow the server's 5MB ceiling and leave the avatar silently unsaved.
+ */
 function readAsDataUrl(file: File): Promise<string> {
+  const MAX_EDGE = 512;
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result));
     reader.onerror = () => reject(new Error("Could not read that image."));
+    reader.onload = () => {
+      const original = String(reader.result);
+      const img = new window.Image();
+      img.onerror = () => reject(new Error("That file isn't a readable image."));
+      img.onload = () => {
+        const scale = Math.min(1, MAX_EDGE / Math.max(img.width, img.height));
+        const width = Math.max(1, Math.round(img.width * scale));
+        const height = Math.max(1, Math.round(img.height * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(original);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.85));
+      };
+      img.src = original;
+    };
     reader.readAsDataURL(file);
   });
 }

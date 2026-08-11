@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
+import { FileUploadField } from "@/components/admin/file-upload-field";
+import { uploadMedia } from "@/lib/media-upload";
 import {
   Dialog,
   DialogContent,
@@ -240,6 +242,7 @@ function ChallengeDialog({
     prize_description: challenge?.prize_description ?? "",
     is_active: challenge?.is_active ?? false,
   });
+  const [imageFile, setImageFile] = useState<File | null | undefined>(undefined);
   const [saving, setSaving] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
@@ -257,7 +260,15 @@ function ChallengeDialog({
 
     setSaving(true);
     try {
+      let imageUrl = challenge?.image_url ?? null;
+      if (imageFile instanceof File) {
+        imageUrl = await uploadMedia(imageFile, "challenges");
+      } else if (imageFile === null) {
+        imageUrl = null;
+      }
+
       const payload = {
+        image_url: imageUrl,
         title: form.title.trim(),
         description: form.description.trim() || null,
         start_date: start,
@@ -334,6 +345,13 @@ function ChallengeDialog({
               className={`${inputClass} resize-y`}
             />
           </Field>
+
+          <FileUploadField
+            label="Preview thumbnail"
+            accept="image/*"
+            currentUrl={challenge?.image_url}
+            onFileChange={setImageFile}
+          />
 
           <label className="flex cursor-pointer items-start gap-3">
             <input

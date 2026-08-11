@@ -25,6 +25,7 @@ const NAV_LINKS = [
   { to: "/debate", label: "Debate" },
   { to: "/news", label: "News" },
   { to: "/contact", label: "Contact" },
+  { to: "/home", label: "Community" },
 ] as const;
 
 function NotFoundComponent() {
@@ -220,6 +221,12 @@ function RootComponent() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const isAdmin = pathname.startsWith("/admin");
+  // The signed-in member area has its own sidebar chrome. Login and signup keep
+  // the public header so a visitor can still navigate the site.
+  const isMemberApp =
+    pathname.startsWith("/member/") &&
+    pathname !== "/member/login" &&
+    pathname !== "/member/signup";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -228,7 +235,7 @@ function RootComponent() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (isAdmin) {
+  if (isAdmin || isMemberApp) {
     return (
       <QueryClientProvider client={queryClient}>
         <Outlet />

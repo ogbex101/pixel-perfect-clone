@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Reveal } from "@/components/reveal";
 import { getTodayQuestion, submitAnswer } from "@/lib/member.functions";
 import { MemberGate, getMemberToken, memberContextKey } from "@/lib/member-session";
+import { MemberShell } from "@/components/member/member-shell";
 
 export const Route = createFileRoute("/member/challenge")({
   ssr: false,
@@ -21,7 +22,13 @@ export const Route = createFileRoute("/member/challenge")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <MemberGate>{() => <ChallengePage />}</MemberGate>,
+  component: () => <MemberGate>
+      {(ctx) => (
+        <MemberShell ctx={ctx}>
+          <ChallengePage />
+        </MemberShell>
+      )}
+    </MemberGate>,
 });
 
 const OPTIONS = ["A", "B", "C", "D"] as const;
