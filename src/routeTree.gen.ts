@@ -20,6 +20,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as MemberSignupRouteImport } from './routes/member.signup'
 import { Route as MemberLoginRouteImport } from './routes/member.login'
 import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
+import { Route as MemberChallengeRouteImport } from './routes/member.challenge'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
@@ -86,6 +87,11 @@ const MemberLoginRoute = MemberLoginRouteImport.update({
 const MemberDashboardRoute = MemberDashboardRouteImport.update({
   id: '/member/dashboard',
   path: '/member/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberChallengeRoute = MemberChallengeRouteImport.update({
+  id: '/member/challenge',
+  path: '/member/challenge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
@@ -168,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
@@ -193,6 +200,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
@@ -219,6 +227,7 @@ export interface FileRoutesById {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/challenge'
     | '/member/dashboard'
     | '/member/login'
     | '/member/signup'
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/challenge'
     | '/member/dashboard'
     | '/member/login'
     | '/member/signup'
@@ -296,6 +307,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/challenge'
     | '/member/dashboard'
     | '/member/login'
     | '/member/signup'
@@ -322,6 +334,7 @@ export interface RootRouteChildren {
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
+  MemberChallengeRoute: typeof MemberChallengeRoute
   MemberDashboardRoute: typeof MemberDashboardRoute
   MemberLoginRoute: typeof MemberLoginRoute
   MemberSignupRoute: typeof MemberSignupRoute
@@ -406,6 +419,13 @@ declare module '@tanstack/react-router' {
       path: '/member/dashboard'
       fullPath: '/member/dashboard'
       preLoaderRoute: typeof MemberDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/challenge': {
+      id: '/member/challenge'
+      path: '/member/challenge'
+      fullPath: '/member/challenge'
+      preLoaderRoute: typeof MemberChallengeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/$bookId': {
@@ -514,6 +534,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
   BooksBookIdRoute: BooksBookIdRoute,
+  MemberChallengeRoute: MemberChallengeRoute,
   MemberDashboardRoute: MemberDashboardRoute,
   MemberLoginRoute: MemberLoginRoute,
   MemberSignupRoute: MemberSignupRoute,
