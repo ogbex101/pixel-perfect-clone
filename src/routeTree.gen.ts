@@ -17,6 +17,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as MemberSignupRouteImport } from './routes/member.signup'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
@@ -68,6 +69,11 @@ const BooksIndexRoute = BooksIndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberSignupRoute = MemberSignupRouteImport.update({
+  id: '/member/signup',
+  path: '/member/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
 }
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/signup': typeof MemberSignupRoute
   '/admin': typeof AdminIndexRoute
   '/books': typeof BooksIndexRoute
 }
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
 }
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/signup'
     | '/admin/'
     | '/books/'
   fileRoutesByTo: FileRoutesByTo
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/signup'
     | '/admin'
     | '/books'
   id:
@@ -263,6 +274,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/signup'
     | '/admin/'
     | '/books/'
   fileRoutesById: FileRoutesById
@@ -286,6 +298,7 @@ export interface RootRouteChildren {
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
+  MemberSignupRoute: typeof MemberSignupRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BooksIndexRoute: typeof BooksIndexRoute
 }
@@ -346,6 +359,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/signup': {
+      id: '/member/signup'
+      path: '/member/signup'
+      fullPath: '/member/signup'
+      preLoaderRoute: typeof MemberSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/$bookId': {
@@ -454,19 +474,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
   BooksBookIdRoute: BooksBookIdRoute,
+  MemberSignupRoute: MemberSignupRoute,
   AdminIndexRoute: AdminIndexRoute,
   BooksIndexRoute: BooksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
