@@ -19,6 +19,7 @@ import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as DebateIndexRouteImport } from './routes/debate.index'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as NewsPostIdRouteImport } from './routes/news.$postId'
 import { Route as MemberSignupRouteImport } from './routes/member.signup'
 import { Route as MemberProfileRouteImport } from './routes/member.profile'
 import { Route as MemberLoginRouteImport } from './routes/member.login'
@@ -87,6 +88,11 @@ const BooksIndexRoute = BooksIndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsPostIdRoute = NewsPostIdRouteImport.update({
+  id: '/news/$postId',
+  path: '/news/$postId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MemberSignupRoute = MemberSignupRouteImport.update({
@@ -211,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/member/login': typeof MemberLoginRoute
   '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
+  '/news/$postId': typeof NewsPostIdRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
   '/debate/': typeof DebateIndexRoute
@@ -242,6 +249,7 @@ export interface FileRoutesByTo {
   '/member/login': typeof MemberLoginRoute
   '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
+  '/news/$postId': typeof NewsPostIdRoute
   '/admin': typeof AdminIndexRoute
   '/books': typeof BooksIndexRoute
   '/debate': typeof DebateIndexRoute
@@ -274,6 +282,7 @@ export interface FileRoutesById {
   '/member/login': typeof MemberLoginRoute
   '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
+  '/news/$postId': typeof NewsPostIdRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
   '/debate/': typeof DebateIndexRoute
@@ -307,6 +316,7 @@ export interface FileRouteTypes {
     | '/member/login'
     | '/member/profile'
     | '/member/signup'
+    | '/news/$postId'
     | '/admin/'
     | '/books/'
     | '/debate/'
@@ -338,6 +348,7 @@ export interface FileRouteTypes {
     | '/member/login'
     | '/member/profile'
     | '/member/signup'
+    | '/news/$postId'
     | '/admin'
     | '/books'
     | '/debate'
@@ -369,6 +380,7 @@ export interface FileRouteTypes {
     | '/member/login'
     | '/member/profile'
     | '/member/signup'
+    | '/news/$postId'
     | '/admin/'
     | '/books/'
     | '/debate/'
@@ -401,6 +413,7 @@ export interface RootRouteChildren {
   MemberLoginRoute: typeof MemberLoginRoute
   MemberProfileRoute: typeof MemberProfileRoute
   MemberSignupRoute: typeof MemberSignupRoute
+  NewsPostIdRoute: typeof NewsPostIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BooksIndexRoute: typeof BooksIndexRoute
   DebateIndexRoute: typeof DebateIndexRoute
@@ -477,6 +490,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$postId': {
+      id: '/news/$postId'
+      path: '/news/$postId'
+      fullPath: '/news/$postId'
+      preLoaderRoute: typeof NewsPostIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/member/signup': {
@@ -641,6 +661,7 @@ const rootRouteChildren: RootRouteChildren = {
   MemberLoginRoute: MemberLoginRoute,
   MemberProfileRoute: MemberProfileRoute,
   MemberSignupRoute: MemberSignupRoute,
+  NewsPostIdRoute: NewsPostIdRoute,
   AdminIndexRoute: AdminIndexRoute,
   BooksIndexRoute: BooksIndexRoute,
   DebateIndexRoute: DebateIndexRoute,
