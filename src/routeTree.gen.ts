@@ -15,8 +15,18 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CinematicRouteImport } from './routes/cinematic'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as DebateIndexRouteImport } from './routes/debate.index'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as NewsPostIdRouteImport } from './routes/news.$postId'
+import { Route as MemberSignupRouteImport } from './routes/member.signup'
+import { Route as MemberProfileRouteImport } from './routes/member.profile'
+import { Route as MemberLoginRouteImport } from './routes/member.login'
+import { Route as MemberLeaderboardRouteImport } from './routes/member.leaderboard'
+import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
+import { Route as MemberChallengeRouteImport } from './routes/member.challenge'
+import { Route as DebateTopicIdRouteImport } from './routes/debate.$topicId'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
@@ -60,6 +70,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DebateIndexRoute = DebateIndexRouteImport.update({
+  id: '/debate/',
+  path: '/debate/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
   id: '/books/',
   path: '/books/',
@@ -68,6 +88,46 @@ const BooksIndexRoute = BooksIndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsPostIdRoute = NewsPostIdRouteImport.update({
+  id: '/news/$postId',
+  path: '/news/$postId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberSignupRoute = MemberSignupRouteImport.update({
+  id: '/member/signup',
+  path: '/member/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberProfileRoute = MemberProfileRouteImport.update({
+  id: '/member/profile',
+  path: '/member/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberLoginRoute = MemberLoginRouteImport.update({
+  id: '/member/login',
+  path: '/member/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberLeaderboardRoute = MemberLeaderboardRouteImport.update({
+  id: '/member/leaderboard',
+  path: '/member/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberDashboardRoute = MemberDashboardRouteImport.update({
+  id: '/member/dashboard',
+  path: '/member/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberChallengeRoute = MemberChallengeRouteImport.update({
+  id: '/member/challenge',
+  path: '/member/challenge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DebateTopicIdRoute = DebateTopicIdRouteImport.update({
+  id: '/debate/$topicId',
+  path: '/debate/$topicId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
@@ -150,8 +210,18 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/debate/$topicId': typeof DebateTopicIdRoute
+  '/member/challenge': typeof MemberChallengeRoute
+  '/member/dashboard': typeof MemberDashboardRoute
+  '/member/leaderboard': typeof MemberLeaderboardRoute
+  '/member/login': typeof MemberLoginRoute
+  '/member/profile': typeof MemberProfileRoute
+  '/member/signup': typeof MemberSignupRoute
+  '/news/$postId': typeof NewsPostIdRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
+  '/debate/': typeof DebateIndexRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -172,8 +242,18 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/debate/$topicId': typeof DebateTopicIdRoute
+  '/member/challenge': typeof MemberChallengeRoute
+  '/member/dashboard': typeof MemberDashboardRoute
+  '/member/leaderboard': typeof MemberLeaderboardRoute
+  '/member/login': typeof MemberLoginRoute
+  '/member/profile': typeof MemberProfileRoute
+  '/member/signup': typeof MemberSignupRoute
+  '/news/$postId': typeof NewsPostIdRoute
   '/admin': typeof AdminIndexRoute
   '/books': typeof BooksIndexRoute
+  '/debate': typeof DebateIndexRoute
+  '/news': typeof NewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -195,8 +275,18 @@ export interface FileRoutesById {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/debate/$topicId': typeof DebateTopicIdRoute
+  '/member/challenge': typeof MemberChallengeRoute
+  '/member/dashboard': typeof MemberDashboardRoute
+  '/member/leaderboard': typeof MemberLeaderboardRoute
+  '/member/login': typeof MemberLoginRoute
+  '/member/profile': typeof MemberProfileRoute
+  '/member/signup': typeof MemberSignupRoute
+  '/news/$postId': typeof NewsPostIdRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
+  '/debate/': typeof DebateIndexRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -219,8 +309,18 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/debate/$topicId'
+    | '/member/challenge'
+    | '/member/dashboard'
+    | '/member/leaderboard'
+    | '/member/login'
+    | '/member/profile'
+    | '/member/signup'
+    | '/news/$postId'
     | '/admin/'
     | '/books/'
+    | '/debate/'
+    | '/news/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -241,8 +341,18 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/debate/$topicId'
+    | '/member/challenge'
+    | '/member/dashboard'
+    | '/member/leaderboard'
+    | '/member/login'
+    | '/member/profile'
+    | '/member/signup'
+    | '/news/$postId'
     | '/admin'
     | '/books'
+    | '/debate'
+    | '/news'
   id:
     | '__root__'
     | '/'
@@ -263,8 +373,18 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/debate/$topicId'
+    | '/member/challenge'
+    | '/member/dashboard'
+    | '/member/leaderboard'
+    | '/member/login'
+    | '/member/profile'
+    | '/member/signup'
+    | '/news/$postId'
     | '/admin/'
     | '/books/'
+    | '/debate/'
+    | '/news/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -286,8 +406,18 @@ export interface RootRouteChildren {
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
+  DebateTopicIdRoute: typeof DebateTopicIdRoute
+  MemberChallengeRoute: typeof MemberChallengeRoute
+  MemberDashboardRoute: typeof MemberDashboardRoute
+  MemberLeaderboardRoute: typeof MemberLeaderboardRoute
+  MemberLoginRoute: typeof MemberLoginRoute
+  MemberProfileRoute: typeof MemberProfileRoute
+  MemberSignupRoute: typeof MemberSignupRoute
+  NewsPostIdRoute: typeof NewsPostIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BooksIndexRoute: typeof BooksIndexRoute
+  DebateIndexRoute: typeof DebateIndexRoute
+  NewsIndexRoute: typeof NewsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -334,6 +464,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/debate/': {
+      id: '/debate/'
+      path: '/debate'
+      fullPath: '/debate/'
+      preLoaderRoute: typeof DebateIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/books/': {
       id: '/books/'
       path: '/books'
@@ -346,6 +490,62 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$postId': {
+      id: '/news/$postId'
+      path: '/news/$postId'
+      fullPath: '/news/$postId'
+      preLoaderRoute: typeof NewsPostIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/signup': {
+      id: '/member/signup'
+      path: '/member/signup'
+      fullPath: '/member/signup'
+      preLoaderRoute: typeof MemberSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/profile': {
+      id: '/member/profile'
+      path: '/member/profile'
+      fullPath: '/member/profile'
+      preLoaderRoute: typeof MemberProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/login': {
+      id: '/member/login'
+      path: '/member/login'
+      fullPath: '/member/login'
+      preLoaderRoute: typeof MemberLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/leaderboard': {
+      id: '/member/leaderboard'
+      path: '/member/leaderboard'
+      fullPath: '/member/leaderboard'
+      preLoaderRoute: typeof MemberLeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/dashboard': {
+      id: '/member/dashboard'
+      path: '/member/dashboard'
+      fullPath: '/member/dashboard'
+      preLoaderRoute: typeof MemberDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/challenge': {
+      id: '/member/challenge'
+      path: '/member/challenge'
+      fullPath: '/member/challenge'
+      preLoaderRoute: typeof MemberChallengeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/debate/$topicId': {
+      id: '/debate/$topicId'
+      path: '/debate/$topicId'
+      fullPath: '/debate/$topicId'
+      preLoaderRoute: typeof DebateTopicIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/$bookId': {
@@ -454,8 +654,18 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
   BooksBookIdRoute: BooksBookIdRoute,
+  DebateTopicIdRoute: DebateTopicIdRoute,
+  MemberChallengeRoute: MemberChallengeRoute,
+  MemberDashboardRoute: MemberDashboardRoute,
+  MemberLeaderboardRoute: MemberLeaderboardRoute,
+  MemberLoginRoute: MemberLoginRoute,
+  MemberProfileRoute: MemberProfileRoute,
+  MemberSignupRoute: MemberSignupRoute,
+  NewsPostIdRoute: NewsPostIdRoute,
   AdminIndexRoute: AdminIndexRoute,
   BooksIndexRoute: BooksIndexRoute,
+  DebateIndexRoute: DebateIndexRoute,
+  NewsIndexRoute: NewsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

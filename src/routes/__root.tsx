@@ -22,6 +22,8 @@ const NAV_LINKS = [
   { to: "/cinematic", label: "Cinematic" },
   { to: "/press", label: "Press" },
   { to: "/testimonials", label: "Praise" },
+  { to: "/debate", label: "Debate" },
+  { to: "/news", label: "News" },
   { to: "/contact", label: "Contact" },
 ] as const;
 

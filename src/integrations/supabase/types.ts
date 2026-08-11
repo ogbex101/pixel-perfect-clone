@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      answers: {
+        Row: {
+          id: string
+          is_correct: boolean
+          member_id: string | null
+          question_id: string | null
+          selected_option: string
+          submitted_at: string | null
+          time_taken_seconds: number | null
+        }
+        Insert: {
+          id?: string
+          is_correct: boolean
+          member_id?: string | null
+          question_id?: string | null
+          selected_option: string
+          submitted_at?: string | null
+          time_taken_seconds?: number | null
+        }
+        Update: {
+          id?: string
+          is_correct?: boolean
+          member_id?: string | null
+          question_id?: string | null
+          selected_option?: string
+          submitted_at?: string | null
+          time_taken_seconds?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "answers_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       author_profile: {
         Row: {
           background_facts: string[]
@@ -62,6 +107,30 @@ export type Database = {
         }
         Relationships: []
       }
+      badges: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          icon_url: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       books: {
         Row: {
           cover_image_url: string | null
@@ -107,6 +176,135 @@ export type Database = {
           title?: string
           updated_at?: string
           video_url?: string | null
+        }
+        Relationships: []
+      }
+      challenge_leaderboard: {
+        Row: {
+          assessed_at: string | null
+          average_time: number | null
+          challenge_id: string | null
+          correct_count: number | null
+          id: string
+          member_id: string | null
+          rank: number | null
+          total_answered: number | null
+        }
+        Insert: {
+          assessed_at?: string | null
+          average_time?: number | null
+          challenge_id?: string | null
+          correct_count?: number | null
+          id?: string
+          member_id?: string | null
+          rank?: number | null
+          total_answered?: number | null
+        }
+        Update: {
+          assessed_at?: string | null
+          average_time?: number | null
+          challenge_id?: string | null
+          correct_count?: number | null
+          id?: string
+          member_id?: string | null
+          rank?: number | null
+          total_answered?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_leaderboard_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_leaderboard_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_winners: {
+        Row: {
+          announced_at: string | null
+          challenge_id: string | null
+          created_at: string | null
+          id: string
+          member_id: string | null
+          prize_fulfilled: boolean | null
+          rank: number
+        }
+        Insert: {
+          announced_at?: string | null
+          challenge_id?: string | null
+          created_at?: string | null
+          id?: string
+          member_id?: string | null
+          prize_fulfilled?: boolean | null
+          rank: number
+        }
+        Update: {
+          announced_at?: string | null
+          challenge_id?: string | null
+          created_at?: string | null
+          id?: string
+          member_id?: string | null
+          prize_fulfilled?: boolean | null
+          rank?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_winners_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_winners_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenges: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          is_active: boolean | null
+          prize_description: string | null
+          start_date: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          prize_description?: string | null
+          start_date?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          prize_description?: string | null
+          start_date?: string | null
+          title?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -187,6 +385,97 @@ export type Database = {
         }
         Relationships: []
       }
+      debate_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          downvotes: number | null
+          id: string
+          is_hidden: boolean | null
+          member_id: string | null
+          parent_id: string | null
+          topic_id: string | null
+          updated_at: string | null
+          upvotes: number | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          downvotes?: number | null
+          id?: string
+          is_hidden?: boolean | null
+          member_id?: string | null
+          parent_id?: string | null
+          topic_id?: string | null
+          updated_at?: string | null
+          upvotes?: number | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          downvotes?: number | null
+          id?: string
+          is_hidden?: boolean | null
+          member_id?: string | null
+          parent_id?: string | null
+          topic_id?: string | null
+          updated_at?: string | null
+          upvotes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "debate_comments_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "debate_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "debate_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "debate_comments_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "debate_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      debate_topics: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          is_pinned: boolean | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_pinned?: boolean | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_pinned?: boolean | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       landing_page_sections: {
         Row: {
           created_at: string
@@ -211,6 +500,190 @@ export type Database = {
           is_visible?: boolean
           section_key?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      member_badges: {
+        Row: {
+          badge_id: string | null
+          earned_at: string | null
+          id: string
+          member_id: string | null
+        }
+        Insert: {
+          badge_id?: string | null
+          earned_at?: string | null
+          id?: string
+          member_id?: string | null
+        }
+        Update: {
+          badge_id?: string | null
+          earned_at?: string | null
+          id?: string
+          member_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "member_badges_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_notifications: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          link: string | null
+          member_id: string | null
+          type: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          member_id?: string | null
+          type?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          member_id?: string | null
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_notifications_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_sessions: {
+        Row: {
+          created_at: string | null
+          expires_at: string
+          id: string
+          member_id: string | null
+          token: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          member_id?: string | null
+          token: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          member_id?: string | null
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_sessions_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      members: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          email: string
+          facebook_username: string | null
+          full_name: string
+          id: string
+          is_active: boolean | null
+          join_date: string | null
+          location: string | null
+          password_hash: string
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          email: string
+          facebook_username?: string | null
+          full_name: string
+          id?: string
+          is_active?: boolean | null
+          join_date?: string | null
+          location?: string | null
+          password_hash: string
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          email?: string
+          facebook_username?: string | null
+          full_name?: string
+          id?: string
+          is_active?: boolean | null
+          join_date?: string | null
+          location?: string | null
+          password_hash?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      news_posts: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string | null
+          id: string
+          image_url: string | null
+          published_at: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string | null
+          title?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -285,6 +758,65 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      questions: {
+        Row: {
+          challenge_id: string | null
+          correct_option: string
+          created_at: string | null
+          day_number: number
+          explanation: string | null
+          id: string
+          image_url: string | null
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          published_at: string | null
+          question_text: string
+          updated_at: string | null
+        }
+        Insert: {
+          challenge_id?: string | null
+          correct_option: string
+          created_at?: string | null
+          day_number: number
+          explanation?: string | null
+          id?: string
+          image_url?: string | null
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          published_at?: string | null
+          question_text: string
+          updated_at?: string | null
+        }
+        Update: {
+          challenge_id?: string | null
+          correct_option?: string
+          created_at?: string | null
+          day_number?: number
+          explanation?: string | null
+          id?: string
+          image_url?: string | null
+          option_a?: string
+          option_b?: string
+          option_c?: string
+          option_d?: string
+          published_at?: string | null
+          question_text?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       testimonials: {
         Row: {
