@@ -24,6 +24,7 @@ import { Route as MemberLoginRouteImport } from './routes/member.login'
 import { Route as MemberLeaderboardRouteImport } from './routes/member.leaderboard'
 import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
 import { Route as MemberChallengeRouteImport } from './routes/member.challenge'
+import { Route as DebateTopicIdRouteImport } from './routes/debate.$topicId'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
@@ -112,6 +113,11 @@ const MemberChallengeRoute = MemberChallengeRouteImport.update({
   path: '/member/challenge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DebateTopicIdRoute = DebateTopicIdRouteImport.update({
+  id: '/debate/$topicId',
+  path: '/debate/$topicId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
   id: '/books/$bookId',
   path: '/books/$bookId',
@@ -192,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
@@ -221,6 +228,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
@@ -251,6 +259,7 @@ export interface FileRoutesById {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
@@ -282,6 +291,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/debate/$topicId'
     | '/member/challenge'
     | '/member/dashboard'
     | '/member/leaderboard'
@@ -311,6 +321,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/debate/$topicId'
     | '/member/challenge'
     | '/member/dashboard'
     | '/member/leaderboard'
@@ -340,6 +351,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/debate/$topicId'
     | '/member/challenge'
     | '/member/dashboard'
     | '/member/leaderboard'
@@ -370,6 +382,7 @@ export interface RootRouteChildren {
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
+  DebateTopicIdRoute: typeof DebateTopicIdRoute
   MemberChallengeRoute: typeof MemberChallengeRoute
   MemberDashboardRoute: typeof MemberDashboardRoute
   MemberLeaderboardRoute: typeof MemberLeaderboardRoute
@@ -488,6 +501,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MemberChallengeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/debate/$topicId': {
+      id: '/debate/$topicId'
+      path: '/debate/$topicId'
+      fullPath: '/debate/$topicId'
+      preLoaderRoute: typeof DebateTopicIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/books/$bookId': {
       id: '/books/$bookId'
       path: '/books/$bookId'
@@ -594,6 +614,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
   BooksBookIdRoute: BooksBookIdRoute,
+  DebateTopicIdRoute: DebateTopicIdRoute,
   MemberChallengeRoute: MemberChallengeRoute,
   MemberDashboardRoute: MemberDashboardRoute,
   MemberLeaderboardRoute: MemberLeaderboardRoute,
