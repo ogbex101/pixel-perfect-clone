@@ -19,6 +19,7 @@ import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as MemberSignupRouteImport } from './routes/member.signup'
 import { Route as MemberLoginRouteImport } from './routes/member.login'
+import { Route as MemberLeaderboardRouteImport } from './routes/member.leaderboard'
 import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
 import { Route as MemberChallengeRouteImport } from './routes/member.challenge'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
@@ -82,6 +83,11 @@ const MemberSignupRoute = MemberSignupRouteImport.update({
 const MemberLoginRoute = MemberLoginRouteImport.update({
   id: '/member/login',
   path: '/member/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberLeaderboardRoute = MemberLeaderboardRouteImport.update({
+  id: '/member/leaderboard',
+  path: '/member/leaderboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MemberDashboardRoute = MemberDashboardRouteImport.update({
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/books/$bookId': typeof BooksBookIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
+  '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/books/$bookId': typeof BooksBookIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
+  '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin': typeof AdminIndexRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/books/$bookId': typeof BooksBookIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
+  '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/books/$bookId'
     | '/member/challenge'
     | '/member/dashboard'
+    | '/member/leaderboard'
     | '/member/login'
     | '/member/signup'
     | '/admin/'
@@ -283,6 +293,7 @@ export interface FileRouteTypes {
     | '/books/$bookId'
     | '/member/challenge'
     | '/member/dashboard'
+    | '/member/leaderboard'
     | '/member/login'
     | '/member/signup'
     | '/admin'
@@ -309,6 +320,7 @@ export interface FileRouteTypes {
     | '/books/$bookId'
     | '/member/challenge'
     | '/member/dashboard'
+    | '/member/leaderboard'
     | '/member/login'
     | '/member/signup'
     | '/admin/'
@@ -336,6 +348,7 @@ export interface RootRouteChildren {
   BooksBookIdRoute: typeof BooksBookIdRoute
   MemberChallengeRoute: typeof MemberChallengeRoute
   MemberDashboardRoute: typeof MemberDashboardRoute
+  MemberLeaderboardRoute: typeof MemberLeaderboardRoute
   MemberLoginRoute: typeof MemberLoginRoute
   MemberSignupRoute: typeof MemberSignupRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -412,6 +425,13 @@ declare module '@tanstack/react-router' {
       path: '/member/login'
       fullPath: '/member/login'
       preLoaderRoute: typeof MemberLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/leaderboard': {
+      id: '/member/leaderboard'
+      path: '/member/leaderboard'
+      fullPath: '/member/leaderboard'
+      preLoaderRoute: typeof MemberLeaderboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/member/dashboard': {
@@ -536,6 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   BooksBookIdRoute: BooksBookIdRoute,
   MemberChallengeRoute: MemberChallengeRoute,
   MemberDashboardRoute: MemberDashboardRoute,
+  MemberLeaderboardRoute: MemberLeaderboardRoute,
   MemberLoginRoute: MemberLoginRoute,
   MemberSignupRoute: MemberSignupRoute,
   AdminIndexRoute: AdminIndexRoute,
