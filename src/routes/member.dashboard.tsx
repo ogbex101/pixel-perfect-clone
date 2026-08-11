@@ -161,7 +161,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 function QuickLink({ to, label }: { to: string; label: string }) {
   return (
     <Link
-      to={to}
+      to={to as never}
       className="border border-border bg-card px-4 py-3 text-center text-sm text-foreground/90 transition-colors hover:border-primary hover:text-primary"
     >
       {label}

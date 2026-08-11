@@ -19,6 +19,7 @@ import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as MemberSignupRouteImport } from './routes/member.signup'
 import { Route as MemberLoginRouteImport } from './routes/member.login'
+import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
@@ -80,6 +81,11 @@ const MemberSignupRoute = MemberSignupRouteImport.update({
 const MemberLoginRoute = MemberLoginRouteImport.update({
   id: '/member/login',
   path: '/member/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberDashboardRoute = MemberDashboardRouteImport.update({
+  id: '/member/dashboard',
+  path: '/member/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/dashboard': typeof MemberDashboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/dashboard': typeof MemberDashboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin': typeof AdminIndexRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/books/$bookId': typeof BooksBookIdRoute
+  '/member/dashboard': typeof MemberDashboardRoute
   '/member/login': typeof MemberLoginRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/dashboard'
     | '/member/login'
     | '/member/signup'
     | '/admin/'
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/dashboard'
     | '/member/login'
     | '/member/signup'
     | '/admin'
@@ -285,6 +296,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/books/$bookId'
+    | '/member/dashboard'
     | '/member/login'
     | '/member/signup'
     | '/admin/'
@@ -310,6 +322,7 @@ export interface RootRouteChildren {
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
   BooksBookIdRoute: typeof BooksBookIdRoute
+  MemberDashboardRoute: typeof MemberDashboardRoute
   MemberLoginRoute: typeof MemberLoginRoute
   MemberSignupRoute: typeof MemberSignupRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -386,6 +399,13 @@ declare module '@tanstack/react-router' {
       path: '/member/login'
       fullPath: '/member/login'
       preLoaderRoute: typeof MemberLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/dashboard': {
+      id: '/member/dashboard'
+      path: '/member/dashboard'
+      fullPath: '/member/dashboard'
+      preLoaderRoute: typeof MemberDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/$bookId': {
@@ -494,6 +514,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
   BooksBookIdRoute: BooksBookIdRoute,
+  MemberDashboardRoute: MemberDashboardRoute,
   MemberLoginRoute: MemberLoginRoute,
   MemberSignupRoute: MemberSignupRoute,
   AdminIndexRoute: AdminIndexRoute,
