@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CinematicRouteImport } from './routes/cinematic'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DebateIndexRouteImport } from './routes/debate.index'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as MemberSignupRouteImport } from './routes/member.signup'
@@ -64,6 +65,11 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DebateIndexRoute = DebateIndexRouteImport.update({
+  id: '/debate/',
+  path: '/debate/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
@@ -194,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
+  '/debate/': typeof DebateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -222,6 +229,7 @@ export interface FileRoutesByTo {
   '/member/signup': typeof MemberSignupRoute
   '/admin': typeof AdminIndexRoute
   '/books': typeof BooksIndexRoute
+  '/debate': typeof DebateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -251,6 +259,7 @@ export interface FileRoutesById {
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
+  '/debate/': typeof DebateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -281,6 +290,7 @@ export interface FileRouteTypes {
     | '/member/signup'
     | '/admin/'
     | '/books/'
+    | '/debate/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -309,6 +319,7 @@ export interface FileRouteTypes {
     | '/member/signup'
     | '/admin'
     | '/books'
+    | '/debate'
   id:
     | '__root__'
     | '/'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/member/signup'
     | '/admin/'
     | '/books/'
+    | '/debate/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -366,6 +378,7 @@ export interface RootRouteChildren {
   MemberSignupRoute: typeof MemberSignupRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BooksIndexRoute: typeof BooksIndexRoute
+  DebateIndexRoute: typeof DebateIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -410,6 +423,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/debate/': {
+      id: '/debate/'
+      path: '/debate'
+      fullPath: '/debate/'
+      preLoaderRoute: typeof DebateIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/': {
@@ -582,6 +602,7 @@ const rootRouteChildren: RootRouteChildren = {
   MemberSignupRoute: MemberSignupRoute,
   AdminIndexRoute: AdminIndexRoute,
   BooksIndexRoute: BooksIndexRoute,
+  DebateIndexRoute: DebateIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
