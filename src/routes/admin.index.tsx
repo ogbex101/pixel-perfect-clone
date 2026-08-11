@@ -53,6 +53,11 @@ const RESOURCES = [
     label: "Cinematic",
     description: "Video uploads, thumbnails, and the featured showcase piece.",
   },
+  {
+    to: "/admin/challenges",
+    label: "Challenges",
+    description: "Manage DUMB 31 challenges, their dates, prizes, and questions.",
+  },
 ] as const;
 
 function AdminDashboard() {
