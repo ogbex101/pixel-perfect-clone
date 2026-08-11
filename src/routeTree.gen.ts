@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BooksIndexRouteImport } from './routes/books.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as MemberSignupRouteImport } from './routes/member.signup'
+import { Route as MemberProfileRouteImport } from './routes/member.profile'
 import { Route as MemberLoginRouteImport } from './routes/member.login'
 import { Route as MemberLeaderboardRouteImport } from './routes/member.leaderboard'
 import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
@@ -78,6 +79,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const MemberSignupRoute = MemberSignupRouteImport.update({
   id: '/member/signup',
   path: '/member/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberProfileRoute = MemberProfileRouteImport.update({
+  id: '/member/profile',
+  path: '/member/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MemberLoginRoute = MemberLoginRouteImport.update({
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
+  '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
@@ -211,6 +218,7 @@ export interface FileRoutesByTo {
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
+  '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin': typeof AdminIndexRoute
   '/books': typeof BooksIndexRoute
@@ -239,6 +247,7 @@ export interface FileRoutesById {
   '/member/dashboard': typeof MemberDashboardRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
+  '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
   '/admin/': typeof AdminIndexRoute
   '/books/': typeof BooksIndexRoute
@@ -268,6 +277,7 @@ export interface FileRouteTypes {
     | '/member/dashboard'
     | '/member/leaderboard'
     | '/member/login'
+    | '/member/profile'
     | '/member/signup'
     | '/admin/'
     | '/books/'
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
     | '/member/dashboard'
     | '/member/leaderboard'
     | '/member/login'
+    | '/member/profile'
     | '/member/signup'
     | '/admin'
     | '/books'
@@ -322,6 +333,7 @@ export interface FileRouteTypes {
     | '/member/dashboard'
     | '/member/leaderboard'
     | '/member/login'
+    | '/member/profile'
     | '/member/signup'
     | '/admin/'
     | '/books/'
@@ -350,6 +362,7 @@ export interface RootRouteChildren {
   MemberDashboardRoute: typeof MemberDashboardRoute
   MemberLeaderboardRoute: typeof MemberLeaderboardRoute
   MemberLoginRoute: typeof MemberLoginRoute
+  MemberProfileRoute: typeof MemberProfileRoute
   MemberSignupRoute: typeof MemberSignupRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BooksIndexRoute: typeof BooksIndexRoute
@@ -418,6 +431,13 @@ declare module '@tanstack/react-router' {
       path: '/member/signup'
       fullPath: '/member/signup'
       preLoaderRoute: typeof MemberSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/profile': {
+      id: '/member/profile'
+      path: '/member/profile'
+      fullPath: '/member/profile'
+      preLoaderRoute: typeof MemberProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/member/login': {
@@ -558,6 +578,7 @@ const rootRouteChildren: RootRouteChildren = {
   MemberDashboardRoute: MemberDashboardRoute,
   MemberLeaderboardRoute: MemberLeaderboardRoute,
   MemberLoginRoute: MemberLoginRoute,
+  MemberProfileRoute: MemberProfileRoute,
   MemberSignupRoute: MemberSignupRoute,
   AdminIndexRoute: AdminIndexRoute,
   BooksIndexRoute: BooksIndexRoute,
