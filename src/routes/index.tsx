@@ -829,10 +829,17 @@ function Home() {
     contact_cta: () => <ContactCtaSection key="contact_cta" />,
   };
 
-  const order =
+  const configured =
     sections.length > 0
       ? sections.filter((s) => s.is_visible).map((s) => s.section_key)
       : DEFAULT_SECTION_ORDER;
+  // "latest_updates" is newer than the stored section list, so slot it in
+  // before the contact CTA when the table predates it.
+  const order = configured.includes("latest_updates")
+    ? configured
+    : configured.includes("contact_cta")
+      ? configured.flatMap((k) => (k === "contact_cta" ? ["latest_updates", k] : [k]))
+      : [...configured, "latest_updates"];
 
   return (
     <>
