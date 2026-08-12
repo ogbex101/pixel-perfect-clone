@@ -50,6 +50,7 @@ function ProfileForm() {
   });
   const [heroPhotoFile, setHeroPhotoFile] = useState<File | null | undefined>(undefined);
   const [heroVideoFile, setHeroVideoFile] = useState<File | null | undefined>(undefined);
+  const [heroImageFile, setHeroImageFile] = useState<File | null | undefined>(undefined);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -88,6 +89,13 @@ function ProfileForm() {
         heroVideoUrl = null;
       }
 
+      let heroImageUrl = data?.hero_image_url ?? null;
+      if (heroImageFile instanceof File) {
+        heroImageUrl = await uploadMedia(heroImageFile, "hero");
+      } else if (heroImageFile === null) {
+        heroImageUrl = null;
+      }
+
       const payload = {
         name: form.name.trim(),
         tagline: form.tagline.trim() || null,
@@ -99,6 +107,7 @@ function ProfileForm() {
         background_facts: form.background_facts.map((f) => f.trim()).filter(Boolean),
         hero_photo_url: heroPhotoUrl,
         hero_video_url: heroVideoUrl,
+        hero_image_url: heroImageUrl,
       };
 
       const { error } = data?.id
@@ -110,6 +119,7 @@ function ProfileForm() {
       toast.success("Author profile saved.");
       setHeroPhotoFile(undefined);
       setHeroVideoFile(undefined);
+      setHeroImageFile(undefined);
       queryClient.invalidateQueries({ queryKey: profileQueryKey });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to save.");
@@ -133,7 +143,17 @@ function ProfileForm() {
       />
       <p className="-mt-4 text-xs text-muted-foreground">
         Plays full-screen behind the homepage headline (muted, looped, no controls). Leave empty and
-        the hero shows a clean dark gradient instead — no photo.
+        the hero falls back to the hero image below, then to a clean dark gradient.
+      </p>
+
+      <FileUploadField
+        label="Hero image"
+        accept="image/*"
+        currentUrl={data?.hero_image_url}
+        onFileChange={setHeroImageFile}
+      />
+      <p className="-mt-4 text-xs text-muted-foreground">
+        Shown full-screen behind the homepage headline when no hero video is uploaded.
       </p>
 
       <FileUploadField
