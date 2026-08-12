@@ -66,6 +66,7 @@ export type Database = {
           brand_accent_color: string | null
           contact_email: string | null
           created_at: string
+          hero_image_url: string | null
           hero_photo_url: string | null
           hero_video_url: string | null
           id: string
@@ -81,6 +82,7 @@ export type Database = {
           brand_accent_color?: string | null
           contact_email?: string | null
           created_at?: string
+          hero_image_url?: string | null
           hero_photo_url?: string | null
           hero_video_url?: string | null
           id?: string
@@ -96,6 +98,7 @@ export type Database = {
           brand_accent_color?: string | null
           contact_email?: string | null
           created_at?: string
+          hero_image_url?: string | null
           hero_photo_url?: string | null
           hero_video_url?: string | null
           id?: string
