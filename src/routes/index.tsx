@@ -6,6 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { QuoteRotator } from "@/components/quote-rotator";
 import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { ParallaxLayer } from "@/components/parallax-layer";
 import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const homeQuery = queryOptions({
@@ -25,6 +26,11 @@ const homeQuery = queryOptions({
           .order("display_order", { ascending: true }),
         supabase.from("videos").select("*").order("display_order", { ascending: true }),
       ]);
+    const news = await supabase
+      .from("news_posts")
+      .select("id,title,content,image_url,category,published_at")
+      .order("published_at", { ascending: false })
+      .limit(3);
     return {
       profile: profile.data,
       featured: featured.data,
@@ -34,6 +40,7 @@ const homeQuery = queryOptions({
       testimonials: testimonials.data ?? [],
       sections: sections.data ?? [],
       videos: videos.data ?? [],
+      news: news.data ?? [],
     };
   },
 });
@@ -129,26 +136,22 @@ function HeroSection({
 }) {
   return (
     <section className="relative flex min-h-[88vh] items-center justify-center overflow-hidden border-b border-border md:min-h-screen">
-      {videoUrl ? (
+      <ParallaxLayer speed={0.28} className="-top-[12%] h-[124%]">
+        {videoUrl ? (
         <video
           src={videoUrl}
           autoPlay
           muted
           loop
           playsInline
-          aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      ) : imageUrl ? (
-        <img
-          src={imageUrl}
-          alt=""
-          aria-hidden
-          className="kenburns absolute inset-0 h-full w-full object-cover"
-        />
-      ) : (
-        <div className="absolute inset-0 texture-metal bg-gradient-to-br from-[color:var(--brand-ink)] via-background to-[color:var(--brand-ink)]" />
-      )}
+            className="h-full w-full object-cover"
+          />
+        ) : imageUrl ? (
+          <img src={imageUrl} alt="" className="kenburns h-full w-full object-cover" />
+        ) : (
+          <div className="h-full w-full texture-metal bg-gradient-to-br from-[color:var(--brand-ink)] via-background to-[color:var(--brand-ink)]" />
+        )}
+      </ParallaxLayer>
 
       {/* Cinematic grading: darkened edges keep the type legible over any footage */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/75" />
