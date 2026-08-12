@@ -6,6 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { QuoteRotator } from "@/components/quote-rotator";
 import { CinematicSlideshow } from "@/components/cinematic-slideshow";
+import { ParallaxLayer } from "@/components/parallax-layer";
 import { SITE_ART, pageMediaQuery, toSlides, type Slide } from "@/lib/page-media";
 
 const homeQuery = queryOptions({
@@ -25,6 +26,11 @@ const homeQuery = queryOptions({
           .order("display_order", { ascending: true }),
         supabase.from("videos").select("*").order("display_order", { ascending: true }),
       ]);
+    const news = await supabase
+      .from("news_posts")
+      .select("id,title,content,image_url,category,published_at")
+      .order("published_at", { ascending: false })
+      .limit(3);
     return {
       profile: profile.data,
       featured: featured.data,
@@ -34,6 +40,7 @@ const homeQuery = queryOptions({
       testimonials: testimonials.data ?? [],
       sections: sections.data ?? [],
       videos: videos.data ?? [],
+      news: news.data ?? [],
     };
   },
 });
@@ -129,26 +136,22 @@ function HeroSection({
 }) {
   return (
     <section className="relative flex min-h-[88vh] items-center justify-center overflow-hidden border-b border-border md:min-h-screen">
-      {videoUrl ? (
+      <ParallaxLayer speed={0.28} className="-top-[12%] h-[124%]">
+        {videoUrl ? (
         <video
           src={videoUrl}
           autoPlay
           muted
           loop
           playsInline
-          aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      ) : imageUrl ? (
-        <img
-          src={imageUrl}
-          alt=""
-          aria-hidden
-          className="kenburns absolute inset-0 h-full w-full object-cover"
-        />
-      ) : (
-        <div className="absolute inset-0 texture-metal bg-gradient-to-br from-[color:var(--brand-ink)] via-background to-[color:var(--brand-ink)]" />
-      )}
+            className="h-full w-full object-cover"
+          />
+        ) : imageUrl ? (
+          <img src={imageUrl} alt="" className="kenburns h-full w-full object-cover" />
+        ) : (
+          <div className="h-full w-full texture-metal bg-gradient-to-br from-[color:var(--brand-ink)] via-background to-[color:var(--brand-ink)]" />
+        )}
+      </ParallaxLayer>
 
       {/* Cinematic grading: darkened edges keep the type legible over any footage */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/75" />
@@ -543,7 +546,15 @@ function TestimonialsSection({
                 {t.quote_text}
               </blockquote>
               <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                <p className="eyebrow">— {t.reviewer_name}</p>
+                <div className="flex items-center gap-3">
+                  <span
+                    aria-hidden
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-secondary/60 font-serif text-sm text-primary"
+                  >
+                    {t.reviewer_name.trim().charAt(0).toUpperCase()}
+                  </span>
+                  <p className="eyebrow">{t.reviewer_name}</p>
+                </div>
                 {t.rating != null && (
                   <p className="tracking-widest text-[color:var(--brand-gold)]">
                     {"★".repeat(t.rating)}
@@ -629,6 +640,100 @@ function ContactCtaSection() {
   );
 }
 
+/**
+ * Latest Updates: the one homepage band that changes on its own as news posts
+ * are published. Cards alternate left/right so the row feels hand-set.
+ */
+function LatestUpdatesSection({
+  posts,
+}: {
+  posts: Array<{
+    id: string;
+    title: string;
+    content: string;
+    image_url: string | null;
+    category: string | null;
+    published_at: string | null;
+  }>;
+}) {
+  return (
+    <section className="border-b border-border py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="The Dispatch"
+          title="Latest Updates"
+          action={
+            <Link
+              to="/news"
+              className="eyebrow link-underline text-sm hover:text-[color:var(--brand-gold-bright)]"
+            >
+              All news →
+            </Link>
+          }
+        />
+        <ul className="mt-12 grid gap-6 md:grid-cols-3 md:gap-8">
+          {posts.map((p, i) => (
+            <Reveal
+              as="li"
+              key={p.id}
+              variant={i === 1 ? "up" : i === 0 ? "left" : "right"}
+              delay={(i % 3) * 110}
+            >
+              <Link
+                to="/news/$postId"
+                params={{ postId: p.id }}
+                className="card-premium group flex h-full flex-col overflow-hidden"
+              >
+                <div className="img-shine relative aspect-[9/16] overflow-hidden sm:aspect-[4/3] md:aspect-[9/16]">
+                  {p.image_url ? (
+                    <img
+                      src={p.image_url}
+                      alt={p.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center texture-metal bg-secondary/40 p-6">
+                      <span className="text-center font-serif text-2xl text-primary">{p.title}</span>
+                    </div>
+                  )}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/10 to-transparent" />
+                  {p.category && (
+                    <span className="eyebrow absolute left-4 top-4 border border-primary/40 bg-background/80 px-2 py-1 text-[0.6rem] backdrop-blur">
+                      {p.category}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  {p.published_at && (
+                    <p className="eyebrow text-[0.6rem]">
+                      {new Date(p.published_at).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  )}
+                  <h3 className="mt-2 font-serif text-xl leading-snug text-primary transition-colors duration-300 group-hover:text-[color:var(--brand-gold-bright)]">
+                    {p.title}
+                  </h3>
+                  <hr className="rule-gold mt-4" />
+                  <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-foreground/75">
+                    {p.content}
+                  </p>
+                  <span className="mt-5 inline-flex w-fit items-center gap-2 border-b border-accent pb-0.5 text-sm font-medium text-primary transition-all group-hover:gap-3">
+                    Read update →
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 /* --- Page ----------------------------------------------------------------- */
 
 /**
@@ -644,13 +749,15 @@ const DEFAULT_SECTION_ORDER = [
   "cinematic_preview",
   "testimonials_preview",
   "press_preview",
+  "latest_updates",
   "contact_cta",
 ];
 
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
   const { data: media } = useSuspenseQuery(pageMediaQuery("home"));
-  const { profile, featured, books, featuredVideo, press, testimonials, sections, videos } = data;
+  const { profile, featured, books, featuredVideo, press, testimonials, sections, videos, news } =
+    data;
 
   const managed = toSlides(media);
   const fallback: Slide[] = [
@@ -725,13 +832,22 @@ function Home() {
       ) : null,
     press_preview: () =>
       press.length > 0 ? <PressSection key="press_preview" press={press} /> : null,
+    latest_updates: () =>
+      news.length > 0 ? <LatestUpdatesSection key="latest_updates" posts={news} /> : null,
     contact_cta: () => <ContactCtaSection key="contact_cta" />,
   };
 
-  const order =
+  const configured =
     sections.length > 0
       ? sections.filter((s) => s.is_visible).map((s) => s.section_key)
       : DEFAULT_SECTION_ORDER;
+  // "latest_updates" is newer than the stored section list, so slot it in
+  // before the contact CTA when the table predates it.
+  const order = configured.includes("latest_updates")
+    ? configured
+    : configured.includes("contact_cta")
+      ? configured.flatMap((k) => (k === "contact_cta" ? ["latest_updates", k] : [k]))
+      : [...configured, "latest_updates"];
 
   return (
     <>
