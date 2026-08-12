@@ -748,7 +748,8 @@ const DEFAULT_SECTION_ORDER = [
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
   const { data: media } = useSuspenseQuery(pageMediaQuery("home"));
-  const { profile, featured, books, featuredVideo, press, testimonials, sections, videos } = data;
+  const { profile, featured, books, featuredVideo, press, testimonials, sections, videos, news } =
+    data;
 
   const managed = toSlides(media);
   const fallback: Slide[] = [
@@ -823,6 +824,8 @@ function Home() {
       ) : null,
     press_preview: () =>
       press.length > 0 ? <PressSection key="press_preview" press={press} /> : null,
+    latest_updates: () =>
+      news.length > 0 ? <LatestUpdatesSection key="latest_updates" posts={news} /> : null,
     contact_cta: () => <ContactCtaSection key="contact_cta" />,
   };
 
