@@ -632,6 +632,124 @@ function ContactCtaSection() {
   );
 }
 
+/**
+ * Latest Updates: the one homepage band that changes on its own as news posts
+ * are published. Cards alternate left/right so the row feels hand-set.
+ */
+function LatestUpdatesSection({
+  posts,
+}: {
+  posts: Array<{
+    id: string;
+    title: string;
+    content: string;
+    image_url: string | null;
+    category: string | null;
+    published_at: string | null;
+  }>;
+}) {
+  return (
+    <section className="border-b border-border py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="The Dispatch"
+          title="Latest Updates"
+          action={
+            <Link
+              to="/news"
+              className="eyebrow link-underline text-sm hover:text-[color:var(--brand-gold-bright)]"
+            >
+              All news →
+            </Link>
+          }
+        />
+        <ul className="mt-12 grid gap-6 md:grid-cols-3 md:gap-8">
+          {posts.map((p, i) => (
+            <Reveal
+              as="li"
+              key={p.id}
+              variant={i === 1 ? "up" : i === 0 ? "left" : "right"}
+              delay={(i % 3) * 110}
+            >
+              <Link
+                to="/news/$postId"
+                params={{ postId: p.id }}
+                className="card-premium group flex h-full flex-col overflow-hidden"
+              >
+                <div className="img-shine relative aspect-[9/16] overflow-hidden sm:aspect-[4/3] md:aspect-[9/16]">
+                  {p.image_url ? (
+                    <img
+                      src={p.image_url}
+                      alt={p.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center texture-metal bg-secondary/40 p-6">
+                      <span className="text-center font-serif text-2xl text-primary">{p.title}</span>
+                    </div>
+                  )}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/10 to-transparent" />
+                  {p.category && (
+                    <span className="eyebrow absolute left-4 top-4 border border-primary/40 bg-background/80 px-2 py-1 text-[0.6rem] backdrop-blur">
+                      {p.category}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  {p.published_at && (
+                    <p className="eyebrow text-[0.6rem]">
+                      {new Date(p.published_at).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  )}
+                  <h3 className="mt-2 font-serif text-xl leading-snug text-primary transition-colors duration-300 group-hover:text-[color:var(--brand-gold-bright)]">
+                    {p.title}
+                  </h3>
+                  <hr className="rule-gold mt-4" />
+                  <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-foreground/75">
+                    {p.content}
+                  </p>
+                  <span className="mt-5 inline-flex w-fit items-center gap-2 border-b border-accent pb-0.5 text-sm font-medium text-primary transition-all group-hover:gap-3">
+                    Read update →
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function ContactCtaSectionLegacy() {
+  return (
+    <section className="texture-paper py-20 md:py-28">
+      <Reveal
+        variant="blur"
+        className="mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-end md:justify-between"
+      >
+        <div>
+          <p className="eyebrow track-in">Get in touch</p>
+          <h2 className="text-gradient-gold mt-3 max-w-xl pb-1 font-serif text-3xl sm:text-4xl md:text-5xl">
+            For interviews, appearances, and reader letters.
+          </h2>
+        </div>
+        <Link
+          to="/contact"
+          className="btn-sheen inline-flex w-fit shrink-0 items-center bg-primary px-8 py-4 font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
+        >
+          Contact →
+        </Link>
+      </Reveal>
+    </section>
+  );
+}
+
 /* --- Page ----------------------------------------------------------------- */
 
 /**
