@@ -368,21 +368,11 @@ function QuestionDialog({
               const isCorrect = form.correct_option === letter;
               return (
                 <div key={letter} className="flex items-center gap-3">
-                  <label className="flex shrink-0 cursor-pointer items-center gap-2">
-                    <input
-                      type="radio"
-                      name="correct_option"
-                      checked={isCorrect}
-                      onChange={() => setForm((f) => ({ ...f, correct_option: letter }))}
-                      className="h-4 w-4 accent-[color:var(--brand-gold)]"
-                      aria-label={`Mark option ${letter} as correct`}
-                    />
-                    <span
-                      className={`w-5 text-sm ${isCorrect ? "font-medium text-primary" : "text-muted-foreground"}`}
-                    >
-                      {letter}
-                    </span>
-                  </label>
+                  <span
+                    className={`w-5 shrink-0 text-sm ${isCorrect ? "font-medium text-primary" : "text-muted-foreground"}`}
+                  >
+                    {letter}
+                  </span>
                   <input
                     value={form[key]}
                     onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
@@ -393,10 +383,30 @@ function QuestionDialog({
                 </div>
               );
             })}
-            <p className="text-xs text-muted-foreground">
-              Select the radio button beside the correct answer.
-            </p>
           </fieldset>
+
+          <Field label="Correct option" required hint="The option marked here is the right answer.">
+            <select
+              value={form.correct_option}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, correct_option: e.target.value as OptionLetter }))
+              }
+              required
+              className={inputClass}
+            >
+              {OPTION_LETTERS.map((letter) => {
+                const key = `option_${letter.toLowerCase()}` as
+                  "option_a" | "option_b" | "option_c" | "option_d";
+                const preview = form[key].trim();
+                return (
+                  <option key={letter} value={letter}>
+                    {letter}
+                    {preview ? ` — ${truncate(preview, 60)}` : ""}
+                  </option>
+                );
+              })}
+            </select>
+          </Field>
 
           <Field label="Explanation" hint="Shown to members after they answer.">
             <textarea
