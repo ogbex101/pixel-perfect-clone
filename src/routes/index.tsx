@@ -726,30 +726,6 @@ function LatestUpdatesSection({
   );
 }
 
-function ContactCtaSectionLegacy() {
-  return (
-    <section className="texture-paper py-20 md:py-28">
-      <Reveal
-        variant="blur"
-        className="mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-end md:justify-between"
-      >
-        <div>
-          <p className="eyebrow track-in">Get in touch</p>
-          <h2 className="text-gradient-gold mt-3 max-w-xl pb-1 font-serif text-3xl sm:text-4xl md:text-5xl">
-            For interviews, appearances, and reader letters.
-          </h2>
-        </div>
-        <Link
-          to="/contact"
-          className="btn-sheen inline-flex w-fit shrink-0 items-center bg-primary px-8 py-4 font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
-        >
-          Contact →
-        </Link>
-      </Reveal>
-    </section>
-  );
-}
-
 /* --- Page ----------------------------------------------------------------- */
 
 /**
@@ -765,6 +741,7 @@ const DEFAULT_SECTION_ORDER = [
   "cinematic_preview",
   "testimonials_preview",
   "press_preview",
+  "latest_updates",
   "contact_cta",
 ];
 
