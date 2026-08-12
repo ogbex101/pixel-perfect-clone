@@ -51,7 +51,7 @@ export function ParallaxLayer({
     <div
       ref={ref}
       aria-hidden
-      className={cn("absolute inset-0 will-change-transform", className)}
+      className={cn("absolute inset-x-0 top-0 h-full will-change-transform", className)}
     >
       {children}
     </div>
