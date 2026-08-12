@@ -546,7 +546,15 @@ function TestimonialsSection({
                 {t.quote_text}
               </blockquote>
               <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                <p className="eyebrow">— {t.reviewer_name}</p>
+                <div className="flex items-center gap-3">
+                  <span
+                    aria-hidden
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-secondary/60 font-serif text-sm text-primary"
+                  >
+                    {t.reviewer_name.trim().charAt(0).toUpperCase()}
+                  </span>
+                  <p className="eyebrow">{t.reviewer_name}</p>
+                </div>
                 {t.rating != null && (
                   <p className="tracking-widest text-[color:var(--brand-gold)]">
                     {"★".repeat(t.rating)}
