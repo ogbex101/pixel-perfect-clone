@@ -692,6 +692,7 @@ function Home() {
       <HeroSection
         key="hero"
         videoUrl={profile?.hero_video_url ?? null}
+        imageUrl={profile?.hero_image_url ?? null}
         title={profile?.name ?? "Nik Nanoski"}
         tagline={profile?.tagline ?? null}
         ctaBookId={featured?.id ?? null}
