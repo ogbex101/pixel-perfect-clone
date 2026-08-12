@@ -112,6 +112,7 @@ function SectionHeading({
 
 function HeroSection({
   videoUrl,
+  imageUrl,
   title,
   tagline,
   ctaBookId,
@@ -119,6 +120,7 @@ function HeroSection({
   purchaseLink,
 }: {
   videoUrl: string | null;
+  imageUrl: string | null;
   title: string;
   tagline: string | null;
   ctaBookId: string | null;
@@ -136,6 +138,13 @@ function HeroSection({
           playsInline
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : imageUrl ? (
+        <img
+          src={imageUrl}
+          alt=""
+          aria-hidden
+          className="kenburns absolute inset-0 h-full w-full object-cover"
         />
       ) : (
         <div className="absolute inset-0 texture-metal bg-gradient-to-br from-[color:var(--brand-ink)] via-background to-[color:var(--brand-ink)]" />
@@ -683,6 +692,7 @@ function Home() {
       <HeroSection
         key="hero"
         videoUrl={profile?.hero_video_url ?? null}
+        imageUrl={profile?.hero_image_url ?? null}
         title={profile?.name ?? "Nik Nanoski"}
         tagline={profile?.tagline ?? null}
         ctaBookId={featured?.id ?? null}
