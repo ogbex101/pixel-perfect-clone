@@ -62,7 +62,7 @@ export const sendNotification = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const db = await admin();
-    const link = data.link || null;
+    const link = data.link || undefined;
 
     if (data.member_id) {
       const { error } = await db.rpc("notify_member", {
