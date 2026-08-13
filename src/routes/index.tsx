@@ -229,6 +229,59 @@ function HeroSection({
   );
 }
 
+/**
+ * Wayfinding strip directly under the hero. The site has three distinct
+ * experiences (the fiction, the visuals, the community) and nothing on the
+ * homepage previously signposted them above the fold.
+ */
+function PathsSection() {
+  const paths = [
+    { to: "/books", eyebrow: "Read", title: "The Books", copy: "Novels, novellas, and the cast." },
+    {
+      to: "/cinematic",
+      eyebrow: "Watch",
+      title: "Cinematic",
+      copy: "Trailers and scenes from the facility.",
+    },
+    {
+      to: "/home",
+      eyebrow: "Play",
+      title: "The Challenge",
+      copy: "Seven days, seven questions, one winner.",
+    },
+    {
+      to: "/debate",
+      eyebrow: "Argue",
+      title: "The Debate",
+      copy: "Readers take sides on the hard choices.",
+    },
+  ] as const;
+
+  return (
+    <section className="border-b border-border bg-secondary/25 texture-metal">
+      <ul className="mx-auto grid max-w-6xl gap-px px-6 py-14 sm:grid-cols-2 md:grid-cols-4 md:py-16">
+        {paths.map((p, i) => (
+          <Reveal as="li" key={p.to} variant="up" delay={i * 90}>
+            <Link
+              to={p.to}
+              className="group flex h-full flex-col border-t border-border pt-6 transition-colors duration-300 hover:border-primary md:px-5 md:first:pl-0"
+            >
+              <p className="eyebrow">{p.eyebrow}</p>
+              <h3 className="mt-2 font-serif text-2xl text-primary transition-colors duration-300 group-hover:text-[color:var(--brand-gold-bright)]">
+                {p.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.copy}</p>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary transition-all duration-300 group-hover:gap-3">
+                Enter →
+              </span>
+            </Link>
+          </Reveal>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function FeaturedBookSection({
   book,
 }: {
