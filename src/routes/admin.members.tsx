@@ -2,11 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Search } from "lucide-react";
+import { KeyRound, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { setMemberPassword } from "@/lib/admin.functions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/admin/members")({
@@ -55,6 +62,7 @@ function MembersManager() {
 
   const [search, setSearch] = useState("");
   const [viewing, setViewing] = useState<Member | null>(null);
+  const [resetting, setResetting] = useState<Member | null>(null);
 
   const filtered = useMemo(() => {
     if (!members) return [];
@@ -177,6 +185,15 @@ function MembersManager() {
                       <div className="flex items-center justify-end gap-4">
                         <button
                           type="button"
+                          onClick={() => setResetting(m)}
+                          title="Set a new password for this member"
+                          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          <KeyRound className="h-3.5 w-3.5" aria-hidden />
+                          Set password
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => toggleSuspended(m)}
                           className="text-sm text-muted-foreground transition-colors hover:text-primary"
                         >
@@ -197,7 +214,105 @@ function MembersManager() {
       )}
 
       {viewing && <MemberDetailDialog member={viewing} onClose={() => setViewing(null)} />}
+      {resetting && <SetPasswordDialog member={resetting} onClose={() => setResetting(null)} />}
     </div>
+  );
+}
+
+/**
+ * Nothing in this project sends email, so members cannot reset their own
+ * password yet. This is the manual stand-in: the admin sets a new one and
+ * passes it to the member out of band. Every existing session is revoked.
+ */
+function SetPasswordDialog({ member, onClose }: { member: Member; onClose: () => void }) {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const tooShort = password.length > 0 && password.length < 8;
+  const mismatch = confirm.length > 0 && password !== confirm;
+  const canSubmit = password.length >= 8 && password === confirm && !saving;
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!canSubmit) return;
+    setSaving(true);
+    try {
+      await setMemberPassword({ data: { member_id: member.id, password } });
+      toast.success(`Password updated. ${member.full_name} has been signed out everywhere.`);
+      onClose();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not set the password.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-serif text-primary">Set a new password</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            For <span className="text-foreground">{member.full_name}</span> ({member.email}). Send
+            them the new password yourself — the site cannot email it.
+          </p>
+
+          <div>
+            <label htmlFor="new-password" className="mb-1 block text-sm text-muted-foreground">
+              New password
+            </label>
+            <input
+              id="new-password"
+              type="text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="off"
+              placeholder="At least 8 characters"
+              className="w-full border border-border bg-card px-3 py-2 text-foreground focus:border-primary focus:outline-none"
+            />
+            {tooShort && (
+              <p className="mt-1 text-xs text-destructive">Use at least 8 characters.</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="confirm-password" className="mb-1 block text-sm text-muted-foreground">
+              Confirm password
+            </label>
+            <input
+              id="confirm-password"
+              type="text"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              autoComplete="off"
+              className="w-full border border-border bg-card px-3 py-2 text-foreground focus:border-primary focus:outline-none"
+            />
+            {mismatch && <p className="mt-1 text-xs text-destructive">Passwords don't match.</p>}
+          </div>
+
+          <DialogFooter>
+            <button
+              type="button"
+              onClick={onClose}
+              className="border border-border px-5 py-2.5 text-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={!canSubmit}
+              className="bg-primary px-5 py-2.5 font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {saving ? "Saving…" : "Set password"}
+            </button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
 

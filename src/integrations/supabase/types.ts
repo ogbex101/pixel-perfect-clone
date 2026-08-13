@@ -889,7 +889,47 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      announce_challenge_starts: {
+        Args: Record<string, never>;
+        Returns: number;
+      };
+      announce_daily_question: {
+        Args: Record<string, never>;
+        Returns: number;
+      };
+      award_badges: {
+        Args: { p_challenge_id: string; p_member_id: string };
+        Returns: string[];
+      };
+      notify_all_members: {
+        Args: { p_content: string; p_link?: string | null; p_type: string };
+        Returns: number;
+      };
+      notify_member: {
+        Args: {
+          p_content: string;
+          p_link?: string | null;
+          p_member_id: string;
+          p_type: string;
+        };
+        Returns: undefined;
+      };
+      run_assessment: {
+        Args: { p_challenge_id: string };
+        Returns: number;
+      };
+      run_scheduled_assessments: {
+        Args: Record<string, never>;
+        Returns: number;
+      };
+      select_challenge_winner: {
+        Args: { p_challenge_id: string };
+        Returns: number;
+      };
+      select_scheduled_winners: {
+        Args: Record<string, never>;
+        Returns: number;
+      };
     };
     Enums: {
       [_ in never]: never;

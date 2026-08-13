@@ -64,7 +64,7 @@ function ChallengePage() {
     if (!selected || !data?.question) return;
     setSaving(true);
     try {
-      await submitAnswer({
+      const result = await submitAnswer({
         data: {
           token,
           question_id: data.question.id,
@@ -74,6 +74,10 @@ function ChallengePage() {
       });
       await queryClient.invalidateQueries({ queryKey });
       await queryClient.invalidateQueries({ queryKey: memberContextKey });
+
+      for (const badge of result.badges_awarded) {
+        toast.success(`Badge unlocked: ${badge}`, { duration: 6000 });
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not submit your answer.");
     } finally {

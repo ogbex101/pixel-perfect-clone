@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Copy } from "lucide-react";
+import { Copy, Crown, Gauge } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { runAssessment, selectWinner } from "@/lib/admin.functions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
 import {
@@ -163,6 +164,14 @@ function WinnersManager() {
 
   return (
     <div>
+      <AutomationPanel
+        challenges={data?.challenges ?? []}
+        onDone={() => {
+          queryClient.invalidateQueries({ queryKey: winnersKey });
+          queryClient.invalidateQueries({ queryKey: ["admin", "challenge_standings"] });
+        }}
+      />
+
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
           {endedChallenges.length === 0
@@ -289,6 +298,113 @@ function WinnersManager() {
         />
       )}
     </div>
+  );
+}
+
+/**
+ * Manual triggers for the scheduled jobs. The cron schedule (assessment on
+ * Wednesday, Friday and Sunday; winner selection on Sunday) runs the same
+ * Postgres functions, so these buttons are a way to run one early or to work
+ * without cron enabled at all.
+ */
+function AutomationPanel({ challenges, onDone }: { challenges: Challenge[]; onDone: () => void }) {
+  const [challengeId, setChallengeId] = useState("");
+  const [busy, setBusy] = useState<"assess" | "winner" | null>(null);
+
+  // Default to the first active challenge, or just the first one available.
+  const preferred = challenges.find((c) => c.is_active)?.id ?? challenges[0]?.id ?? "";
+  const selectedId = challengeId || preferred;
+
+  async function handleAssess() {
+    if (!selectedId) return;
+    setBusy("assess");
+    try {
+      const { ranked } = await runAssessment({ data: { challenge_id: selectedId } });
+      toast.success(
+        ranked === 0
+          ? "Assessment ran, but nobody has answered this challenge yet."
+          : `Leaderboard rebuilt for ${ranked} member${ranked === 1 ? "" : "s"}. Badges re-checked.`,
+      );
+      onDone();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Assessment failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function handleSelectWinner() {
+    if (!selectedId) return;
+    setBusy("winner");
+    try {
+      const { inserted } = await selectWinner({ data: { challenge_id: selectedId } });
+      toast.success(
+        inserted === 0
+          ? "Nothing to do — this challenge already has winners, or nobody has answered it."
+          : `${inserted} winner${inserted === 1 ? "" : "s"} recorded and announced.`,
+      );
+      onDone();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Winner selection failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  if (challenges.length === 0) return null;
+
+  return (
+    <section className="mb-8 border border-border bg-card p-5">
+      <p className="eyebrow">Automation</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Assessment runs automatically on Wednesday, Friday and Sunday; winners are selected on
+        Sunday. Use these to run either one now.
+      </p>
+
+      <div className="mt-4 flex flex-wrap items-end gap-3">
+        <div className="min-w-[240px] flex-1">
+          <label
+            htmlFor="automation-challenge"
+            className="mb-1 block text-sm text-muted-foreground"
+          >
+            Challenge
+          </label>
+          <select
+            id="automation-challenge"
+            value={selectedId}
+            onChange={(e) => setChallengeId(e.target.value)}
+            className="w-full border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none"
+          >
+            {challenges.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.title}
+                {c.is_active ? " (active)" : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleAssess}
+          disabled={busy !== null || !selectedId}
+          className="inline-flex items-center gap-2 border border-primary px-5 py-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <Gauge className="h-4 w-4" aria-hidden />
+          {busy === "assess" ? "Assessing…" : "Run assessment now"}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleSelectWinner}
+          disabled={busy !== null || !selectedId}
+          className="inline-flex items-center gap-2 bg-primary px-5 py-2.5 font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)] disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <Crown className="h-4 w-4" aria-hidden />
+          {busy === "winner" ? "Selecting…" : "Select winner now"}
+        </button>
+      </div>
+    </section>
   );
 }
 

@@ -210,11 +210,49 @@ export const submitAnswer = createServerFn({ method: "POST" })
     });
     if (error) throw new Error(error.message);
 
+    // Badges are evaluated immediately so the member sees the award on the
+    // dashboard they land on next. A failure here must not lose the answer,
+    // and the scheduled assessment re-evaluates everything anyway.
+    let awarded: string[] = [];
+    if (question.challenge_id) {
+      try {
+        const { data: badges } = await db.rpc("award_badges", {
+          p_member_id: member.id,
+          p_challenge_id: question.challenge_id,
+        });
+        awarded = badges ?? [];
+      } catch {
+        awarded = [];
+      }
+    }
+
     return {
       is_correct: isCorrect,
       correct_option: question.correct_option.toUpperCase(),
       explanation: question.explanation,
+      badges_awarded: awarded,
     };
+  });
+
+/**
+ * Re-evaluates every badge rule for one member in one challenge. The answer
+ * flow calls this automatically; it is exposed separately so a member landing
+ * on the dashboard can pick up badges earned by activity elsewhere (debate
+ * comments, for instance).
+ */
+export const checkAndAwardBadges = createServerFn({ method: "POST" })
+  .inputValidator((data) =>
+    z.object({ token: z.string().min(1), challenge_id: z.string().uuid() }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    const member = await requireMember(data.token);
+    const db = await admin();
+    const { data: awarded, error } = await db.rpc("award_badges", {
+      p_member_id: member.id,
+      p_challenge_id: data.challenge_id,
+    });
+    if (error) throw new Error(error.message);
+    return { awarded: awarded ?? [] };
   });
 
 export const updateMemberProfile = createServerFn({ method: "POST" })

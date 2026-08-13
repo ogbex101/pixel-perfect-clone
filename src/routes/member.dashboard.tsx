@@ -211,14 +211,32 @@ function Dashboard({ ctx }: { ctx: MemberCtx }) {
           <p className="mt-4 text-sm text-muted-foreground">Nothing yet.</p>
         ) : (
           <ul className="mt-4 space-y-2">
-            {notifications.slice(0, 6).map((n) => (
-              <li
-                key={n.id}
-                className={`border border-border px-4 py-3 text-sm ${n.is_read ? "bg-transparent text-muted-foreground" : "bg-card text-foreground"}`}
-              >
-                {n.content}
-              </li>
-            ))}
+            {notifications.slice(0, 6).map((n) => {
+              const body = (
+                <>
+                  <span className="flex-1">{n.content}</span>
+                  <span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground">
+                    {timeAgo(n.created_at)}
+                  </span>
+                </>
+              );
+              const cls = `flex items-start gap-3 border px-4 py-3 text-sm ${
+                n.is_read
+                  ? "border-border bg-transparent text-muted-foreground"
+                  : "border-primary/40 bg-card text-foreground"
+              }`;
+              return (
+                <li key={n.id}>
+                  {n.link ? (
+                    <a href={n.link} className={`${cls} transition-colors hover:border-primary`}>
+                      {body}
+                    </a>
+                  ) : (
+                    <div className={cls}>{body}</div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         )}
       </Reveal>
@@ -232,10 +250,11 @@ function Dashboard({ ctx }: { ctx: MemberCtx }) {
           <ul className="mt-4 flex flex-wrap gap-2">
             {badges.map((b, i) => {
               const badge = b.badges as { name: string; description: string | null } | null;
+              const earned = b.earned_at ? ` · earned ${timeAgo(b.earned_at)}` : "";
               return (
                 <li
                   key={i}
-                  title={badge?.description ?? undefined}
+                  title={`${badge?.description ?? ""}${earned}`.trim() || undefined}
                   className="rounded-full border border-primary/50 bg-primary/10 px-3 py-1 text-xs text-primary"
                 >
                   {badge?.name ?? "Badge"}
@@ -247,6 +266,18 @@ function Dashboard({ ctx }: { ctx: MemberCtx }) {
       </Reveal>
     </div>
   );
+}
+
+function timeAgo(iso: string | null) {
+  if (!iso) return "";
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "";
+  const mins = Math.round((Date.now() - then) / 60_000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.round(hours / 24)}d ago`;
 }
 
 function Stat({ icon: Icon, label, value }: { icon: typeof Target; label: string; value: string }) {
