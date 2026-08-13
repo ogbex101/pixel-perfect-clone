@@ -150,7 +150,7 @@ function BooksIndex() {
                   params={{ bookId: b.id }}
                   className="card-premium img-shine block overflow-hidden"
                 >
-                  <div className="aspect-[2/3] bg-muted overflow-hidden">
+                  <div className="aspect-[2/3] bg-secondary/40 overflow-hidden">
                     {b.cover_image_url ? (
                       <img
                         src={b.cover_image_url}

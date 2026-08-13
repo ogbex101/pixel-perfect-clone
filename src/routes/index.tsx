@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -139,7 +139,7 @@ function HeroSection({
   purchaseLink: string | null;
 }) {
   return (
-    <section className="relative flex min-h-[88vh] items-center justify-center overflow-hidden border-b border-border md:min-h-screen">
+    <section className="relative flex min-h-[82vh] items-center justify-center overflow-hidden border-b border-border md:min-h-[92vh]">
       <ParallaxLayer speed={0.28} className="-top-[12%] h-[124%]">
         {videoUrl ? (
           <video
@@ -153,7 +153,9 @@ function HeroSection({
         ) : imageUrl ? (
           <img src={imageUrl} alt="" className="kenburns h-full w-full object-cover" />
         ) : (
-          <div className="h-full w-full texture-metal bg-gradient-to-br from-[color:var(--brand-ink)] via-background to-[color:var(--brand-ink)]" />
+          // No admin-supplied hero yet: fall back to the DUMB 31 key art rather
+          // than an empty gradient, so the fold always carries an image.
+          <img src={SITE_ART.cover} alt="" className="kenburns h-full w-full object-cover" />
         )}
       </ParallaxLayer>
 
@@ -161,7 +163,7 @@ function HeroSection({
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/75" />
       <div className="absolute inset-0 vignette" />
 
-      <div className="relative mx-auto w-full max-w-4xl px-6 py-24 text-center">
+      <div className="relative mx-auto w-full max-w-4xl px-6 py-20 text-center">
         <Reveal variant="blur">
           <p className="eyebrow track-in">Science Fiction Author</p>
         </Reveal>
@@ -170,10 +172,17 @@ function HeroSection({
             {title}
           </h1>
         </Reveal>
-        {tagline && (
+        {tagline ? (
           <Reveal variant="blur" delay={280}>
             <p className="mx-auto mt-7 max-w-2xl font-serif text-lg italic text-foreground/80 md:text-2xl">
               “{tagline}”
+            </p>
+          </Reveal>
+        ) : (
+          <Reveal variant="blur" delay={280}>
+            <p className="mx-auto mt-7 max-w-2xl font-serif text-lg italic text-foreground/75 md:text-2xl">
+              Post-apocalyptic fiction about survival, inherited lies, and the hope that outlives
+              the world.
             </p>
           </Reveal>
         )}
@@ -222,6 +231,59 @@ function HeroSection({
   );
 }
 
+/**
+ * Wayfinding strip directly under the hero. The site has three distinct
+ * experiences (the fiction, the visuals, the community) and nothing on the
+ * homepage previously signposted them above the fold.
+ */
+function PathsSection() {
+  const paths = [
+    { to: "/books", eyebrow: "Read", title: "The Books", copy: "Novels, novellas, and the cast." },
+    {
+      to: "/cinematic",
+      eyebrow: "Watch",
+      title: "Cinematic",
+      copy: "Trailers and scenes from the facility.",
+    },
+    {
+      to: "/home",
+      eyebrow: "Play",
+      title: "The Challenge",
+      copy: "Seven days, seven questions, one winner.",
+    },
+    {
+      to: "/debate",
+      eyebrow: "Argue",
+      title: "The Debate",
+      copy: "Readers take sides on the hard choices.",
+    },
+  ] as const;
+
+  return (
+    <section className="border-b border-border bg-secondary/25 texture-metal">
+      <ul className="mx-auto grid max-w-6xl gap-px px-6 py-14 sm:grid-cols-2 md:grid-cols-4 md:py-16">
+        {paths.map((p, i) => (
+          <Reveal as="li" key={p.to} variant="up" delay={i * 90}>
+            <Link
+              to={p.to}
+              className="group flex h-full flex-col border-t border-border pt-6 transition-colors duration-300 hover:border-primary md:px-5 md:first:pl-0"
+            >
+              <p className="eyebrow">{p.eyebrow}</p>
+              <h3 className="mt-2 font-serif text-2xl text-primary transition-colors duration-300 group-hover:text-[color:var(--brand-gold-bright)]">
+                {p.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.copy}</p>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary transition-all duration-300 group-hover:gap-3">
+                Enter →
+              </span>
+            </Link>
+          </Reveal>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function FeaturedBookSection({
   book,
 }: {
@@ -244,7 +306,7 @@ function FeaturedBookSection({
             <Link
               to="/books/$bookId"
               params={{ bookId: book.id }}
-              className="card-premium img-shine group block aspect-[2/3] overflow-hidden"
+              className="card-premium img-shine group block aspect-[2/3] overflow-hidden bg-secondary/40"
             >
               {book.cover_image_url ? (
                 <img
@@ -419,7 +481,7 @@ function LibrarySection({
             className="w-60 shrink-0 snap-start sm:w-72 md:w-80"
           >
             <Link to="/books/$bookId" params={{ bookId: b.id }} className="group block">
-              <div className="card-premium img-shine relative aspect-[2/3] overflow-hidden">
+              <div className="card-premium img-shine relative aspect-[2/3] overflow-hidden bg-secondary/40">
                 {b.cover_image_url ? (
                   <img
                     src={b.cover_image_url}
@@ -857,7 +919,12 @@ function Home() {
 
   return (
     <>
-      {order.map((key) => renderers[key]?.() ?? null)}
+      {order.map((key) => (
+        <Fragment key={key}>
+          {renderers[key]?.() ?? null}
+          {key === "hero" ? <PathsSection /> : null}
+        </Fragment>
+      ))}
       <CinematicSlideshow
         slides={slides}
         eyebrow="The Gallery"

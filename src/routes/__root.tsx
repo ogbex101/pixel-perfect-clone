@@ -9,22 +9,45 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { ArrowUp, Menu, X } from "lucide-react";
+import { ArrowUp, ChevronDown, Menu, X } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 
-const NAV_LINKS = [
+/**
+ * Navigation is grouped rather than flat: nine equal-weight links gave the
+ * header no hierarchy, so related pages now sit under three labelled groups
+ * and the member CTA is promoted out of the slide-out menu.
+ */
+const NAV_GROUPS = [
+  {
+    label: "The Work",
+    links: [
+      { to: "/books", label: "Books", hint: "Novels & series" },
+      { to: "/cinematic", label: "Cinematic", hint: "Trailers & scenes" },
+    ],
+  },
+  {
+    label: "Community",
+    links: [
+      { to: "/home", label: "Challenge", hint: "The DUMB 31 challenge" },
+      { to: "/debate", label: "Debate", hint: "Reader arguments" },
+      { to: "/news", label: "News", hint: "Latest dispatches" },
+    ],
+  },
+  {
+    label: "Reception",
+    links: [
+      { to: "/press", label: "Press", hint: "Coverage & interviews" },
+      { to: "/testimonials", label: "Praise", hint: "What readers say" },
+    ],
+  },
+] as const;
+
+const NAV_DIRECT = [
   { to: "/about", label: "About" },
-  { to: "/books", label: "Books" },
-  { to: "/cinematic", label: "Cinematic" },
-  { to: "/press", label: "Press" },
-  { to: "/testimonials", label: "Praise" },
-  { to: "/debate", label: "Debate" },
-  { to: "/news", label: "News" },
   { to: "/contact", label: "Contact" },
-  { to: "/home", label: "Community" },
 ] as const;
 
 function NotFoundComponent() {
@@ -267,18 +290,39 @@ function SiteMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
           </button>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
-          {NAV_LINKS.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              onClick={onClose}
-              tabIndex={open ? 0 : -1}
-              activeProps={{ className: "text-primary border-primary/50 bg-primary/10" }}
-              className="border border-transparent px-4 py-3 font-serif text-lg text-foreground/85 transition-all duration-300 hover:border-border hover:pl-6 hover:text-primary"
-            >
-              {l.label}
-            </Link>
+        <nav className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
+          <div className="flex flex-col gap-1">
+            {NAV_DIRECT.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                onClick={onClose}
+                tabIndex={open ? 0 : -1}
+                activeProps={{ className: "text-primary border-primary/50 bg-primary/10" }}
+                className="border border-transparent px-4 py-3 font-serif text-lg text-foreground/85 transition-all duration-300 hover:border-border hover:pl-6 hover:text-primary"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label}>
+              <p className="eyebrow px-4 pb-2 text-[0.62rem]">{group.label}</p>
+              <div className="flex flex-col gap-1">
+                {group.links.map((l) => (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    onClick={onClose}
+                    tabIndex={open ? 0 : -1}
+                    activeProps={{ className: "text-primary border-primary/50 bg-primary/10" }}
+                    className="border border-transparent px-4 py-3 font-serif text-lg text-foreground/85 transition-all duration-300 hover:border-border hover:pl-6 hover:text-primary"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
 
@@ -347,31 +391,76 @@ function RootComponent() {
             >
               Nik Nanoski
             </Link>
-            {/* Desktop links stay visible; the hamburger sits alongside them at
-                every width so the full menu is always one click away. */}
-            <nav className="hidden lg:flex flex-wrap items-center gap-8 text-[0.8rem] font-medium tracking-[0.08em] uppercase text-muted-foreground">
-              {NAV_LINKS.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  activeProps={{ className: "text-primary" }}
-                  className="link-underline hover:text-primary transition-colors duration-300"
-                >
-                  {l.label}
-                </Link>
+            {/* Grouped desktop nav: two direct links plus three hover/focus
+                menus, so the header stays scannable at five items. */}
+            <nav className="hidden lg:flex items-center gap-7 text-[0.78rem] font-medium tracking-[0.08em] uppercase text-muted-foreground">
+              <Link
+                to="/about"
+                activeProps={{ className: "text-primary" }}
+                className="link-underline transition-colors duration-300 hover:text-primary"
+              >
+                About
+              </Link>
+
+              {NAV_GROUPS.map((group) => (
+                <div key={group.label} className="relative group">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 uppercase tracking-[0.08em] transition-colors duration-300 group-hover:text-primary group-focus-within:text-primary"
+                  >
+                    {group.label}
+                    <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                  </button>
+                  <div className="invisible absolute left-1/2 top-full z-50 w-60 -translate-x-1/2 pt-4 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                    <div className="texture-ink border border-[color:oklch(0.79_0.115_85_/_28%)] p-2 shadow-[0_24px_50px_-24px_oklch(0_0_0/0.9)]">
+                      {group.links.map((l) => (
+                        <Link
+                          key={l.to}
+                          to={l.to}
+                          activeProps={{ className: "bg-primary/10 text-primary" }}
+                          className="block px-3 py-2.5 normal-case tracking-normal transition-colors duration-200 hover:bg-primary/10 hover:text-primary"
+                        >
+                          <span className="block font-serif text-base text-foreground/90">
+                            {l.label}
+                          </span>
+                          <span className="mt-0.5 block text-[0.7rem] text-muted-foreground">
+                            {l.hint}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ))}
+
+              <Link
+                to="/contact"
+                activeProps={{ className: "text-primary" }}
+                className="link-underline transition-colors duration-300 hover:text-primary"
+              >
+                Contact
+              </Link>
             </nav>
 
-            <button
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open menu"
-              aria-expanded={menuOpen}
-              aria-controls="site-menu"
-              className="inline-flex items-center justify-center rounded-sm border border-primary/40 p-2 text-primary transition-colors hover:border-primary hover:bg-primary/10"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/member/login"
+                className="btn-sheen hidden items-center border border-primary px-4 py-2 text-[0.72rem] font-medium uppercase tracking-[0.12em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground sm:inline-flex"
+              >
+                Member sign in
+              </Link>
+              {/* The slide-out is the primary nav below lg and an escape hatch above it. */}
+              <button
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                aria-label="Open menu"
+                aria-expanded={menuOpen}
+                aria-controls="site-menu"
+                className="inline-flex items-center justify-center rounded-sm border border-primary/40 p-2 text-primary transition-colors hover:border-primary hover:bg-primary/10 lg:hidden"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </div>
           </div>
           <ScrollProgress />
         </header>
@@ -387,27 +476,61 @@ function RootComponent() {
                 ✦
               </span>
             </div>
-            <div className="mt-10 flex flex-col items-center gap-8 md:flex-row md:items-end md:justify-between">
-              <div className="text-center md:text-left">
+            {/* Grouped sitemap mirrors the header so the footer is orienting
+                rather than a second flat list of every page. */}
+            <div className="mt-10 grid gap-12 md:grid-cols-12">
+              <div className="md:col-span-4">
                 <p className="font-serif text-2xl text-gradient-gold">Nik Nanoski</p>
-                <p className="mt-2 font-serif italic text-sm text-muted-foreground">
+                <p className="mt-2 font-serif text-sm italic text-muted-foreground">
                   Stories from after the end.
                 </p>
+                <Link
+                  to="/member/signup"
+                  className="btn-sheen mt-6 inline-flex items-center bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
+                >
+                  Join the community →
+                </Link>
               </div>
-              <nav className="flex flex-wrap justify-center gap-x-7 gap-y-3 text-[0.75rem] font-medium tracking-[0.14em] uppercase text-muted-foreground">
-                {NAV_LINKS.map((l) => (
-                  <Link
-                    key={l.to}
-                    to={l.to}
-                    className="link-underline hover:text-primary transition-colors duration-300"
-                  >
-                    {l.label}
-                  </Link>
+              <nav className="grid gap-10 sm:grid-cols-2 md:col-span-8 md:grid-cols-4">
+                <div>
+                  <p className="eyebrow text-[0.62rem]">Author</p>
+                  <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                    {NAV_DIRECT.map((l) => (
+                      <li key={l.to}>
+                        <Link
+                          to={l.to}
+                          className="link-underline transition-colors duration-300 hover:text-primary"
+                        >
+                          {l.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {NAV_GROUPS.map((group) => (
+                  <div key={group.label}>
+                    <p className="eyebrow text-[0.62rem]">{group.label}</p>
+                    <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                      {group.links.map((l) => (
+                        <li key={l.to}>
+                          <Link
+                            to={l.to}
+                            className="link-underline transition-colors duration-300 hover:text-primary"
+                          >
+                            {l.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
               </nav>
             </div>
-            <div className="mt-10 border-t border-border pt-6 text-center text-xs text-muted-foreground/70 md:text-left">
-              © {new Date().getFullYear()} Nik Nanoski. All rights reserved.
+            <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted-foreground/70 sm:flex-row sm:items-center sm:justify-between">
+              <span>© {new Date().getFullYear()} Nik Nanoski. All rights reserved.</span>
+              <Link to="/member/login" className="transition-colors hover:text-primary">
+                Member sign in
+              </Link>
             </div>
           </div>
         </footer>

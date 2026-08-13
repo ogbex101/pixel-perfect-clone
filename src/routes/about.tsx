@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Reveal } from "@/components/reveal";
@@ -95,7 +95,8 @@ function About() {
         eyebrow="The Profile"
         title={`About ${data.name}`}
         subtitle={data.tagline ? `“${data.tagline}”` : null}
-        imageUrl={SITE_ART.door}
+        imageUrl={data.hero_photo_url ?? SITE_ART.door}
+        focalPoint="center 30%"
       />
 
       {/* Bio: text carries the weight, location tucked beside it */}
@@ -107,16 +108,47 @@ function About() {
             </div>
           )}
         </Reveal>
-        {data.location && (
-          <Reveal
-            variant="right"
-            delay={150}
-            className="md:col-span-4 md:border-l md:border-border md:pl-8"
-          >
-            <p className="eyebrow">Based in</p>
-            <p className="mt-1 text-foreground">{data.location}</p>
-          </Reveal>
-        )}
+        <Reveal
+          variant="right"
+          delay={150}
+          className="md:col-span-4 md:border-l md:border-border md:pl-8"
+        >
+          {/* Sticky context rail: orienting facts stay in view while the bio scrolls */}
+          <div className="md:sticky md:top-28">
+            {data.hero_photo_url && (
+              <img
+                src={data.hero_photo_url}
+                alt={data.name}
+                className="card-premium mb-8 aspect-[4/5] w-full object-cover"
+                style={{ objectPosition: "center 25%" }}
+              />
+            )}
+            {data.location && (
+              <>
+                <p className="eyebrow">Based in</p>
+                <p className="mt-1 text-foreground">{data.location}</p>
+              </>
+            )}
+            <p className="eyebrow mt-8">Start here</p>
+            <ul className="mt-3 space-y-2.5 text-sm">
+              <li>
+                <Link to="/books" className="link-underline text-primary hover:opacity-80">
+                  Read the books →
+                </Link>
+              </li>
+              <li>
+                <Link to="/cinematic" className="link-underline text-primary hover:opacity-80">
+                  Watch the cinematics →
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="link-underline text-primary hover:opacity-80">
+                  Get in touch →
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </Reveal>
       </div>
 
       {/* Background facts: staggered timeline, not a bullet list */}

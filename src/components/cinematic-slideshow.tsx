@@ -44,7 +44,9 @@ export function CinematicSlideshow({
   const active = slides[Math.min(index, count - 1)];
 
   return (
-    <section className={`border-y border-border texture-metal overflow-hidden ${className}`}>
+    <section
+      className={`overflow-hidden border-y border-border bg-secondary/25 texture-metal ${className}`}
+    >
       <div className="mx-auto max-w-6xl px-6 py-14 md:py-20">
         <Reveal className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-4">
           <div>
