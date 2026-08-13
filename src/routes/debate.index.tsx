@@ -34,7 +34,10 @@ function DebateIndex() {
           .select("*")
           .order("is_pinned", { ascending: false })
           .order("created_at", { ascending: false }),
-        supabase.from("debate_comments").select("topic_id, created_at").eq("is_hidden", false),
+        supabase
+          .from("debate_comments")
+          .select("topic_id, created_at")
+          .or("is_hidden.is.null,is_hidden.eq.false"),
       ]);
       if (topics.error) throw topics.error;
       if (comments.error) throw comments.error;
@@ -93,7 +96,8 @@ function DebateIndex() {
                   )}
                   <p className="mt-3 text-xs uppercase tracking-[0.14em] text-muted-foreground">
                     {topic.commentCount} {topic.commentCount === 1 ? "comment" : "comments"}
-                    {topic.latest && ` · last activity ${new Date(topic.latest).toLocaleDateString()}`}
+                    {topic.latest &&
+                      ` · last activity ${new Date(topic.latest).toLocaleDateString()}`}
                   </p>
                 </div>
               </Link>

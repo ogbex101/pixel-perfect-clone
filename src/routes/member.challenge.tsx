@@ -22,13 +22,15 @@ export const Route = createFileRoute("/member/challenge")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <MemberGate>
+  component: () => (
+    <MemberGate>
       {(ctx) => (
         <MemberShell ctx={ctx}>
           <ChallengePage />
         </MemberShell>
       )}
-    </MemberGate>,
+    </MemberGate>
+  ),
 });
 
 const OPTIONS = ["A", "B", "C", "D"] as const;

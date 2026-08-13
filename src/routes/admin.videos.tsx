@@ -7,7 +7,7 @@ import { AdminShell } from "@/components/admin/admin-shell";
 import { SortableList } from "@/components/admin/sortable-list";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
-import { uploadMedia } from "@/lib/media-upload";
+import { deleteMedia, uploadMedia } from "@/lib/media-upload";
 import {
   Dialog,
   DialogContent,
@@ -69,6 +69,8 @@ function VideosManager() {
       toast.error(error.message);
       return;
     }
+    // The row is gone; drop its uploaded files so the bucket doesn't grow orphans.
+    await deleteMedia(video.video_url, video.thumbnail_url);
     toast.success(`"${video.title}" deleted.`);
     queryClient.invalidateQueries({ queryKey });
   }

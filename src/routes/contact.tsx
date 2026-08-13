@@ -73,42 +73,42 @@ function Contact() {
         imageUrl={SITE_ART.door}
       />
       <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
-      <Reveal variant="blur">
-        <p className="eyebrow">Write to Nik</p>
-        {data.email && (
-          <a
-            href={`mailto:${data.email}`}
-            className="mt-4 inline-block font-serif text-xl sm:text-2xl md:text-3xl text-primary border-b-2 border-accent pb-1 hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300 break-all"
-          >
-            {data.email}
-          </a>
-        )}
-      </Reveal>
-      {data.links.length > 0 && (
-        <Reveal variant="blur" delay={200} className="mt-14">
-          <div className="ornament mb-6">
-            <span className="eyebrow">Elsewhere</span>
-          </div>
-          <ul className="flex flex-wrap gap-3">
-            {data.links.map((l, i) => {
-              const Icon = resolveContactIcon(l.icon);
-              return (
-                <Reveal as="li" key={l.id} variant="zoom" delay={250 + i * 80}>
-                  <a
-                    href={l.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-sheen inline-flex items-center gap-2 border border-primary px-5 py-2.5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <Icon className="h-4 w-4" aria-hidden />
-                    {l.platform_name}
-                  </a>
-                </Reveal>
-              );
-            })}
-          </ul>
+        <Reveal variant="blur">
+          <p className="eyebrow">Write to Nik</p>
+          {data.email && (
+            <a
+              href={`mailto:${data.email}`}
+              className="mt-4 inline-block font-serif text-xl sm:text-2xl md:text-3xl text-primary border-b-2 border-accent pb-1 hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300 break-all"
+            >
+              {data.email}
+            </a>
+          )}
         </Reveal>
-      )}
+        {data.links.length > 0 && (
+          <Reveal variant="blur" delay={200} className="mt-14">
+            <div className="ornament mb-6">
+              <span className="eyebrow">Elsewhere</span>
+            </div>
+            <ul className="flex flex-wrap gap-3">
+              {data.links.map((l, i) => {
+                const Icon = resolveContactIcon(l.icon);
+                return (
+                  <Reveal as="li" key={l.id} variant="zoom" delay={250 + i * 80}>
+                    <a
+                      href={l.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-sheen inline-flex items-center gap-2 border border-primary px-5 py-2.5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
+                      <Icon className="h-4 w-4" aria-hidden />
+                      {l.platform_name}
+                    </a>
+                  </Reveal>
+                );
+              })}
+            </ul>
+          </Reveal>
+        )}
       </section>
       <CinematicSlideshow slides={slides} eyebrow="In Frame" title="From the Facility" />
     </>

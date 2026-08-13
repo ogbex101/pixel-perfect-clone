@@ -78,42 +78,42 @@ function Testimonials() {
         imageUrl={SITE_ART.opie}
       />
       <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      {data.length === 0 ? (
-        <p className="text-muted-foreground">No testimonials yet.</p>
-      ) : (
-        <ul className="grid gap-8 md:grid-cols-2">
-          {data.map((t, i) => (
-            <Reveal
-              as="li"
-              key={t.id}
-              variant={i % 2 === 0 ? "left" : "right"}
-              delay={(i % 2) * 100}
-              className="card-premium texture-paper relative p-8"
-            >
-              <span
-                aria-hidden
-                className="text-gradient-gold absolute -top-5 left-6 font-serif text-7xl leading-none opacity-80"
+        {data.length === 0 ? (
+          <p className="text-muted-foreground">No testimonials yet.</p>
+        ) : (
+          <ul className="grid gap-8 md:grid-cols-2">
+            {data.map((t, i) => (
+              <Reveal
+                as="li"
+                key={t.id}
+                variant={i % 2 === 0 ? "left" : "right"}
+                delay={(i % 2) * 100}
+                className="card-premium texture-paper relative p-8"
               >
-                “
-              </span>
-              <blockquote className="font-serif italic text-lg text-foreground/85 leading-relaxed">
-                {t.quote_text}
-              </blockquote>
-              <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                <p className="eyebrow">— {t.reviewer_name}</p>
-                {t.rating != null && (
-                  <p className="text-[color:var(--brand-gold)] text-lg tracking-widest">
-                    {"★".repeat(t.rating)}
-                    <span className="text-muted-foreground/40">
-                      {"★".repeat(Math.max(0, 5 - t.rating))}
-                    </span>
-                  </p>
-                )}
-              </div>
-            </Reveal>
-          ))}
-        </ul>
-      )}
+                <span
+                  aria-hidden
+                  className="text-gradient-gold absolute -top-5 left-6 font-serif text-7xl leading-none opacity-80"
+                >
+                  “
+                </span>
+                <blockquote className="font-serif italic text-lg text-foreground/85 leading-relaxed">
+                  {t.quote_text}
+                </blockquote>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+                  <p className="eyebrow">— {t.reviewer_name}</p>
+                  {t.rating != null && (
+                    <p className="text-[color:var(--brand-gold)] text-lg tracking-widest">
+                      {"★".repeat(t.rating)}
+                      <span className="text-muted-foreground/40">
+                        {"★".repeat(Math.max(0, 5 - t.rating))}
+                      </span>
+                    </p>
+                  )}
+                </div>
+              </Reveal>
+            ))}
+          </ul>
+        )}
       </section>
       <CinematicSlideshow slides={slides} eyebrow="In Frame" title="Scenes Readers Remember" />
     </>

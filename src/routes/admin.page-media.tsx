@@ -63,9 +63,7 @@ function PageMediaManager() {
     queryClient.setQueryData(queryKey, next);
     try {
       const results = await Promise.all(
-        next.map((m, i) =>
-          supabase.from("page_media").update({ display_order: i }).eq("id", m.id),
-        ),
+        next.map((m, i) => supabase.from("page_media").update({ display_order: i }).eq("id", m.id)),
       );
       const failed = results.find((r) => r.error);
       if (failed?.error) throw failed.error;
@@ -168,11 +166,7 @@ function PageMediaManager() {
                   aria-label={item.is_visible ? "Hide slide" : "Show slide"}
                   className="text-muted-foreground hover:text-primary"
                 >
-                  {item.is_visible ? (
-                    <Eye className="h-4 w-4" />
-                  ) : (
-                    <EyeOff className="h-4 w-4" />
-                  )}
+                  {item.is_visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                 </button>
                 <button
                   type="button"
@@ -257,9 +251,7 @@ function SlideFormDialog({
 
       const { error } = item
         ? await supabase.from("page_media").update(payload).eq("id", item.id)
-        : await supabase
-            .from("page_media")
-            .insert({ ...payload, display_order: nextDisplayOrder });
+        : await supabase.from("page_media").insert({ ...payload, display_order: nextDisplayOrder });
       if (error) throw error;
       toast.success(item ? "Slide updated." : "Slide added.");
       onSaved();
@@ -359,15 +351,7 @@ function SlideFormDialog({
   );
 }
 
-function Field({
-  label,
-  hint,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  children: ReactNode;
-}) {
+function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
   return (
     <div>
       <label className="mb-1 block text-sm text-muted-foreground">{label}</label>

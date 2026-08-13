@@ -7,7 +7,7 @@ import { AdminShell } from "@/components/admin/admin-shell";
 import { SortableList } from "@/components/admin/sortable-list";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
-import { uploadMedia } from "@/lib/media-upload";
+import { deleteMedia, uploadMedia } from "@/lib/media-upload";
 import {
   Dialog,
   DialogContent,
@@ -119,6 +119,8 @@ function CharacterList({ bookId }: { bookId: string }) {
       toast.error(error.message);
       return;
     }
+    // The row is gone; drop its uploaded files so the bucket doesn't grow orphans.
+    await deleteMedia(character.image_url);
     toast.success(`"${character.name}" deleted.`);
     queryClient.invalidateQueries({ queryKey });
   }

@@ -85,49 +85,49 @@ function Press() {
         imageUrl={SITE_ART.cover}
       />
       <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      {data.length === 0 ? (
-        <p className="text-muted-foreground">No press mentions yet.</p>
-      ) : (
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {data.map((p, i) => (
-            <Reveal
-              as="li"
-              key={p.id}
-              variant="zoom"
-              delay={Math.min(i, 5) * 90}
-              className="card-premium texture-paper group p-6 flex flex-col"
-            >
-              <div className="h-10 flex items-center">
-                {p.logo_url ? (
-                  <img
-                    src={p.logo_url}
-                    alt={p.source_name}
-                    className="max-h-10 max-w-[160px] object-contain opacity-80 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
-                  />
-                ) : (
-                  <span className="font-serif text-xl text-primary">{p.source_name}</span>
-                )}
-              </div>
-              <p className="mt-4 flex-1 font-serif italic text-foreground/80">
-                {p.headline || "—"}
-              </p>
-              <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                <p className="eyebrow">{p.source_name}</p>
-                {p.link && (
-                  <a
-                    href={p.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="eyebrow link-underline hover:text-[color:var(--brand-gold-bright)]"
-                  >
-                    Read →
-                  </a>
-                )}
-              </div>
-            </Reveal>
-          ))}
-        </ul>
-      )}
+        {data.length === 0 ? (
+          <p className="text-muted-foreground">No press mentions yet.</p>
+        ) : (
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {data.map((p, i) => (
+              <Reveal
+                as="li"
+                key={p.id}
+                variant="zoom"
+                delay={Math.min(i, 5) * 90}
+                className="card-premium texture-paper group p-6 flex flex-col"
+              >
+                <div className="h-10 flex items-center">
+                  {p.logo_url ? (
+                    <img
+                      src={p.logo_url}
+                      alt={p.source_name}
+                      className="max-h-10 max-w-[160px] object-contain opacity-80 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
+                    />
+                  ) : (
+                    <span className="font-serif text-xl text-primary">{p.source_name}</span>
+                  )}
+                </div>
+                <p className="mt-4 flex-1 font-serif italic text-foreground/80">
+                  {p.headline || "—"}
+                </p>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+                  <p className="eyebrow">{p.source_name}</p>
+                  {p.link && (
+                    <a
+                      href={p.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="eyebrow link-underline hover:text-[color:var(--brand-gold-bright)]"
+                    >
+                      Read →
+                    </a>
+                  )}
+                </div>
+              </Reveal>
+            ))}
+          </ul>
+        )}
       </section>
       <CinematicSlideshow slides={slides} eyebrow="In Frame" title="Press & Key Art" />
     </>

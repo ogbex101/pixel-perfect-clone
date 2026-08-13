@@ -227,9 +227,7 @@ function Dashboard({ ctx }: { ctx: MemberCtx }) {
       <Reveal className="mt-10">
         <h2 className="border-b border-border pb-3 font-serif text-xl text-primary">Badges</h2>
         {badges.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">
-            No badges yet — they arrive as you complete challenges.
-          </p>
+          <p className="mt-4 text-sm text-muted-foreground">No badges yet.</p>
         ) : (
           <ul className="mt-4 flex flex-wrap gap-2">
             {badges.map((b, i) => {

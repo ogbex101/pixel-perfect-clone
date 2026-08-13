@@ -22,9 +22,7 @@ function toHex(buffer: ArrayBuffer): string {
 }
 
 async function derive(password: string, saltHex: string): Promise<string> {
-  const salt = Uint8Array.from(
-    saltHex.match(/.{2}/g)?.map((h) => parseInt(h, 16)) ?? [],
-  );
+  const salt = Uint8Array.from(saltHex.match(/.{2}/g)?.map((h) => parseInt(h, 16)) ?? []);
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(password),

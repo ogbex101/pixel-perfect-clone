@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
 import { FileUploadField } from "@/components/admin/file-upload-field";
-import { uploadMedia } from "@/lib/media-upload";
+import { deleteMedia, uploadMedia } from "@/lib/media-upload";
 import {
   Dialog,
   DialogContent,
@@ -97,6 +97,8 @@ function DebatesManager() {
       toast.error(error.message);
       return;
     }
+    // The row is gone; drop its uploaded files so the bucket doesn't grow orphans.
+    await deleteMedia(t.image_url);
     toast.success(`"${t.title}" deleted.`);
     queryClient.invalidateQueries({ queryKey });
   }

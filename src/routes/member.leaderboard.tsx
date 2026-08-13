@@ -22,13 +22,15 @@ export const Route = createFileRoute("/member/leaderboard")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <MemberGate>
+  component: () => (
+    <MemberGate>
       {(ctx) => (
         <MemberShell ctx={ctx}>
           <LeaderboardPage ctx={ctx} />
         </MemberShell>
       )}
-    </MemberGate>,
+    </MemberGate>
+  ),
 });
 
 function LeaderboardPage({ ctx }: { ctx: MemberCtx }) {

@@ -106,93 +106,99 @@ function BooksIndex() {
         imageUrl={SITE_ART.betterauds}
       />
       <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      {books.length > 0 && (
-        <Reveal
-          delay={150}
-          className="flex flex-wrap gap-2"
-          role="group"
-          aria-label="Filter books by status"
-        >
-          {STATUS_FILTERS.map((f) => (
-            <button
-              key={f.key}
-              type="button"
-              onClick={() => setFilter(f.key)}
-              aria-pressed={filter === f.key}
-              className={cn(
-                "eyebrow btn-sheen rounded-full px-5 py-2 border transition-all duration-300",
-                filter === f.key
-                  ? "border-primary text-primary bg-primary/10 shadow-[0_0_18px_-6px_oklch(0.79_0.115_85/0.5)]"
-                  : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground",
-              )}
-            >
-              {f.label}
-            </button>
-          ))}
-        </Reveal>
-      )}
-      {books.length === 0 ? (
-        <p className="mt-10 text-muted-foreground">No books yet.</p>
-      ) : filtered.length === 0 ? (
-        <p className="mt-10 text-muted-foreground">No books match this filter.</p>
-      ) : (
-        <ul className="mt-12 grid gap-10 md:gap-12 md:grid-cols-2">
-          {filtered.map((b, i) => (
-            <Reveal
-              as="li"
-              key={b.id}
-              variant={i % 2 === 0 ? "left" : "right"}
-              delay={(i % 2) * 100}
-              className="group grid grid-cols-[minmax(0,120px)_1fr] sm:grid-cols-[minmax(0,1fr)_2fr] gap-5 sm:gap-6"
-            >
-              <Link
-                to="/books/$bookId"
-                params={{ bookId: b.id }}
-                className="card-premium img-shine block overflow-hidden"
-              >
-                <div className="aspect-[2/3] bg-muted overflow-hidden">
-                  {b.cover_image_url ? (
-                    <img
-                      src={b.cover_image_url}
-                      alt={b.title}
-                      className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700 ease-out"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center p-3 bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground">
-                      <span className="font-serif text-xl text-center">{b.title}</span>
-                    </div>
-                  )}
-                </div>
-              </Link>
-              <div className="min-w-0">
-                <p className="eyebrow">{b.status.replace("_", " ")}</p>
-                <h2 className="mt-1 font-serif text-xl sm:text-2xl md:text-3xl text-primary">
-                  <Link
-                    to="/books/$bookId"
-                    params={{ bookId: b.id }}
-                    className="hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300"
-                  >
-                    {b.title}
-                  </Link>
-                </h2>
-                {b.genre && <p className="mt-1 italic text-muted-foreground text-sm">{b.genre}</p>}
-                {b.short_description && (
-                  <p className="mt-3 text-foreground/80 line-clamp-5">{b.short_description}</p>
+        {books.length > 0 && (
+          <Reveal
+            delay={150}
+            className="flex flex-wrap gap-2"
+            role="group"
+            aria-label="Filter books by status"
+          >
+            {STATUS_FILTERS.map((f) => (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() => setFilter(f.key)}
+                aria-pressed={filter === f.key}
+                className={cn(
+                  "eyebrow btn-sheen rounded-full px-5 py-2 border transition-all duration-300",
+                  filter === f.key
+                    ? "border-primary text-primary bg-primary/10 shadow-[0_0_18px_-6px_oklch(0.79_0.115_85/0.5)]"
+                    : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground",
                 )}
+              >
+                {f.label}
+              </button>
+            ))}
+          </Reveal>
+        )}
+        {books.length === 0 ? (
+          <p className="mt-10 text-muted-foreground">No books yet.</p>
+        ) : filtered.length === 0 ? (
+          <p className="mt-10 text-muted-foreground">No books match this filter.</p>
+        ) : (
+          <ul className="mt-12 grid gap-10 md:gap-12 md:grid-cols-2">
+            {filtered.map((b, i) => (
+              <Reveal
+                as="li"
+                key={b.id}
+                variant={i % 2 === 0 ? "left" : "right"}
+                delay={(i % 2) * 100}
+                className="group grid grid-cols-[minmax(0,120px)_1fr] sm:grid-cols-[minmax(0,1fr)_2fr] gap-5 sm:gap-6"
+              >
                 <Link
                   to="/books/$bookId"
                   params={{ bookId: b.id }}
-                  className="mt-4 inline-block border-b-2 border-accent pb-0.5 text-sm font-medium text-primary link-underline hover:text-[color:var(--brand-gold-bright)] transition-colors"
+                  className="card-premium img-shine block overflow-hidden"
                 >
-                  Read more →
+                  <div className="aspect-[2/3] bg-muted overflow-hidden">
+                    {b.cover_image_url ? (
+                      <img
+                        src={b.cover_image_url}
+                        alt={b.title}
+                        className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700 ease-out"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center p-3 bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground">
+                        <span className="font-serif text-xl text-center">{b.title}</span>
+                      </div>
+                    )}
+                  </div>
                 </Link>
-              </div>
-            </Reveal>
-          ))}
-        </ul>
-      )}
+                <div className="min-w-0">
+                  <p className="eyebrow">{b.status.replace("_", " ")}</p>
+                  <h2 className="mt-1 font-serif text-xl sm:text-2xl md:text-3xl text-primary">
+                    <Link
+                      to="/books/$bookId"
+                      params={{ bookId: b.id }}
+                      className="hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300"
+                    >
+                      {b.title}
+                    </Link>
+                  </h2>
+                  {b.genre && (
+                    <p className="mt-1 italic text-muted-foreground text-sm">{b.genre}</p>
+                  )}
+                  {b.short_description && (
+                    <p className="mt-3 text-foreground/80 line-clamp-5">{b.short_description}</p>
+                  )}
+                  <Link
+                    to="/books/$bookId"
+                    params={{ bookId: b.id }}
+                    className="mt-4 inline-block border-b-2 border-accent pb-0.5 text-sm font-medium text-primary link-underline hover:text-[color:var(--brand-gold-bright)] transition-colors"
+                  >
+                    Read more →
+                  </Link>
+                </div>
+              </Reveal>
+            ))}
+          </ul>
+        )}
       </section>
-      <CinematicSlideshow slides={slides} eyebrow="Covers & Key Art" title="The Library in Frames" />
+      <CinematicSlideshow
+        slides={slides}
+        eyebrow="Covers & Key Art"
+        title="The Library in Frames"
+      />
     </>
   );
 }

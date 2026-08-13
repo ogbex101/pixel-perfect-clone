@@ -57,8 +57,8 @@ export const pageMediaQuery = (pageKey: string) =>
 export function toSlides(rows: PageMedia[]): Slide[] {
   const slides: Slide[] = [];
   for (const r of rows) {
-      const isVideo = r.media_type === "video" && r.video_url;
-      const src = isVideo ? r.video_url : r.image_url;
+    const isVideo = r.media_type === "video" && r.video_url;
+    const src = isVideo ? r.video_url : r.image_url;
     if (!src) continue;
     slides.push({
       id: r.id,

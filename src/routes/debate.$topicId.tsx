@@ -59,7 +59,7 @@ function DebateTopicPage() {
           .from("debate_comments")
           .select("*, members(full_name, avatar_url)")
           .eq("topic_id", topicId)
-          .eq("is_hidden", false)
+          .or("is_hidden.is.null,is_hidden.eq.false")
           .order("created_at", { ascending: true }),
       ]);
       if (topic.error) throw topic.error;

@@ -44,7 +44,6 @@ function ProfileForm() {
     bio: "",
     location: "",
     contact_email: "",
-    brand_accent_color: "",
     quotes: [] as string[],
     background_facts: [] as string[],
   });
@@ -61,7 +60,6 @@ function ProfileForm() {
       bio: data.bio ?? "",
       location: data.location ?? "",
       contact_email: data.contact_email ?? "",
-      brand_accent_color: data.brand_accent_color ?? "",
       quotes: data.quotes ?? [],
       background_facts: data.background_facts ?? [],
     });
@@ -102,7 +100,6 @@ function ProfileForm() {
         bio: form.bio.trim() || null,
         location: form.location.trim() || null,
         contact_email: form.contact_email.trim() || null,
-        brand_accent_color: form.brand_accent_color.trim() || null,
         quotes: form.quotes.map((q) => q.trim()).filter(Boolean),
         background_facts: form.background_facts.map((f) => f.trim()).filter(Boolean),
         hero_photo_url: heroPhotoUrl,
@@ -202,14 +199,6 @@ function ProfileForm() {
           type="email"
           value={form.contact_email}
           onChange={(e) => setForm((f) => ({ ...f, contact_email: e.target.value }))}
-          className={inputClass}
-        />
-      </Field>
-
-      <Field label="Brand accent color" hint="Optional CSS color value, e.g. #b8934a">
-        <input
-          value={form.brand_accent_color}
-          onChange={(e) => setForm((f) => ({ ...f, brand_accent_color: e.target.value }))}
           className={inputClass}
         />
       </Field>

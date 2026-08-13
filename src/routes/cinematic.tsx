@@ -90,95 +90,95 @@ function Cinematic() {
         videoUrl={SITE_ART.corridorVideo}
       />
       <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-      {data.length === 0 ? (
-        <p className="text-muted-foreground">No videos yet.</p>
-      ) : (
-        <>
-          {featured && (
-            <Reveal variant="zoom">
-              <p className="eyebrow">Featured</p>
-              <div className="frame-gold mt-5 aspect-video w-full overflow-hidden bg-muted texture-metal">
-                {featured.video_url ? (
-                  <video
-                    src={featured.video_url}
-                    controls
-                    poster={featured.thumbnail_url ?? undefined}
-                    className="h-full w-full"
-                  />
-                ) : featured.thumbnail_url ? (
-                  <img
-                    src={featured.thumbnail_url}
-                    alt={featured.title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <span className="font-serif text-2xl text-primary">{featured.title}</span>
-                  </div>
+        {data.length === 0 ? (
+          <p className="text-muted-foreground">No videos yet.</p>
+        ) : (
+          <>
+            {featured && (
+              <Reveal variant="zoom">
+                <p className="eyebrow">Featured</p>
+                <div className="frame-gold mt-5 aspect-video w-full overflow-hidden bg-muted texture-metal">
+                  {featured.video_url ? (
+                    <video
+                      src={featured.video_url}
+                      controls
+                      poster={featured.thumbnail_url ?? undefined}
+                      className="h-full w-full"
+                    />
+                  ) : featured.thumbnail_url ? (
+                    <img
+                      src={featured.thumbnail_url}
+                      alt={featured.title}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <span className="font-serif text-2xl text-primary">{featured.title}</span>
+                    </div>
+                  )}
+                </div>
+                <h2 className="text-gradient-gold mt-6 font-serif text-2xl md:text-3xl pb-1">
+                  {featured.title}
+                </h2>
+                {featured.description && (
+                  <p className="mt-2 text-foreground/80 max-w-3xl">{featured.description}</p>
                 )}
-              </div>
-              <h2 className="text-gradient-gold mt-6 font-serif text-2xl md:text-3xl pb-1">
-                {featured.title}
-              </h2>
-              {featured.description && (
-                <p className="mt-2 text-foreground/80 max-w-3xl">{featured.description}</p>
-              )}
-            </Reveal>
-          )}
-
-          {rest.length > 0 && (
-            <div className="mt-20">
-              <Reveal className="ornament pb-4">
-                <span className="eyebrow">{featured ? "More" : "All videos"}</span>
               </Reveal>
-              <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {rest.map((v, i) => (
-                  <Reveal
-                    as="li"
-                    key={v.id}
-                    variant="zoom"
-                    delay={(i % 3) * 110}
-                    className="group card-premium overflow-hidden"
-                  >
-                    <div className="aspect-video w-full overflow-hidden border-b border-border bg-muted">
-                      {v.video_url ? (
-                        <video
-                          src={v.video_url}
-                          controls
-                          poster={v.thumbnail_url ?? undefined}
-                          className="h-full w-full"
-                        />
-                      ) : v.thumbnail_url ? (
-                        <img
-                          src={v.thumbnail_url}
-                          alt={v.title}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center p-4">
-                          <span className="font-serif text-lg text-primary text-center">
-                            {v.title}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-serif text-lg text-primary group-hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300">
-                        {v.title}
-                      </h3>
-                      {v.description && (
-                        <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                          {v.description}
-                        </p>
-                      )}
-                    </div>
-                  </Reveal>
-                ))}
-              </ul>
-            </div>
-          )}
-        </>
-      )}
+            )}
+
+            {rest.length > 0 && (
+              <div className="mt-20">
+                <Reveal className="ornament pb-4">
+                  <span className="eyebrow">{featured ? "More" : "All videos"}</span>
+                </Reveal>
+                <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                  {rest.map((v, i) => (
+                    <Reveal
+                      as="li"
+                      key={v.id}
+                      variant="zoom"
+                      delay={(i % 3) * 110}
+                      className="group card-premium overflow-hidden"
+                    >
+                      <div className="aspect-video w-full overflow-hidden border-b border-border bg-muted">
+                        {v.video_url ? (
+                          <video
+                            src={v.video_url}
+                            controls
+                            poster={v.thumbnail_url ?? undefined}
+                            className="h-full w-full"
+                          />
+                        ) : v.thumbnail_url ? (
+                          <img
+                            src={v.thumbnail_url}
+                            alt={v.title}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center p-4">
+                            <span className="font-serif text-lg text-primary text-center">
+                              {v.title}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-serif text-lg text-primary group-hover:text-[color:var(--brand-gold-bright)] transition-colors duration-300">
+                          {v.title}
+                        </h3>
+                        {v.description && (
+                          <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                            {v.description}
+                          </p>
+                        )}
+                      </div>
+                    </Reveal>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
+        )}
       </section>
       <CinematicSlideshow slides={slides} eyebrow="Reel" title="Continuous Play" />
     </>
