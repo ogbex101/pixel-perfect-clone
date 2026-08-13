@@ -9,11 +9,10 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { ArrowUp, Menu } from "lucide-react";
+import { ArrowUp, Menu, X } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Toaster } from "@/components/ui/sonner";
 
 const NAV_LINKS = [
@@ -215,6 +214,89 @@ function BackToTop() {
   );
 }
 
+/**
+ * Slide-out menu shared by every breakpoint. It overlays the page rather than
+ * pushing it, closes on link click, on a click outside, and on Escape.
+ */
+function SiteMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    // Stop the page behind the overlay from scrolling with it.
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previous;
+    };
+  }, [open, onClose]);
+
+  return (
+    <>
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden={!open}
+        onClick={onClose}
+        className={`fixed inset-0 z-50 bg-background/70 backdrop-blur-sm transition-opacity duration-300 ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        <span className="sr-only">Close menu</span>
+      </button>
+
+      <aside
+        id="site-menu"
+        aria-hidden={!open}
+        className={`texture-ink fixed inset-y-0 right-0 z-50 flex w-[min(20rem,85vw)] flex-col border-l border-[color:oklch(0.79_0.115_85_/_28%)] shadow-[0_0_60px_-10px_oklch(0_0_0/0.9)] transition-transform duration-300 ease-out ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-border px-6 py-5">
+          <span className="font-serif text-lg text-gradient-gold">Menu</span>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close menu"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-primary/40 text-primary transition-colors hover:border-primary hover:bg-primary/10"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
+          {NAV_LINKS.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              onClick={onClose}
+              tabIndex={open ? 0 : -1}
+              activeProps={{ className: "text-primary border-primary/50 bg-primary/10" }}
+              className="border border-transparent px-4 py-3 font-serif text-lg text-foreground/85 transition-all duration-300 hover:border-border hover:pl-6 hover:text-primary"
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="border-t border-border p-4">
+          <Link
+            to="/member/login"
+            onClick={onClose}
+            tabIndex={open ? 0 : -1}
+            className="block bg-primary px-4 py-3 text-center text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
+          >
+            Member sign in
+          </Link>
+        </div>
+      </aside>
+    </>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -265,7 +347,9 @@ function RootComponent() {
             >
               Nik Nanoski
             </Link>
-            <nav className="hidden md:flex flex-wrap items-center gap-8 text-[0.8rem] font-medium tracking-[0.08em] uppercase text-muted-foreground">
+            {/* Desktop links stay visible; the hamburger sits alongside them at
+                every width so the full menu is always one click away. */}
+            <nav className="hidden lg:flex flex-wrap items-center gap-8 text-[0.8rem] font-medium tracking-[0.08em] uppercase text-muted-foreground">
               {NAV_LINKS.map((l) => (
                 <Link
                   key={l.to}
@@ -277,36 +361,22 @@ function RootComponent() {
                 </Link>
               ))}
             </nav>
-            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-              <SheetTrigger asChild>
-                <button
-                  className="md:hidden inline-flex items-center justify-center rounded-sm border border-border p-2 text-foreground hover:border-primary hover:text-primary transition-colors"
-                  aria-label="Open menu"
-                >
-                  <Menu className="h-5 w-5" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right" className="texture-paper border-l border-border w-3/4">
-                <SheetTitle className="font-serif text-lg text-gradient-gold">Menu</SheetTitle>
-                <nav className="mt-8 flex flex-col gap-6 text-lg font-serif">
-                  {NAV_LINKS.map((l, i) => (
-                    <Link
-                      key={l.to}
-                      to={l.to}
-                      onClick={() => setMenuOpen(false)}
-                      activeProps={{ className: "text-primary" }}
-                      className="route-transition text-foreground/85 hover:text-primary hover:translate-x-1 transition-all duration-300"
-                      style={{ animationDelay: `${i * 60}ms`, animationFillMode: "both" }}
-                    >
-                      {l.label}
-                    </Link>
-                  ))}
-                </nav>
-              </SheetContent>
-            </Sheet>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+              aria-controls="site-menu"
+              className="inline-flex items-center justify-center rounded-sm border border-primary/40 p-2 text-primary transition-colors hover:border-primary hover:bg-primary/10"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
           </div>
           <ScrollProgress />
         </header>
+
+        <SiteMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
         <main key={pathname} className="flex-1 route-transition">
           <Outlet />
         </main>

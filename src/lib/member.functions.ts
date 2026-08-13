@@ -484,3 +484,70 @@ export const getMemberProgress = createServerFn({ method: "POST" })
       streak: best,
     };
   });
+
+/** Edits a comment, but only if the signed-in member wrote it. */
+export const editDebateComment = createServerFn({ method: "POST" })
+  .inputValidator((data) =>
+    z
+      .object({
+        token: z.string().min(1),
+        comment_id: z.string().uuid(),
+        content: z.string().trim().min(1).max(4000),
+      })
+      .parse(data),
+  )
+  .handler(async ({ data }) => {
+    const member = await requireMember(data.token);
+    const db = await admin();
+    const { data: comment } = await db
+      .from("debate_comments")
+      .select("member_id")
+      .eq("id", data.comment_id)
+      .maybeSingle();
+    if (!comment) throw new Error("Comment not found.");
+    if (comment.member_id !== member.id) throw new Error("That isn't your comment.");
+
+    const { error } = await db
+      .from("debate_comments")
+      .update({ content: data.content, updated_at: new Date().toISOString() })
+      .eq("id", data.comment_id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+/** Deletes a comment, but only if the signed-in member wrote it. */
+export const deleteDebateComment = createServerFn({ method: "POST" })
+  .inputValidator((data) =>
+    z.object({ token: z.string().min(1), comment_id: z.string().uuid() }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    const member = await requireMember(data.token);
+    const db = await admin();
+    const { data: comment } = await db
+      .from("debate_comments")
+      .select("member_id")
+      .eq("id", data.comment_id)
+      .maybeSingle();
+    if (!comment) throw new Error("Comment not found.");
+    if (comment.member_id !== member.id) throw new Error("That isn't your comment.");
+
+    // Replies would be orphaned by a hard delete, so a comment with children is
+    // blanked in place and the thread structure survives.
+    const { count } = await db
+      .from("debate_comments")
+      .select("id", { count: "exact", head: true })
+      .eq("parent_id", data.comment_id);
+
+    if ((count ?? 0) > 0) {
+      const { error } = await db
+        .from("debate_comments")
+        .update({ content: "[deleted]", updated_at: new Date().toISOString() })
+        .eq("id", data.comment_id);
+      if (error) throw new Error(error.message);
+      return { ok: true, blanked: true };
+    }
+
+    const { error } = await db.from("debate_comments").delete().eq("id", data.comment_id);
+    if (error) throw new Error(error.message);
+    return { ok: true, blanked: false };
+  });
