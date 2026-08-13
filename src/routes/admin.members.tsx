@@ -22,7 +22,8 @@ export const Route = createFileRoute("/admin/members")({
   component: AdminMembersPage,
 });
 
-type Member = Tables<"members">;
+/** Password hashes are not readable by the admin UI (revoked at the column level). */
+type Member = Omit<Tables<"members">, "password_hash">;
 
 const queryKey = ["admin", "members"];
 
@@ -53,7 +54,9 @@ function MembersManager() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("members")
-        .select("*")
+        .select(
+          "id, email, full_name, facebook_username, avatar_url, bio, location, join_date, is_active, created_at, updated_at",
+        )
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
