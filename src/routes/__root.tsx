@@ -15,16 +15,45 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 
-const NAV_LINKS = [
+/**
+ * Navigation is grouped rather than flat: nine equal-weight links gave the
+ * header no hierarchy, so related pages now sit under three labelled groups
+ * and the member CTA is promoted out of the slide-out menu.
+ */
+const NAV_GROUPS = [
+  {
+    label: "The Work",
+    links: [
+      { to: "/books", label: "Books", hint: "Novels & series" },
+      { to: "/cinematic", label: "Cinematic", hint: "Trailers & scenes" },
+    ],
+  },
+  {
+    label: "Community",
+    links: [
+      { to: "/home", label: "Challenge", hint: "The DUMB 31 challenge" },
+      { to: "/debate", label: "Debate", hint: "Reader arguments" },
+      { to: "/news", label: "News", hint: "Latest dispatches" },
+    ],
+  },
+  {
+    label: "Reception",
+    links: [
+      { to: "/press", label: "Press", hint: "Coverage & interviews" },
+      { to: "/testimonials", label: "Praise", hint: "What readers say" },
+    ],
+  },
+] as const;
+
+const NAV_DIRECT = [
   { to: "/about", label: "About" },
-  { to: "/books", label: "Books" },
-  { to: "/cinematic", label: "Cinematic" },
-  { to: "/press", label: "Press" },
-  { to: "/testimonials", label: "Praise" },
-  { to: "/debate", label: "Debate" },
-  { to: "/news", label: "News" },
   { to: "/contact", label: "Contact" },
-  { to: "/home", label: "Community" },
+] as const;
+
+const NAV_LINKS = [
+  ...NAV_DIRECT.slice(0, 1),
+  ...NAV_GROUPS.flatMap((g) => g.links.map((l) => ({ to: l.to, label: l.label }))),
+  ...NAV_DIRECT.slice(1),
 ] as const;
 
 function NotFoundComponent() {
