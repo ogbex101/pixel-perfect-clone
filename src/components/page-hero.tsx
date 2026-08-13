@@ -46,7 +46,8 @@ export function PageHero({
         />
       ) : null}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/82 to-background/55" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/72 to-background/35" />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent" />
       <div className="absolute inset-0 vignette" />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pb-10 pt-20 md:px-14 md:pb-14 md:pt-28">
