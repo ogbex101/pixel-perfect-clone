@@ -115,6 +115,14 @@ function About() {
         >
           {/* Sticky context rail: orienting facts stay in view while the bio scrolls */}
           <div className="md:sticky md:top-28">
+            {data.hero_photo_url && (
+              <img
+                src={data.hero_photo_url}
+                alt={data.name}
+                className="card-premium mb-8 aspect-[4/5] w-full object-cover"
+                style={{ objectPosition: "center 25%" }}
+              />
+            )}
             {data.location && (
               <>
                 <p className="eyebrow">Based in</p>
