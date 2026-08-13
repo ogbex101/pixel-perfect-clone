@@ -155,7 +155,7 @@ function BooksIndex() {
                       <img
                         src={b.cover_image_url}
                         alt={b.title}
-                        className="w-full h-full object-contain group-hover:scale-[1.06] transition-transform duration-700 ease-out"
+                        className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700 ease-out"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center p-3 bg-gradient-to-br from-primary to-[color:var(--brand-rust)] text-primary-foreground">

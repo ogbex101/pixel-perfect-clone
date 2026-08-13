@@ -312,7 +312,7 @@ function FeaturedBookSection({
                 <img
                   src={book.cover_image_url}
                   alt={`${book.title} cover`}
-                  className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary to-[color:var(--brand-rust)] p-6">
@@ -486,7 +486,7 @@ function LibrarySection({
                   <img
                     src={b.cover_image_url}
                     alt={b.title}
-                    className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary to-[color:var(--brand-rust)] p-4 text-primary-foreground">
