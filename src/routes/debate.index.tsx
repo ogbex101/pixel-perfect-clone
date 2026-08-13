@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Reveal } from "@/components/reveal";
+import { PageHero } from "@/components/page-hero";
+import { SITE_ART } from "@/lib/page-media";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/debate/")({
@@ -54,21 +56,24 @@ function DebateIndex() {
   });
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16">
-      <Reveal>
-        <p className="eyebrow">Community</p>
-        <h1 className="mt-2 font-serif text-4xl text-gradient-gold sm:text-5xl">Debate forum</h1>
-        <p className="mt-4 max-w-2xl text-muted-foreground">
-          Some doors were never meant to be opened. Argue about who opened them anyway.
-        </p>
-      </Reveal>
-
-      <div className="rule-gold my-10" />
-
+    <>
+      <PageHero
+        eyebrow="Community"
+        title="Debate forum"
+        subtitle="Some doors were never meant to be opened. Argue about who opened them anyway."
+        imageUrl={SITE_ART.opie}
+      />
+      <div className="mx-auto max-w-4xl px-6 py-16">
       {isLoading ? (
         <p className="text-sm text-muted-foreground">Loading topics…</p>
       ) : !data || data.length === 0 ? (
-        <p className="text-muted-foreground">No debate topics yet.</p>
+        <div className="card-premium texture-paper p-10 text-center">
+          <p className="eyebrow">Floor is empty</p>
+          <p className="mt-3 font-serif text-2xl text-primary">No debate topics yet</p>
+          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
+            Topics open as the series unfolds. Sign in as a member to be first in the room.
+          </p>
+        </div>
       ) : (
         <ul className="space-y-4">
           {data.map((topic, i) => (
@@ -105,6 +110,7 @@ function DebateIndex() {
           ))}
         </ul>
       )}
-    </div>
+      </div>
+    </>
   );
 }
