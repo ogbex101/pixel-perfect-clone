@@ -917,7 +917,12 @@ function Home() {
 
   return (
     <>
-      {order.map((key) => renderers[key]?.() ?? null)}
+      {order.map((key) => (
+        <>
+          {renderers[key]?.() ?? null}
+          {key === "hero" ? <PathsSection key="paths" /> : null}
+        </>
+      ))}
       <CinematicSlideshow
         slides={slides}
         eyebrow="The Gallery"
