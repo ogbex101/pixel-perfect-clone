@@ -376,31 +376,76 @@ function RootComponent() {
             >
               Nik Nanoski
             </Link>
-            {/* Desktop links stay visible; the hamburger sits alongside them at
-                every width so the full menu is always one click away. */}
-            <nav className="hidden lg:flex flex-wrap items-center gap-8 text-[0.8rem] font-medium tracking-[0.08em] uppercase text-muted-foreground">
-              {NAV_LINKS.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  activeProps={{ className: "text-primary" }}
-                  className="link-underline hover:text-primary transition-colors duration-300"
-                >
-                  {l.label}
-                </Link>
+            {/* Grouped desktop nav: two direct links plus three hover/focus
+                menus, so the header stays scannable at five items. */}
+            <nav className="hidden lg:flex items-center gap-7 text-[0.78rem] font-medium tracking-[0.08em] uppercase text-muted-foreground">
+              <Link
+                to="/about"
+                activeProps={{ className: "text-primary" }}
+                className="link-underline transition-colors duration-300 hover:text-primary"
+              >
+                About
+              </Link>
+
+              {NAV_GROUPS.map((group) => (
+                <div key={group.label} className="relative group">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 uppercase tracking-[0.08em] transition-colors duration-300 group-hover:text-primary group-focus-within:text-primary"
+                  >
+                    {group.label}
+                    <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                  </button>
+                  <div className="invisible absolute left-1/2 top-full z-50 w-60 -translate-x-1/2 pt-4 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                    <div className="texture-ink border border-[color:oklch(0.79_0.115_85_/_28%)] p-2 shadow-[0_24px_50px_-24px_oklch(0_0_0/0.9)]">
+                      {group.links.map((l) => (
+                        <Link
+                          key={l.to}
+                          to={l.to}
+                          activeProps={{ className: "bg-primary/10 text-primary" }}
+                          className="block px-3 py-2.5 normal-case tracking-normal transition-colors duration-200 hover:bg-primary/10 hover:text-primary"
+                        >
+                          <span className="block font-serif text-base text-foreground/90">
+                            {l.label}
+                          </span>
+                          <span className="mt-0.5 block text-[0.7rem] text-muted-foreground">
+                            {l.hint}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ))}
+
+              <Link
+                to="/contact"
+                activeProps={{ className: "text-primary" }}
+                className="link-underline transition-colors duration-300 hover:text-primary"
+              >
+                Contact
+              </Link>
             </nav>
 
-            <button
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open menu"
-              aria-expanded={menuOpen}
-              aria-controls="site-menu"
-              className="inline-flex items-center justify-center rounded-sm border border-primary/40 p-2 text-primary transition-colors hover:border-primary hover:bg-primary/10"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/member/login"
+                className="btn-sheen hidden items-center border border-primary px-4 py-2 text-[0.72rem] font-medium uppercase tracking-[0.12em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground sm:inline-flex"
+              >
+                Member sign in
+              </Link>
+              {/* The slide-out is the primary nav below lg and an escape hatch above it. */}
+              <button
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                aria-label="Open menu"
+                aria-expanded={menuOpen}
+                aria-controls="site-menu"
+                className="inline-flex items-center justify-center rounded-sm border border-primary/40 p-2 text-primary transition-colors hover:border-primary hover:bg-primary/10 lg:hidden"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </div>
           </div>
           <ScrollProgress />
         </header>
