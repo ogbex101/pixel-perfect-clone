@@ -306,13 +306,13 @@ function FeaturedBookSection({
             <Link
               to="/books/$bookId"
               params={{ bookId: book.id }}
-              className="card-premium img-shine group block aspect-[2/3] overflow-hidden"
+              className="card-premium img-shine group block aspect-[2/3] overflow-hidden bg-secondary/40"
             >
               {book.cover_image_url ? (
                 <img
                   src={book.cover_image_url}
                   alt={`${book.title} cover`}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary to-[color:var(--brand-rust)] p-6">
@@ -481,12 +481,12 @@ function LibrarySection({
             className="w-60 shrink-0 snap-start sm:w-72 md:w-80"
           >
             <Link to="/books/$bookId" params={{ bookId: b.id }} className="group block">
-              <div className="card-premium img-shine relative aspect-[2/3] overflow-hidden">
+              <div className="card-premium img-shine relative aspect-[2/3] overflow-hidden bg-secondary/40">
                 {b.cover_image_url ? (
                   <img
                     src={b.cover_image_url}
                     alt={b.title}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                    className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.06]"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary to-[color:var(--brand-rust)] p-4 text-primary-foreground">
