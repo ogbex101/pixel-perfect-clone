@@ -29,12 +29,20 @@ const createFirstAdmin = createServerFn({ method: "POST" })
     if ((existing?.users?.length ?? 0) > 0) {
       throw new Error("An admin account already exists. Go to /admin/login instead.");
     }
-    const { error } = await supabaseAdmin.auth.admin.createUser({
+    const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
       email: data.email,
       password: data.password,
       email_confirm: true,
     });
     if (error) throw new Error(error.message);
+    // The first account is the site admin: privileges come from user_roles,
+    // never from the mere fact of being signed in.
+    if (created?.user) {
+      const { error: roleError } = await supabaseAdmin
+        .from("user_roles")
+        .insert({ user_id: created.user.id, role: "admin" });
+      if (roleError) throw new Error(roleError.message);
+    }
     return { ok: true };
   });
 
