@@ -108,9 +108,13 @@ function Press() {
                     <span className="font-serif text-xl text-primary">{p.source_name}</span>
                   )}
                 </div>
-                <p className="mt-4 flex-1 font-serif italic text-foreground/80">
-                  {p.headline || "—"}
-                </p>
+                {p.headline ? (
+                  <p className="mt-4 flex-1 font-serif italic text-foreground/80">{p.headline}</p>
+                ) : (
+                  <p className="mt-4 flex-1 text-sm text-muted-foreground">
+                    Coverage of the DUMB 31 series.
+                  </p>
+                )}
                 <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
                   <p className="eyebrow">{p.source_name}</p>
                   {p.link && (
