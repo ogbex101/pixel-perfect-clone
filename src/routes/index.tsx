@@ -26,9 +26,13 @@ const homeQuery = queryOptions({
           .order("display_order", { ascending: true }),
         supabase.from("videos").select("*").order("display_order", { ascending: true }),
       ]);
+    // Drafts have a null published_at and scheduled posts a future one; both
+    // must stay off the public homepage, same rule the /news page applies.
     const news = await supabase
       .from("news_posts")
       .select("id,title,content,image_url,category,published_at")
+      .not("published_at", "is", null)
+      .lte("published_at", new Date().toISOString())
       .order("published_at", { ascending: false })
       .limit(3);
     return {
@@ -138,12 +142,12 @@ function HeroSection({
     <section className="relative flex min-h-[88vh] items-center justify-center overflow-hidden border-b border-border md:min-h-screen">
       <ParallaxLayer speed={0.28} className="-top-[12%] h-[124%]">
         {videoUrl ? (
-        <video
-          src={videoUrl}
-          autoPlay
-          muted
-          loop
-          playsInline
+          <video
+            src={videoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
             className="h-full w-full object-cover"
           />
         ) : imageUrl ? (
@@ -694,7 +698,9 @@ function LatestUpdatesSection({
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center texture-metal bg-secondary/40 p-6">
-                      <span className="text-center font-serif text-2xl text-primary">{p.title}</span>
+                      <span className="text-center font-serif text-2xl text-primary">
+                        {p.title}
+                      </span>
                     </div>
                   )}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/10 to-transparent" />
