@@ -139,7 +139,7 @@ function HeroSection({
   purchaseLink: string | null;
 }) {
   return (
-    <section className="relative flex min-h-[88vh] items-center justify-center overflow-hidden border-b border-border md:min-h-screen">
+    <section className="relative flex min-h-[82vh] items-center justify-center overflow-hidden border-b border-border md:min-h-[92vh]">
       <ParallaxLayer speed={0.28} className="-top-[12%] h-[124%]">
         {videoUrl ? (
           <video
@@ -161,7 +161,7 @@ function HeroSection({
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/75" />
       <div className="absolute inset-0 vignette" />
 
-      <div className="relative mx-auto w-full max-w-4xl px-6 py-24 text-center">
+      <div className="relative mx-auto w-full max-w-4xl px-6 py-20 text-center">
         <Reveal variant="blur">
           <p className="eyebrow track-in">Science Fiction Author</p>
         </Reveal>
@@ -170,10 +170,17 @@ function HeroSection({
             {title}
           </h1>
         </Reveal>
-        {tagline && (
+        {tagline ? (
           <Reveal variant="blur" delay={280}>
             <p className="mx-auto mt-7 max-w-2xl font-serif text-lg italic text-foreground/80 md:text-2xl">
               “{tagline}”
+            </p>
+          </Reveal>
+        ) : (
+          <Reveal variant="blur" delay={280}>
+            <p className="mx-auto mt-7 max-w-2xl font-serif text-lg italic text-foreground/75 md:text-2xl">
+              Post-apocalyptic fiction about survival, inherited lies, and the hope that outlives
+              the world.
             </p>
           </Reveal>
         )}
