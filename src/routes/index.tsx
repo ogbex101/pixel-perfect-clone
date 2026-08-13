@@ -153,7 +153,9 @@ function HeroSection({
         ) : imageUrl ? (
           <img src={imageUrl} alt="" className="kenburns h-full w-full object-cover" />
         ) : (
-          <div className="h-full w-full texture-metal bg-gradient-to-br from-[color:var(--brand-ink)] via-background to-[color:var(--brand-ink)]" />
+          // No admin-supplied hero yet: fall back to the DUMB 31 key art rather
+          // than an empty gradient, so the fold always carries an image.
+          <img src={SITE_ART.cover} alt="" className="kenburns h-full w-full object-cover" />
         )}
       </ParallaxLayer>
 
