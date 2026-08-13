@@ -9,7 +9,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { ArrowUp, Menu, X } from "lucide-react";
+import { ArrowUp, ChevronDown, Menu, X } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -296,18 +296,39 @@ function SiteMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
           </button>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
-          {NAV_LINKS.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              onClick={onClose}
-              tabIndex={open ? 0 : -1}
-              activeProps={{ className: "text-primary border-primary/50 bg-primary/10" }}
-              className="border border-transparent px-4 py-3 font-serif text-lg text-foreground/85 transition-all duration-300 hover:border-border hover:pl-6 hover:text-primary"
-            >
-              {l.label}
-            </Link>
+        <nav className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
+          <div className="flex flex-col gap-1">
+            {NAV_DIRECT.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                onClick={onClose}
+                tabIndex={open ? 0 : -1}
+                activeProps={{ className: "text-primary border-primary/50 bg-primary/10" }}
+                className="border border-transparent px-4 py-3 font-serif text-lg text-foreground/85 transition-all duration-300 hover:border-border hover:pl-6 hover:text-primary"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label}>
+              <p className="eyebrow px-4 pb-2 text-[0.62rem]">{group.label}</p>
+              <div className="flex flex-col gap-1">
+                {group.links.map((l) => (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    onClick={onClose}
+                    tabIndex={open ? 0 : -1}
+                    activeProps={{ className: "text-primary border-primary/50 bg-primary/10" }}
+                    className="border border-transparent px-4 py-3 font-serif text-lg text-foreground/85 transition-all duration-300 hover:border-border hover:pl-6 hover:text-primary"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
 
