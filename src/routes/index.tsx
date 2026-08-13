@@ -918,10 +918,10 @@ function Home() {
   return (
     <>
       {order.map((key) => (
-        <>
+        <Fragment key={key}>
           {renderers[key]?.() ?? null}
-          {key === "hero" ? <PathsSection key="paths" /> : null}
-        </>
+          {key === "hero" ? <PathsSection /> : null}
+        </Fragment>
       ))}
       <CinematicSlideshow
         slides={slides}
