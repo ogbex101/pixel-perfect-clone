@@ -60,10 +60,16 @@ function NewsIndex() {
             facility is waiting.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link to="/books" className="btn-gold btn-sheen px-6 py-3 text-sm">
+            <Link
+              to="/books"
+              className="btn-sheen inline-flex items-center bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
+            >
               Read the books
             </Link>
-            <Link to="/debate" className="btn-outline-gold px-6 py-3 text-sm">
+            <Link
+              to="/debate"
+              className="btn-sheen inline-flex items-center border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
               Join the debate
             </Link>
           </div>
