@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Reveal } from "@/components/reveal";
+import { PageHero } from "@/components/page-hero";
+import { SITE_ART } from "@/lib/page-media";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/news/")({
@@ -39,18 +41,33 @@ function NewsIndex() {
   });
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16">
-      <Reveal>
-        <p className="eyebrow">Dispatches</p>
-        <h1 className="mt-2 font-serif text-4xl text-gradient-gold sm:text-5xl">News</h1>
-      </Reveal>
-
-      <div className="rule-gold my-10" />
-
+    <>
+      <PageHero
+        eyebrow="Dispatches"
+        title="News"
+        subtitle="Challenge announcements, lore drops, and author updates."
+        imageUrl={SITE_ART.door}
+      />
+      <div className="mx-auto max-w-4xl px-6 py-16">
       {isLoading ? (
         <p className="text-sm text-muted-foreground">Loading dispatches…</p>
       ) : !data || data.length === 0 ? (
-        <p className="text-muted-foreground">No posts published yet.</p>
+        <div className="card-premium texture-paper p-10 text-center">
+          <p className="eyebrow">Transmission silent</p>
+          <p className="mt-3 font-serif text-2xl text-primary">No dispatches yet</p>
+          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
+            New lore drops and challenge announcements land here first. In the meantime, the
+            facility is waiting.
+          </p>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Link to="/books" className="btn-gold btn-sheen px-6 py-3 text-sm">
+              Read the books
+            </Link>
+            <Link to="/debate" className="btn-outline-gold px-6 py-3 text-sm">
+              Join the debate
+            </Link>
+          </div>
+        </div>
       ) : (
         <ul className="space-y-8">
           {data.map((post, i) => (
@@ -73,6 +90,7 @@ function NewsIndex() {
           ))}
         </ul>
       )}
-    </div>
+      </div>
+    </>
   );
 }
