@@ -50,12 +50,6 @@ const NAV_DIRECT = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-const NAV_LINKS = [
-  ...NAV_DIRECT.slice(0, 1),
-  ...NAV_GROUPS.flatMap((g) => g.links.map((l) => ({ to: l.to, label: l.label }))),
-  ...NAV_DIRECT.slice(1),
-] as const;
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
