@@ -482,27 +482,61 @@ function RootComponent() {
                 ✦
               </span>
             </div>
-            <div className="mt-10 flex flex-col items-center gap-8 md:flex-row md:items-end md:justify-between">
-              <div className="text-center md:text-left">
+            {/* Grouped sitemap mirrors the header so the footer is orienting
+                rather than a second flat list of every page. */}
+            <div className="mt-10 grid gap-12 md:grid-cols-12">
+              <div className="md:col-span-4">
                 <p className="font-serif text-2xl text-gradient-gold">Nik Nanoski</p>
-                <p className="mt-2 font-serif italic text-sm text-muted-foreground">
+                <p className="mt-2 font-serif text-sm italic text-muted-foreground">
                   Stories from after the end.
                 </p>
+                <Link
+                  to="/member/signup"
+                  className="btn-sheen mt-6 inline-flex items-center bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
+                >
+                  Join the community →
+                </Link>
               </div>
-              <nav className="flex flex-wrap justify-center gap-x-7 gap-y-3 text-[0.75rem] font-medium tracking-[0.14em] uppercase text-muted-foreground">
-                {NAV_LINKS.map((l) => (
-                  <Link
-                    key={l.to}
-                    to={l.to}
-                    className="link-underline hover:text-primary transition-colors duration-300"
-                  >
-                    {l.label}
-                  </Link>
+              <nav className="grid gap-10 sm:grid-cols-2 md:col-span-8 md:grid-cols-4">
+                <div>
+                  <p className="eyebrow text-[0.62rem]">Author</p>
+                  <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                    {NAV_DIRECT.map((l) => (
+                      <li key={l.to}>
+                        <Link
+                          to={l.to}
+                          className="link-underline transition-colors duration-300 hover:text-primary"
+                        >
+                          {l.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {NAV_GROUPS.map((group) => (
+                  <div key={group.label}>
+                    <p className="eyebrow text-[0.62rem]">{group.label}</p>
+                    <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                      {group.links.map((l) => (
+                        <li key={l.to}>
+                          <Link
+                            to={l.to}
+                            className="link-underline transition-colors duration-300 hover:text-primary"
+                          >
+                            {l.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
               </nav>
             </div>
-            <div className="mt-10 border-t border-border pt-6 text-center text-xs text-muted-foreground/70 md:text-left">
-              © {new Date().getFullYear()} Nik Nanoski. All rights reserved.
+            <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted-foreground/70 sm:flex-row sm:items-center sm:justify-between">
+              <span>© {new Date().getFullYear()} Nik Nanoski. All rights reserved.</span>
+              <Link to="/member/login" className="transition-colors hover:text-primary">
+                Member sign in
+              </Link>
             </div>
           </div>
         </footer>
