@@ -11,6 +11,7 @@ export function PageHero({
   subtitle,
   imageUrl,
   videoUrl,
+  focalPoint = "center",
   children,
 }: {
   eyebrow: string;
@@ -18,10 +19,12 @@ export function PageHero({
   subtitle?: string | null;
   imageUrl?: string;
   videoUrl?: string;
+  /** CSS object-position for the artwork, so tall art isn't cropped badly. */
+  focalPoint?: string;
   children?: ReactNode;
 }) {
   return (
-    <section className="relative flex min-h-[46vh] items-end overflow-hidden border-b border-border texture-metal md:min-h-[62vh]">
+    <section className="relative flex min-h-[38vh] items-end overflow-hidden border-b border-border texture-metal md:min-h-[52vh] md:max-h-[680px]">
       {videoUrl ? (
         <video
           src={videoUrl}
@@ -31,6 +34,7 @@ export function PageHero({
           playsInline
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: focalPoint }}
         />
       ) : imageUrl ? (
         <img
@@ -38,18 +42,19 @@ export function PageHero({
           alt=""
           aria-hidden
           className="kenburns absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: focalPoint }}
         />
       ) : null}
 
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/40" />
       <div className="absolute inset-0 vignette" />
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 pb-12 pt-24 md:px-14 md:pb-16 md:pt-32">
+      <div className="relative mx-auto w-full max-w-6xl px-6 pb-10 pt-20 md:px-14 md:pb-14 md:pt-28">
         <Reveal variant="blur">
           <p className="eyebrow track-in">{eyebrow}</p>
         </Reveal>
         <Reveal variant="blur" delay={120}>
-          <h1 className="text-gradient-gold mt-3 max-w-3xl pb-2 font-serif text-4xl leading-[1.06] sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-gradient-gold mt-3 max-w-3xl pb-2 font-serif text-4xl leading-[1.06] sm:text-5xl md:text-6xl">
             {title}
           </h1>
         </Reveal>
@@ -62,7 +67,7 @@ export function PageHero({
         )}
         {children}
         <Reveal delay={340}>
-          <hr className="rule-gold rule-draw mt-9" />
+          <hr className="rule-gold rule-draw mt-8" />
         </Reveal>
       </div>
     </section>
