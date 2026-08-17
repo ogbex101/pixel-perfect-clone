@@ -1,14 +1,31 @@
 // Admin-only server functions.
 //
-// Every handler here is gated by `requireSupabaseAuth` — the caller must present
-// a valid Supabase Auth bearer token, which in this project only admins hold
-// (community members use the hand-built session system in member-auth.server).
-// The actual work then runs through the service-role client so it is not
+// Two gates, and both are needed. `requireSupabaseAuth` proves the caller holds
+// a valid Supabase Auth bearer token; `assertAdmin` then proves that account
+// actually carries the admin role. The token alone is not enough — anyone who
+// can sign up through the Auth API would otherwise be able to reset a member's
+// password or broadcast a notification to the whole community.
+//
+// Past the gates the work runs through the service-role client, which is not
 // subject to RLS, exactly like the member functions.
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { admin, hashPassword } from "./member-auth.server";
+import { admin, hashPassword, type Admin } from "./member-auth.server";
+
+/**
+ * Throws unless `userId` holds the admin role, checked against user_roles via
+ * the same `has_role` function the RLS policies use, so the panel and the
+ * database agree on who counts as an admin.
+ */
+async function assertAdmin(db: Admin, userId: string): Promise<void> {
+  const { data: isAdmin, error } = await db.rpc("has_role", {
+    _user_id: userId,
+    _role: "admin",
+  });
+  if (error) throw new Error(`Could not verify admin access: ${error.message}`);
+  if (!isAdmin) throw new Error("Admin access required.");
+}
 
 /**
  * Rebuilds `challenge_leaderboard` for one challenge, re-awards badges whose
@@ -18,8 +35,9 @@ import { admin, hashPassword } from "./member-auth.server";
 export const runAssessment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => z.object({ challenge_id: z.string().uuid() }).parse(data))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const db = await admin();
+    await assertAdmin(db, context.userId);
     const { data: ranked, error } = await db.rpc("run_assessment", {
       p_challenge_id: data.challenge_id,
     });
@@ -35,8 +53,9 @@ export const runAssessment = createServerFn({ method: "POST" })
 export const selectWinner = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => z.object({ challenge_id: z.string().uuid() }).parse(data))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const db = await admin();
+    await assertAdmin(db, context.userId);
     const { data: inserted, error } = await db.rpc("select_challenge_winner", {
       p_challenge_id: data.challenge_id,
     });
@@ -60,8 +79,9 @@ export const sendNotification = createServerFn({ method: "POST" })
       })
       .parse(data),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const db = await admin();
+    await assertAdmin(db, context.userId);
     const link = data.link || undefined;
 
     if (data.member_id) {
@@ -90,8 +110,9 @@ export const awardBadges = createServerFn({ method: "POST" })
   .inputValidator((data) =>
     z.object({ member_id: z.string().uuid(), challenge_id: z.string().uuid() }).parse(data),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const db = await admin();
+    await assertAdmin(db, context.userId);
     const { data: awarded, error } = await db.rpc("award_badges", {
       p_member_id: data.member_id,
       p_challenge_id: data.challenge_id,
@@ -110,8 +131,9 @@ export const setMemberPassword = createServerFn({ method: "POST" })
   .inputValidator((data) =>
     z.object({ member_id: z.string().uuid(), password: z.string().min(8).max(200) }).parse(data),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const db = await admin();
+    await assertAdmin(db, context.userId);
     const { error } = await db
       .from("members")
       .update({ password_hash: await hashPassword(data.password) })

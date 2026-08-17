@@ -48,11 +48,25 @@ function ChallengePage() {
   const [saving, setSaving] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const startRef = useRef<number>(Date.now());
-  const answered = data?.answered ?? null;
+
+  // The server hands back the oldest unanswered question, so refetching right
+  // after a submit would skip straight past the result the member just earned.
+  // Pin it locally instead, and only refetch when they ask for the next one.
+  const [justAnswered, setJustAnswered] = useState<{
+    question_id: string;
+    selected_option: string;
+    is_correct: boolean;
+    correct_option: string | null;
+    explanation: string | null;
+  } | null>(null);
+
+  const pinned = justAnswered?.question_id === data?.question?.id ? justAnswered : null;
+  const answered = pinned ?? data?.answered ?? null;
 
   useEffect(() => {
     if (answered || !data?.question) return;
     startRef.current = Date.now();
+    setElapsed(0);
     const id = window.setInterval(
       () => setElapsed(Math.floor((Date.now() - startRef.current) / 1000)),
       1000,
@@ -72,7 +86,15 @@ function ChallengePage() {
           time_taken_seconds: Math.floor((Date.now() - startRef.current) / 1000),
         },
       });
-      await queryClient.invalidateQueries({ queryKey });
+      setJustAnswered({
+        question_id: data.question.id,
+        selected_option: selected,
+        is_correct: result.is_correct,
+        correct_option: result.correct_option,
+        explanation: result.explanation,
+      });
+      // Refreshes the sidebar and dashboard counts without disturbing the
+      // question on screen, which is a different query.
       await queryClient.invalidateQueries({ queryKey: memberContextKey });
 
       for (const badge of result.badges_awarded) {
@@ -83,6 +105,12 @@ function ChallengePage() {
     } finally {
       setSaving(false);
     }
+  }
+
+  async function handleNext() {
+    setJustAnswered(null);
+    setSelected(null);
+    await queryClient.invalidateQueries({ queryKey });
   }
 
   if (isLoading) {
@@ -107,7 +135,9 @@ function ChallengePage() {
     );
   }
 
-  const progress = Math.min(7, data.progress ?? 0);
+  // The pinned answer isn't in the server counts yet, so add it back by hand.
+  const progress = Math.min(7, (data.progress ?? 0) + (pinned ? 1 : 0));
+  const remaining = Math.max(0, (data.openCount ?? 0) - (pinned ? 1 : 0));
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
@@ -137,11 +167,36 @@ function ChallengePage() {
       </div>
 
       {!data.question ? (
-        <p className="mt-12 text-sm text-muted-foreground">
-          Today's question hasn't been posted yet. Come back shortly.
-        </p>
+        <div className="mt-12 border border-border bg-card p-6 text-sm text-muted-foreground">
+          <p className="text-foreground">No questions have been posted for this challenge yet.</p>
+          <p className="mt-2">
+            The challenge is on Day {data.day} of 7. As soon as a question is posted for Day{" "}
+            {data.day} or any earlier day, it will appear here.
+          </p>
+        </div>
       ) : (
         <Reveal className="mt-10 border border-border bg-card p-6 sm:p-8" variant="blur">
+          {/* The served question is the oldest unanswered one, which is not
+              necessarily today's — say so rather than letting the day number in
+              the header contradict the question on screen. */}
+          {data.question.day_number !== data.day && (
+            <p className="mb-5 border-l-2 border-primary/60 bg-primary/5 px-4 py-2.5 text-sm text-muted-foreground">
+              {answered ? (
+                <>
+                  Showing Day {data.question.day_number}.
+                  {/* Only claim today is empty once the backlog is genuinely
+                      clear — otherwise a later day may still be waiting. */}
+                  {remaining === 0 && ` Nothing has been posted for Day ${data.day} yet.`}
+                </>
+              ) : (
+                <>
+                  Catching up on{" "}
+                  <span className="text-primary">Day {data.question.day_number}</span>
+                  {data.openCount > 1 && ` — ${data.openCount - 1} more open after this`}.
+                </>
+              )}
+            </p>
+          )}
           {data.question.image_url && (
             <div className="mb-6 overflow-hidden border border-border">
               <img
@@ -210,12 +265,20 @@ function ChallengePage() {
                   {answered.explanation}
                 </p>
               )}
-              <Link
-                to="/member/leaderboard"
-                className="mt-5 inline-block text-sm text-primary hover:underline"
-              >
-                See the leaderboard →
-              </Link>
+              <div className="mt-5 flex flex-wrap items-center gap-4">
+                {remaining > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
+                  >
+                    Next question ({remaining} left) →
+                  </button>
+                )}
+                <Link to="/member/leaderboard" className="text-sm text-primary hover:underline">
+                  See the leaderboard →
+                </Link>
+              </div>
             </div>
           ) : (
             <button

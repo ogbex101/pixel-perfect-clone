@@ -5,6 +5,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 
+// The day rule is shared with the admin panel; see lib/challenge-day.ts.
+export { currentDayNumber } from "./challenge-day";
+
 const PBKDF2_ITERATIONS = 100_000;
 const SESSION_DAYS = 30;
 
@@ -111,12 +114,6 @@ export async function activeChallenge() {
 }
 
 /** Day 1 starts on the challenge start date; capped to 7. */
-export function currentDayNumber(startDate: string | null): number {
-  if (!startDate) return 1;
-  const start = new Date(startDate).getTime();
-  const days = Math.floor((Date.now() - start) / 86_400_000) + 1;
-  return Math.min(7, Math.max(1, days));
-}
 
 export async function uploadDataUrl(dataUrl: string, folder: string): Promise<string> {
   const match = /^data:([^;]+);base64,(.+)$/.exec(dataUrl);

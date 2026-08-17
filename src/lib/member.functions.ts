@@ -129,12 +129,17 @@ export const getTodayQuestion = createServerFn({ method: "POST" })
     if (!challenge) return { challenge: null, question: null, answered: null, progress: 0 };
 
     const day = currentDayNumber(challenge.start_date);
-    const { data: question } = await db
+
+    // Every question up to and including today is fair game. Members who join
+    // late, or who miss a day, work through the backlog oldest-first rather
+    // than hitting a dead end — a question is only out of reach if its day
+    // hasn't arrived yet.
+    const { data: openDays } = await db
       .from("questions")
       .select("*")
       .eq("challenge_id", challenge.id)
-      .eq("day_number", day)
-      .maybeSingle();
+      .lte("day_number", day)
+      .order("day_number", { ascending: true });
 
     const { data: answers } = await db
       .from("answers")
@@ -142,11 +147,19 @@ export const getTodayQuestion = createServerFn({ method: "POST" })
       .eq("member_id", member.id)
       .eq("questions.challenge_id", challenge.id);
 
+    const answeredIds = new Set((answers ?? []).map((a) => a.question_id));
+    const unanswered = (openDays ?? []).filter((q) => !answeredIds.has(q.id));
+
+    // Serve the oldest unanswered one; if the backlog is clear, fall back to
+    // the most recent question so the member still sees their last result.
+    const question = unanswered[0] ?? (openDays ?? []).at(-1) ?? null;
     const existing = (answers ?? []).find((a) => a.question_id === question?.id) ?? null;
 
     return {
       challenge,
       day,
+      openCount: unanswered.length,
+      totalOpenDays: (openDays ?? []).length,
       progress: (answers ?? []).length,
       answered: existing
         ? {
@@ -191,6 +204,20 @@ export const submitAnswer = createServerFn({ method: "POST" })
       .eq("id", data.question_id)
       .maybeSingle();
     if (!question) throw new Error("That question is no longer available.");
+
+    // Past days are answerable, future ones are not. The client is only ever
+    // handed an open question, but the id travels through the request, so the
+    // window is enforced here rather than trusted.
+    if (question.challenge_id) {
+      const { data: parent } = await db
+        .from("challenges")
+        .select("start_date")
+        .eq("id", question.challenge_id)
+        .maybeSingle();
+      if (parent && question.day_number > currentDayNumber(parent.start_date)) {
+        throw new Error("That question hasn't opened yet.");
+      }
+    }
 
     const { data: existing } = await db
       .from("answers")

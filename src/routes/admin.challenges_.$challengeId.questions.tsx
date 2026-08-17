@@ -7,6 +7,7 @@ import { AdminShell } from "@/components/admin/admin-shell";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 import { deleteMedia, uploadMedia } from "@/lib/media-upload";
+import { CHALLENGE_DAYS, currentDayNumber, hasStarted } from "@/lib/challenge-day";
 import {
   Dialog,
   DialogContent,
@@ -105,6 +106,12 @@ function QuestionsManager({ challengeId }: { challengeId: string }) {
   return (
     <div>
       <BackLink />
+
+      <LiveDayNotice
+        challenge={data.challenge}
+        usedDays={usedDays}
+        onAdd={() => setEditing("new")}
+      />
 
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
         <div>
@@ -467,6 +474,92 @@ function Field({
       </label>
       {children}
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
+    </div>
+  );
+}
+
+/**
+ * Which day members are actually on, and which open days have no question.
+ *
+ * Visibility is driven entirely by the challenge's start date: a member sees
+ * every question from Day 1 up to today. Without this panel an author can post
+ * Day 1, look at a member account showing "Day 6", and have no way to tell why
+ * the two disagree.
+ */
+function LiveDayNotice({
+  challenge,
+  usedDays,
+  onAdd,
+}: {
+  challenge: Tables<"challenges">;
+  usedDays: number[];
+  onAdd: () => void;
+}) {
+  const started = hasStarted(challenge.start_date);
+  const day = currentDayNumber(challenge.start_date);
+  const openDays = Array.from({ length: day }, (_, i) => i + 1);
+  const missing = started ? openDays.filter((d) => !usedDays.includes(d)) : [];
+
+  if (!challenge.start_date) {
+    return (
+      <p className="mt-5 border-l-2 border-destructive/60 bg-destructive/5 px-4 py-3 text-sm text-muted-foreground">
+        This challenge has no start date, so members will always see Day 1. Set one on the challenge
+        to move the days along.
+      </p>
+    );
+  }
+
+  if (!started) {
+    return (
+      <p className="mt-5 border-l-2 border-border bg-card px-4 py-3 text-sm text-muted-foreground">
+        Hasn't started yet — opens{" "}
+        <span className="text-foreground">
+          {new Date(challenge.start_date).toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </span>
+        . Members see nothing until then.
+      </p>
+    );
+  }
+
+  return (
+    <div
+      className={`mt-5 border-l-2 px-4 py-3 text-sm ${
+        missing.length > 0
+          ? "border-destructive/60 bg-destructive/5"
+          : "border-primary/60 bg-primary/5"
+      }`}
+    >
+      <p className="text-foreground">
+        Members are on <span className="text-primary">Day {day}</span> of {CHALLENGE_DAYS}, so Day
+        {day === 1 ? " 1 is" : `s 1–${day} are`} open to answer.
+      </p>
+      {missing.length > 0 ? (
+        <p className="mt-1.5 text-muted-foreground">
+          No question posted for{" "}
+          <span className="text-destructive">
+            Day{missing.length === 1 ? " " : "s "}
+            {missing.join(", ")}
+          </span>
+          .{" "}
+          <button
+            type="button"
+            onClick={onAdd}
+            className="text-primary underline underline-offset-2 hover:no-underline"
+          >
+            Add one now
+          </button>
+          , or change the challenge's start date so the days line up with your writing.
+        </p>
+      ) : (
+        <p className="mt-1.5 text-muted-foreground">
+          Every open day has a question. Day {Math.min(day + 1, CHALLENGE_DAYS)}
+          {day < CHALLENGE_DAYS ? " opens tomorrow." : " is the last day."}
+        </p>
+      )}
     </div>
   );
 }
