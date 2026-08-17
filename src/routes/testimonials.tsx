@@ -81,13 +81,7 @@ function Testimonials() {
         {data.length === 0 ? (
           <p className="text-muted-foreground">No testimonials yet.</p>
         ) : (
-          <ul
-            className={
-              data.length === 1
-                ? "mx-auto max-w-3xl"
-                : "grid gap-8 md:grid-cols-2"
-            }
-          >
+          <ul className={data.length === 1 ? "mx-auto max-w-3xl" : "grid gap-8 md:grid-cols-2"}>
             {data.map((t, i) => (
               <Reveal
                 as="li"

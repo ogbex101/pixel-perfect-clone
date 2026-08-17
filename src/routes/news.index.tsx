@@ -49,53 +49,55 @@ function NewsIndex() {
         imageUrl={SITE_ART.door}
       />
       <div className="mx-auto max-w-4xl px-6 py-16">
-      {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading dispatches…</p>
-      ) : !data || data.length === 0 ? (
-        <div className="card-premium texture-paper p-10 text-center">
-          <p className="eyebrow">Transmission silent</p>
-          <p className="mt-3 font-serif text-2xl text-primary">No dispatches yet</p>
-          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-            New lore drops and challenge announcements land here first. In the meantime, the
-            facility is waiting.
-          </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/books"
-              className="btn-sheen inline-flex items-center bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
-            >
-              Read the books
-            </Link>
-            <Link
-              to="/debate"
-              className="btn-sheen inline-flex items-center border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              Join the debate
-            </Link>
-          </div>
-        </div>
-      ) : (
-        <ul className="space-y-8">
-          {data.map((post, i) => (
-            <Reveal as="li" key={post.id} delay={i * 60}>
+        {isLoading ? (
+          <p className="text-sm text-muted-foreground">Loading dispatches…</p>
+        ) : !data || data.length === 0 ? (
+          <div className="card-premium texture-paper p-10 text-center">
+            <p className="eyebrow">Transmission silent</p>
+            <p className="mt-3 font-serif text-2xl text-primary">No dispatches yet</p>
+            <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
+              New lore drops and challenge announcements land here first. In the meantime, the
+              facility is waiting.
+            </p>
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link
-                to="/news/$postId"
-                params={{ postId: post.id }}
-                className="block border-b border-border pb-8 transition-colors hover:border-primary"
+                to="/books"
+                className="btn-sheen inline-flex items-center bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--brand-gold-bright)]"
               >
-                <p className="eyebrow">
-                  {post.category ?? "news"}
-                  {post.published_at && ` · ${new Date(post.published_at).toLocaleDateString()}`}
-                </p>
-                <h2 className="mt-2 font-serif text-2xl text-primary sm:text-3xl">{post.title}</h2>
-                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
-                  {post.content}
-                </p>
+                Read the books
               </Link>
-            </Reveal>
-          ))}
-        </ul>
-      )}
+              <Link
+                to="/debate"
+                className="btn-sheen inline-flex items-center border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                Join the debate
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <ul className="space-y-8">
+            {data.map((post, i) => (
+              <Reveal as="li" key={post.id} delay={i * 60}>
+                <Link
+                  to="/news/$postId"
+                  params={{ postId: post.id }}
+                  className="block border-b border-border pb-8 transition-colors hover:border-primary"
+                >
+                  <p className="eyebrow">
+                    {post.category ?? "news"}
+                    {post.published_at && ` · ${new Date(post.published_at).toLocaleDateString()}`}
+                  </p>
+                  <h2 className="mt-2 font-serif text-2xl text-primary sm:text-3xl">
+                    {post.title}
+                  </h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                    {post.content}
+                  </p>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );

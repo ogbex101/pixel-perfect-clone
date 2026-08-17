@@ -64,52 +64,52 @@ function DebateIndex() {
         imageUrl={SITE_ART.opie}
       />
       <div className="mx-auto max-w-4xl px-6 py-16">
-      {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading topics…</p>
-      ) : !data || data.length === 0 ? (
-        <div className="card-premium texture-paper p-10 text-center">
-          <p className="eyebrow">Floor is empty</p>
-          <p className="mt-3 font-serif text-2xl text-primary">No debate topics yet</p>
-          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-            Topics open as the series unfolds. Sign in as a member to be first in the room.
-          </p>
-        </div>
-      ) : (
-        <ul className="space-y-4">
-          {data.map((topic, i) => (
-            <Reveal as="li" key={topic.id} delay={i * 60}>
-              <Link
-                to="/debate/$topicId"
-                params={{ topicId: topic.id }}
-                className="flex gap-5 border border-border bg-card p-5 transition-colors hover:border-primary"
-              >
-                {topic.image_url && (
-                  <img
-                    src={topic.image_url}
-                    alt=""
-                    loading="lazy"
-                    className="hidden h-24 w-32 shrink-0 object-cover sm:block"
-                  />
-                )}
-                <div className="min-w-0">
-                  {topic.is_pinned && <p className="eyebrow">Pinned</p>}
-                  <h2 className="font-serif text-2xl text-primary">{topic.title}</h2>
-                  {topic.description && (
-                    <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                      {topic.description}
-                    </p>
+        {isLoading ? (
+          <p className="text-sm text-muted-foreground">Loading topics…</p>
+        ) : !data || data.length === 0 ? (
+          <div className="card-premium texture-paper p-10 text-center">
+            <p className="eyebrow">Floor is empty</p>
+            <p className="mt-3 font-serif text-2xl text-primary">No debate topics yet</p>
+            <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
+              Topics open as the series unfolds. Sign in as a member to be first in the room.
+            </p>
+          </div>
+        ) : (
+          <ul className="space-y-4">
+            {data.map((topic, i) => (
+              <Reveal as="li" key={topic.id} delay={i * 60}>
+                <Link
+                  to="/debate/$topicId"
+                  params={{ topicId: topic.id }}
+                  className="flex gap-5 border border-border bg-card p-5 transition-colors hover:border-primary"
+                >
+                  {topic.image_url && (
+                    <img
+                      src={topic.image_url}
+                      alt=""
+                      loading="lazy"
+                      className="hidden h-24 w-32 shrink-0 object-cover sm:block"
+                    />
                   )}
-                  <p className="mt-3 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-                    {topic.commentCount} {topic.commentCount === 1 ? "comment" : "comments"}
-                    {topic.latest &&
-                      ` · last activity ${new Date(topic.latest).toLocaleDateString()}`}
-                  </p>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </ul>
-      )}
+                  <div className="min-w-0">
+                    {topic.is_pinned && <p className="eyebrow">Pinned</p>}
+                    <h2 className="font-serif text-2xl text-primary">{topic.title}</h2>
+                    {topic.description && (
+                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                        {topic.description}
+                      </p>
+                    )}
+                    <p className="mt-3 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                      {topic.commentCount} {topic.commentCount === 1 ? "comment" : "comments"}
+                      {topic.latest &&
+                        ` · last activity ${new Date(topic.latest).toLocaleDateString()}`}
+                    </p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );
