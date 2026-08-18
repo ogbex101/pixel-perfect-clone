@@ -108,8 +108,24 @@ function LeaderboardPage({ ctx }: { ctx: MemberCtx }) {
                   >
                     <td className="py-3 pr-4 font-serif text-primary">{row.rank}</td>
                     <td className="py-3 pr-4">
-                      {row.name}
-                      {isMe && <span className="ml-2 text-xs text-primary">you</span>}
+                      <span className="flex items-center gap-3">
+                        <span className="h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border bg-card">
+                          {row.avatar_url ? (
+                            <img
+                              src={row.avatar_url}
+                              alt=""
+                              loading="lazy"
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <span className="flex h-full w-full items-center justify-center font-serif text-sm text-primary">
+                              {row.name.slice(0, 1).toUpperCase()}
+                            </span>
+                          )}
+                        </span>
+                        <span className="min-w-0 truncate">{row.name}</span>
+                        {isMe && <span className="text-xs text-primary">you</span>}
+                      </span>
                     </td>
                     <td className="py-3 pr-4 tabular-nums">
                       {row.correct} / {row.total}

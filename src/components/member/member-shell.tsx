@@ -18,8 +18,8 @@ const NAV = [
   { to: "/member/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/member/challenge", label: "Today's Challenge", icon: Swords },
   { to: "/member/leaderboard", label: "Leaderboard", icon: Trophy },
-  { to: "/debate", label: "Debate Forum", icon: MessageSquare },
-  { to: "/news", label: "News", icon: Newspaper },
+  { to: "/member/debate", label: "Debate Forum", icon: MessageSquare },
+  { to: "/member/news", label: "News", icon: Newspaper },
   { to: "/member/profile", label: "Profile", icon: User },
 ] as const;
 
@@ -123,7 +123,7 @@ export function MemberShell({ ctx, children }: { ctx: MemberCtx; children: React
         <nav className="flex-1 overflow-y-auto p-3">
           <ul className="space-y-1">
             {NAV.map((item) => {
-              const active = pathname === item.to;
+              const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
               return (
                 <li key={item.to}>
                   <Link
