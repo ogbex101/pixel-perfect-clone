@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import type { Session } from "@supabase/supabase-js";
 import {
   BookOpen,
+  ChevronDown,
   Crown,
   Drama,
   Film,
@@ -103,17 +104,31 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
             <Link to="/admin" className="font-serif text-lg text-primary">
               Admin
             </Link>
-            <nav className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              {ADMIN_NAV.map((n) => (
-                <Link
-                  key={n.to}
-                  to={n.to}
-                  activeProps={{ className: "text-primary" }}
-                  className="inline-flex items-center gap-1.5 hover:text-primary transition-colors"
-                >
-                  <n.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                  {n.label}
-                </Link>
+            {/* Grouped menus: fourteen flat links were impossible to scan. */}
+            <nav className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
+              {ADMIN_NAV_GROUPS.map((group) => (
+                <div key={group.label} className="group relative">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1 px-3 py-2 transition-colors hover:text-primary group-hover:text-primary"
+                  >
+                    {group.label}
+                    <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+                  </button>
+                  <div className="pointer-events-none absolute left-0 top-full z-50 w-56 border border-border bg-card p-1 opacity-0 shadow-xl transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
+                    {group.items.map((n) => (
+                      <Link
+                        key={n.to}
+                        to={n.to}
+                        activeProps={{ className: "text-primary bg-primary/10" }}
+                        className="flex items-center gap-2 px-3 py-2 transition-colors hover:bg-secondary/60 hover:text-primary"
+                      >
+                        <n.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                        {n.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               ))}
             </nav>
           </div>
