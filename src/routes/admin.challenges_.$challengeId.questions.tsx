@@ -181,6 +181,34 @@ function QuestionsManager({ challengeId }: { challengeId: string }) {
                       Day {q.day_number}
                     </span>
                   </td>
+                  <td className="px-4 py-3 align-top">
+                    {(() => {
+                      const open = isQuestionOpen(q, liveDay);
+                      const early = open && q.day_number > liveDay;
+                      return (
+                        <span className="flex flex-col items-start gap-1.5">
+                          <span
+                            className={`inline-block whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs ${
+                              open
+                                ? "border-[oklch(0.65_0.14_150)]/60 bg-[oklch(0.65_0.14_150)]/15 text-[oklch(0.76_0.13_150)]"
+                                : "border-border text-muted-foreground"
+                            }`}
+                          >
+                            {early ? "Unlocked early" : open ? "Open" : "Locked"}
+                          </span>
+                          {q.day_number > liveDay && (
+                            <button
+                              type="button"
+                              onClick={() => toggleUnlock(q, !early)}
+                              className="whitespace-nowrap text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-primary hover:underline"
+                            >
+                              {early ? "Re-lock" : "Unlock now"}
+                            </button>
+                          )}
+                        </span>
+                      );
+                    })()}
+                  </td>
                   <td className="max-w-sm px-4 py-3 align-top text-foreground">
                     {truncate(q.question_text)}
                   </td>
