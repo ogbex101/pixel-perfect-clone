@@ -486,7 +486,7 @@ export const getMemberProgress = createServerFn({ method: "POST" })
     const day = currentDayNumber(challenge.start_date);
     const { data: questions } = await db
       .from("questions")
-      .select("id, day_number")
+      .select("id, day_number, published_at")
       .eq("challenge_id", challenge.id)
       .order("day_number", { ascending: true });
     const ids = (questions ?? []).map((q) => q.id);
@@ -509,7 +509,7 @@ export const getMemberProgress = createServerFn({ method: "POST" })
           ? answer.is_correct
             ? ("correct" as const)
             : ("incorrect" as const)
-          : q.day_number <= day
+          : isQuestionOpen(q, day)
             ? ("missed" as const)
             : ("locked" as const),
       };
