@@ -9,67 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as CinematicRouteImport } from './routes/cinematic'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as HomeRouteImport } from './routes/home'
-import { Route as PressRouteImport } from './routes/press'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminBooksRouteImport } from './routes/admin.books'
-import { Route as AdminChallengesRouteImport } from './routes/admin.challenges'
-import { Route as AdminCharactersRouteImport } from './routes/admin.characters'
-import { Route as AdminContactLinksRouteImport } from './routes/admin.contact-links'
-import { Route as AdminDebatesRouteImport } from './routes/admin.debates'
-import { Route as AdminHomepageRouteImport } from './routes/admin.homepage'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminMembersRouteImport } from './routes/admin.members'
-import { Route as AdminNewsRouteImport } from './routes/admin.news'
-import { Route as AdminPageMediaRouteImport } from './routes/admin.page-media'
-import { Route as AdminPressRouteImport } from './routes/admin.press'
-import { Route as AdminProfileRouteImport } from './routes/admin.profile'
-import { Route as AdminSetupRouteImport } from './routes/admin.setup'
-import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
-import { Route as AdminVideosRouteImport } from './routes/admin.videos'
-import { Route as AdminWinnersRouteImport } from './routes/admin.winners'
-import { Route as BooksIndexRouteImport } from './routes/books.index'
-import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
-import { Route as DebateIndexRouteImport } from './routes/debate.index'
-import { Route as DebateTopicIdRouteImport } from './routes/debate.$topicId'
-import { Route as MemberChallengeRouteImport } from './routes/member.challenge'
-import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
-import { Route as MemberLeaderboardRouteImport } from './routes/member.leaderboard'
-import { Route as MemberLoginRouteImport } from './routes/member.login'
-import { Route as MemberProfileRouteImport } from './routes/member.profile'
-import { Route as MemberSignupRouteImport } from './routes/member.signup'
+import { Route as PressRouteImport } from './routes/press'
+import { Route as HomeRouteImport } from './routes/home'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CinematicRouteImport } from './routes/cinematic'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as DebateIndexRouteImport } from './routes/debate.index'
+import { Route as BooksIndexRouteImport } from './routes/books.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as NewsPostIdRouteImport } from './routes/news.$postId'
+import { Route as MemberSignupRouteImport } from './routes/member.signup'
+import { Route as MemberProfileRouteImport } from './routes/member.profile'
+import { Route as MemberNewsRouteImport } from './routes/member.news'
+import { Route as MemberLoginRouteImport } from './routes/member.login'
+import { Route as MemberLeaderboardRouteImport } from './routes/member.leaderboard'
+import { Route as MemberDebateRouteImport } from './routes/member.debate'
+import { Route as MemberDashboardRouteImport } from './routes/member.dashboard'
+import { Route as MemberChallengeRouteImport } from './routes/member.challenge'
+import { Route as DebateTopicIdRouteImport } from './routes/debate.$topicId'
+import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
+import { Route as AdminWinnersRouteImport } from './routes/admin.winners'
+import { Route as AdminVideosRouteImport } from './routes/admin.videos'
+import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
+import { Route as AdminSetupRouteImport } from './routes/admin.setup'
+import { Route as AdminProfileRouteImport } from './routes/admin.profile'
+import { Route as AdminPressRouteImport } from './routes/admin.press'
+import { Route as AdminPageMediaRouteImport } from './routes/admin.page-media'
+import { Route as AdminNewsRouteImport } from './routes/admin.news'
+import { Route as AdminMembersRouteImport } from './routes/admin.members'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminHomepageRouteImport } from './routes/admin.homepage'
+import { Route as AdminDebatesRouteImport } from './routes/admin.debates'
+import { Route as AdminContactLinksRouteImport } from './routes/admin.contact-links'
+import { Route as AdminCharactersRouteImport } from './routes/admin.characters'
+import { Route as AdminChallengesRouteImport } from './routes/admin.challenges'
+import { Route as AdminBooksRouteImport } from './routes/admin.books'
+import { Route as MemberNewsPostIdRouteImport } from './routes/member.news_.$postId'
+import { Route as MemberDebateTopicIdRouteImport } from './routes/member.debate_.$topicId'
 import { Route as AdminChallengesChallengeIdQuestionsRouteImport } from './routes/admin.challenges_.$challengeId.questions'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CinematicRoute = CinematicRouteImport.update({
-  id: '/cinematic',
-  path: '/cinematic',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PressRoute = PressRouteImport.update({
@@ -77,144 +61,29 @@ const PressRoute = PressRouteImport.update({
   path: '/press',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TestimonialsRoute = TestimonialsRouteImport.update({
-  id: '/testimonials',
-  path: '/testimonials',
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminBooksRoute = AdminBooksRouteImport.update({
-  id: '/admin/books',
-  path: '/admin/books',
+const CinematicRoute = CinematicRouteImport.update({
+  id: '/cinematic',
+  path: '/cinematic',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminChallengesRoute = AdminChallengesRouteImport.update({
-  id: '/admin/challenges',
-  path: '/admin/challenges',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminCharactersRoute = AdminCharactersRouteImport.update({
-  id: '/admin/characters',
-  path: '/admin/characters',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminContactLinksRoute = AdminContactLinksRouteImport.update({
-  id: '/admin/contact-links',
-  path: '/admin/contact-links',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminDebatesRoute = AdminDebatesRouteImport.update({
-  id: '/admin/debates',
-  path: '/admin/debates',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminHomepageRoute = AdminHomepageRouteImport.update({
-  id: '/admin/homepage',
-  path: '/admin/homepage',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminMembersRoute = AdminMembersRouteImport.update({
-  id: '/admin/members',
-  path: '/admin/members',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminNewsRoute = AdminNewsRouteImport.update({
-  id: '/admin/news',
-  path: '/admin/news',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminPageMediaRoute = AdminPageMediaRouteImport.update({
-  id: '/admin/page-media',
-  path: '/admin/page-media',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminPressRoute = AdminPressRouteImport.update({
-  id: '/admin/press',
-  path: '/admin/press',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminProfileRoute = AdminProfileRouteImport.update({
-  id: '/admin/profile',
-  path: '/admin/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSetupRoute = AdminSetupRouteImport.update({
-  id: '/admin/setup',
-  path: '/admin/setup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
-  id: '/admin/testimonials',
-  path: '/admin/testimonials',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminVideosRoute = AdminVideosRouteImport.update({
-  id: '/admin/videos',
-  path: '/admin/videos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminWinnersRoute = AdminWinnersRouteImport.update({
-  id: '/admin/winners',
-  path: '/admin/winners',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BooksIndexRoute = BooksIndexRouteImport.update({
-  id: '/books/',
-  path: '/books/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BooksBookIdRoute = BooksBookIdRouteImport.update({
-  id: '/books/$bookId',
-  path: '/books/$bookId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DebateIndexRoute = DebateIndexRouteImport.update({
-  id: '/debate/',
-  path: '/debate/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DebateTopicIdRoute = DebateTopicIdRouteImport.update({
-  id: '/debate/$topicId',
-  path: '/debate/$topicId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemberChallengeRoute = MemberChallengeRouteImport.update({
-  id: '/member/challenge',
-  path: '/member/challenge',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemberDashboardRoute = MemberDashboardRouteImport.update({
-  id: '/member/dashboard',
-  path: '/member/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemberLeaderboardRoute = MemberLeaderboardRouteImport.update({
-  id: '/member/leaderboard',
-  path: '/member/leaderboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemberLoginRoute = MemberLoginRouteImport.update({
-  id: '/member/login',
-  path: '/member/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemberProfileRoute = MemberProfileRouteImport.update({
-  id: '/member/profile',
-  path: '/member/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemberSignupRoute = MemberSignupRouteImport.update({
-  id: '/member/signup',
-  path: '/member/signup',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsIndexRoute = NewsIndexRouteImport.update({
@@ -222,9 +91,164 @@ const NewsIndexRoute = NewsIndexRouteImport.update({
   path: '/news/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DebateIndexRoute = DebateIndexRouteImport.update({
+  id: '/debate/',
+  path: '/debate/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BooksIndexRoute = BooksIndexRouteImport.update({
+  id: '/books/',
+  path: '/books/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsPostIdRoute = NewsPostIdRouteImport.update({
   id: '/news/$postId',
   path: '/news/$postId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberSignupRoute = MemberSignupRouteImport.update({
+  id: '/member/signup',
+  path: '/member/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberProfileRoute = MemberProfileRouteImport.update({
+  id: '/member/profile',
+  path: '/member/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberNewsRoute = MemberNewsRouteImport.update({
+  id: '/member/news',
+  path: '/member/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberLoginRoute = MemberLoginRouteImport.update({
+  id: '/member/login',
+  path: '/member/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberLeaderboardRoute = MemberLeaderboardRouteImport.update({
+  id: '/member/leaderboard',
+  path: '/member/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberDebateRoute = MemberDebateRouteImport.update({
+  id: '/member/debate',
+  path: '/member/debate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberDashboardRoute = MemberDashboardRouteImport.update({
+  id: '/member/dashboard',
+  path: '/member/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberChallengeRoute = MemberChallengeRouteImport.update({
+  id: '/member/challenge',
+  path: '/member/challenge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DebateTopicIdRoute = DebateTopicIdRouteImport.update({
+  id: '/debate/$topicId',
+  path: '/debate/$topicId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BooksBookIdRoute = BooksBookIdRouteImport.update({
+  id: '/books/$bookId',
+  path: '/books/$bookId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminWinnersRoute = AdminWinnersRouteImport.update({
+  id: '/admin/winners',
+  path: '/admin/winners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVideosRoute = AdminVideosRouteImport.update({
+  id: '/admin/videos',
+  path: '/admin/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
+  id: '/admin/testimonials',
+  path: '/admin/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSetupRoute = AdminSetupRouteImport.update({
+  id: '/admin/setup',
+  path: '/admin/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProfileRoute = AdminProfileRouteImport.update({
+  id: '/admin/profile',
+  path: '/admin/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPressRoute = AdminPressRouteImport.update({
+  id: '/admin/press',
+  path: '/admin/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPageMediaRoute = AdminPageMediaRouteImport.update({
+  id: '/admin/page-media',
+  path: '/admin/page-media',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsRoute = AdminNewsRouteImport.update({
+  id: '/admin/news',
+  path: '/admin/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMembersRoute = AdminMembersRouteImport.update({
+  id: '/admin/members',
+  path: '/admin/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminHomepageRoute = AdminHomepageRouteImport.update({
+  id: '/admin/homepage',
+  path: '/admin/homepage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDebatesRoute = AdminDebatesRouteImport.update({
+  id: '/admin/debates',
+  path: '/admin/debates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminContactLinksRoute = AdminContactLinksRouteImport.update({
+  id: '/admin/contact-links',
+  path: '/admin/contact-links',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCharactersRoute = AdminCharactersRouteImport.update({
+  id: '/admin/characters',
+  path: '/admin/characters',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminChallengesRoute = AdminChallengesRouteImport.update({
+  id: '/admin/challenges',
+  path: '/admin/challenges',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBooksRoute = AdminBooksRouteImport.update({
+  id: '/admin/books',
+  path: '/admin/books',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberNewsPostIdRoute = MemberNewsPostIdRouteImport.update({
+  id: '/member/news_/$postId',
+  path: '/member/news/$postId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemberDebateTopicIdRoute = MemberDebateTopicIdRouteImport.update({
+  id: '/member/debate_/$topicId',
+  path: '/member/debate/$topicId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminChallengesChallengeIdQuestionsRoute =
@@ -262,8 +286,10 @@ export interface FileRoutesByFullPath {
   '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
+  '/member/debate': typeof MemberDebateRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
+  '/member/news': typeof MemberNewsRoute
   '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
   '/news/$postId': typeof NewsPostIdRoute
@@ -271,6 +297,8 @@ export interface FileRoutesByFullPath {
   '/books/': typeof BooksIndexRoute
   '/debate/': typeof DebateIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/member/debate/$topicId': typeof MemberDebateTopicIdRoute
+  '/member/news/$postId': typeof MemberNewsPostIdRoute
   '/admin/challenges/$challengeId/questions': typeof AdminChallengesChallengeIdQuestionsRoute
 }
 export interface FileRoutesByTo {
@@ -301,8 +329,10 @@ export interface FileRoutesByTo {
   '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
+  '/member/debate': typeof MemberDebateRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
+  '/member/news': typeof MemberNewsRoute
   '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
   '/news/$postId': typeof NewsPostIdRoute
@@ -310,6 +340,8 @@ export interface FileRoutesByTo {
   '/books': typeof BooksIndexRoute
   '/debate': typeof DebateIndexRoute
   '/news': typeof NewsIndexRoute
+  '/member/debate/$topicId': typeof MemberDebateTopicIdRoute
+  '/member/news/$postId': typeof MemberNewsPostIdRoute
   '/admin/challenges/$challengeId/questions': typeof AdminChallengesChallengeIdQuestionsRoute
 }
 export interface FileRoutesById {
@@ -341,8 +373,10 @@ export interface FileRoutesById {
   '/debate/$topicId': typeof DebateTopicIdRoute
   '/member/challenge': typeof MemberChallengeRoute
   '/member/dashboard': typeof MemberDashboardRoute
+  '/member/debate': typeof MemberDebateRoute
   '/member/leaderboard': typeof MemberLeaderboardRoute
   '/member/login': typeof MemberLoginRoute
+  '/member/news': typeof MemberNewsRoute
   '/member/profile': typeof MemberProfileRoute
   '/member/signup': typeof MemberSignupRoute
   '/news/$postId': typeof NewsPostIdRoute
@@ -350,6 +384,8 @@ export interface FileRoutesById {
   '/books/': typeof BooksIndexRoute
   '/debate/': typeof DebateIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/member/debate_/$topicId': typeof MemberDebateTopicIdRoute
+  '/member/news_/$postId': typeof MemberNewsPostIdRoute
   '/admin/challenges_/$challengeId/questions': typeof AdminChallengesChallengeIdQuestionsRoute
 }
 export interface FileRouteTypes {
@@ -382,8 +418,10 @@ export interface FileRouteTypes {
     | '/debate/$topicId'
     | '/member/challenge'
     | '/member/dashboard'
+    | '/member/debate'
     | '/member/leaderboard'
     | '/member/login'
+    | '/member/news'
     | '/member/profile'
     | '/member/signup'
     | '/news/$postId'
@@ -391,6 +429,8 @@ export interface FileRouteTypes {
     | '/books/'
     | '/debate/'
     | '/news/'
+    | '/member/debate/$topicId'
+    | '/member/news/$postId'
     | '/admin/challenges/$challengeId/questions'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -421,8 +461,10 @@ export interface FileRouteTypes {
     | '/debate/$topicId'
     | '/member/challenge'
     | '/member/dashboard'
+    | '/member/debate'
     | '/member/leaderboard'
     | '/member/login'
+    | '/member/news'
     | '/member/profile'
     | '/member/signup'
     | '/news/$postId'
@@ -430,6 +472,8 @@ export interface FileRouteTypes {
     | '/books'
     | '/debate'
     | '/news'
+    | '/member/debate/$topicId'
+    | '/member/news/$postId'
     | '/admin/challenges/$challengeId/questions'
   id:
     | '__root__'
@@ -460,8 +504,10 @@ export interface FileRouteTypes {
     | '/debate/$topicId'
     | '/member/challenge'
     | '/member/dashboard'
+    | '/member/debate'
     | '/member/leaderboard'
     | '/member/login'
+    | '/member/news'
     | '/member/profile'
     | '/member/signup'
     | '/news/$postId'
@@ -469,6 +515,8 @@ export interface FileRouteTypes {
     | '/books/'
     | '/debate/'
     | '/news/'
+    | '/member/debate_/$topicId'
+    | '/member/news_/$postId'
     | '/admin/challenges_/$challengeId/questions'
   fileRoutesById: FileRoutesById
 }
@@ -500,8 +548,10 @@ export interface RootRouteChildren {
   DebateTopicIdRoute: typeof DebateTopicIdRoute
   MemberChallengeRoute: typeof MemberChallengeRoute
   MemberDashboardRoute: typeof MemberDashboardRoute
+  MemberDebateRoute: typeof MemberDebateRoute
   MemberLeaderboardRoute: typeof MemberLeaderboardRoute
   MemberLoginRoute: typeof MemberLoginRoute
+  MemberNewsRoute: typeof MemberNewsRoute
   MemberProfileRoute: typeof MemberProfileRoute
   MemberSignupRoute: typeof MemberSignupRoute
   NewsPostIdRoute: typeof NewsPostIdRoute
@@ -509,44 +559,18 @@ export interface RootRouteChildren {
   BooksIndexRoute: typeof BooksIndexRoute
   DebateIndexRoute: typeof DebateIndexRoute
   NewsIndexRoute: typeof NewsIndexRoute
+  MemberDebateTopicIdRoute: typeof MemberDebateTopicIdRoute
+  MemberNewsPostIdRoute: typeof MemberNewsPostIdRoute
   AdminChallengesChallengeIdQuestionsRoute: typeof AdminChallengesChallengeIdQuestionsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cinematic': {
-      id: '/cinematic'
-      path: '/cinematic'
-      fullPath: '/cinematic'
-      preLoaderRoute: typeof CinematicRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/press': {
@@ -556,200 +580,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PressRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/testimonials': {
-      id: '/testimonials'
-      path: '/testimonials'
-      fullPath: '/testimonials'
-      preLoaderRoute: typeof TestimonialsRouteImport
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/admin'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/books': {
-      id: '/admin/books'
-      path: '/admin/books'
-      fullPath: '/admin/books'
-      preLoaderRoute: typeof AdminBooksRouteImport
+    '/cinematic': {
+      id: '/cinematic'
+      path: '/cinematic'
+      fullPath: '/cinematic'
+      preLoaderRoute: typeof CinematicRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/challenges': {
-      id: '/admin/challenges'
-      path: '/admin/challenges'
-      fullPath: '/admin/challenges'
-      preLoaderRoute: typeof AdminChallengesRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/characters': {
-      id: '/admin/characters'
-      path: '/admin/characters'
-      fullPath: '/admin/characters'
-      preLoaderRoute: typeof AdminCharactersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/contact-links': {
-      id: '/admin/contact-links'
-      path: '/admin/contact-links'
-      fullPath: '/admin/contact-links'
-      preLoaderRoute: typeof AdminContactLinksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/debates': {
-      id: '/admin/debates'
-      path: '/admin/debates'
-      fullPath: '/admin/debates'
-      preLoaderRoute: typeof AdminDebatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/homepage': {
-      id: '/admin/homepage'
-      path: '/admin/homepage'
-      fullPath: '/admin/homepage'
-      preLoaderRoute: typeof AdminHomepageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/admin/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/members': {
-      id: '/admin/members'
-      path: '/admin/members'
-      fullPath: '/admin/members'
-      preLoaderRoute: typeof AdminMembersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/news': {
-      id: '/admin/news'
-      path: '/admin/news'
-      fullPath: '/admin/news'
-      preLoaderRoute: typeof AdminNewsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/page-media': {
-      id: '/admin/page-media'
-      path: '/admin/page-media'
-      fullPath: '/admin/page-media'
-      preLoaderRoute: typeof AdminPageMediaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/press': {
-      id: '/admin/press'
-      path: '/admin/press'
-      fullPath: '/admin/press'
-      preLoaderRoute: typeof AdminPressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/profile': {
-      id: '/admin/profile'
-      path: '/admin/profile'
-      fullPath: '/admin/profile'
-      preLoaderRoute: typeof AdminProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/setup': {
-      id: '/admin/setup'
-      path: '/admin/setup'
-      fullPath: '/admin/setup'
-      preLoaderRoute: typeof AdminSetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/testimonials': {
-      id: '/admin/testimonials'
-      path: '/admin/testimonials'
-      fullPath: '/admin/testimonials'
-      preLoaderRoute: typeof AdminTestimonialsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/videos': {
-      id: '/admin/videos'
-      path: '/admin/videos'
-      fullPath: '/admin/videos'
-      preLoaderRoute: typeof AdminVideosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/winners': {
-      id: '/admin/winners'
-      path: '/admin/winners'
-      fullPath: '/admin/winners'
-      preLoaderRoute: typeof AdminWinnersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/books/': {
-      id: '/books/'
-      path: '/books'
-      fullPath: '/books/'
-      preLoaderRoute: typeof BooksIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/books/$bookId': {
-      id: '/books/$bookId'
-      path: '/books/$bookId'
-      fullPath: '/books/$bookId'
-      preLoaderRoute: typeof BooksBookIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/debate/': {
-      id: '/debate/'
-      path: '/debate'
-      fullPath: '/debate/'
-      preLoaderRoute: typeof DebateIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/debate/$topicId': {
-      id: '/debate/$topicId'
-      path: '/debate/$topicId'
-      fullPath: '/debate/$topicId'
-      preLoaderRoute: typeof DebateTopicIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/member/challenge': {
-      id: '/member/challenge'
-      path: '/member/challenge'
-      fullPath: '/member/challenge'
-      preLoaderRoute: typeof MemberChallengeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/member/dashboard': {
-      id: '/member/dashboard'
-      path: '/member/dashboard'
-      fullPath: '/member/dashboard'
-      preLoaderRoute: typeof MemberDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/member/leaderboard': {
-      id: '/member/leaderboard'
-      path: '/member/leaderboard'
-      fullPath: '/member/leaderboard'
-      preLoaderRoute: typeof MemberLeaderboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/member/login': {
-      id: '/member/login'
-      path: '/member/login'
-      fullPath: '/member/login'
-      preLoaderRoute: typeof MemberLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/member/profile': {
-      id: '/member/profile'
-      path: '/member/profile'
-      fullPath: '/member/profile'
-      preLoaderRoute: typeof MemberProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/member/signup': {
-      id: '/member/signup'
-      path: '/member/signup'
-      fullPath: '/member/signup'
-      preLoaderRoute: typeof MemberSignupRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news/': {
@@ -759,11 +622,228 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/debate/': {
+      id: '/debate/'
+      path: '/debate'
+      fullPath: '/debate/'
+      preLoaderRoute: typeof DebateIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/books/': {
+      id: '/books/'
+      path: '/books'
+      fullPath: '/books/'
+      preLoaderRoute: typeof BooksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/news/$postId': {
       id: '/news/$postId'
       path: '/news/$postId'
       fullPath: '/news/$postId'
       preLoaderRoute: typeof NewsPostIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/signup': {
+      id: '/member/signup'
+      path: '/member/signup'
+      fullPath: '/member/signup'
+      preLoaderRoute: typeof MemberSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/profile': {
+      id: '/member/profile'
+      path: '/member/profile'
+      fullPath: '/member/profile'
+      preLoaderRoute: typeof MemberProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/news': {
+      id: '/member/news'
+      path: '/member/news'
+      fullPath: '/member/news'
+      preLoaderRoute: typeof MemberNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/login': {
+      id: '/member/login'
+      path: '/member/login'
+      fullPath: '/member/login'
+      preLoaderRoute: typeof MemberLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/leaderboard': {
+      id: '/member/leaderboard'
+      path: '/member/leaderboard'
+      fullPath: '/member/leaderboard'
+      preLoaderRoute: typeof MemberLeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/debate': {
+      id: '/member/debate'
+      path: '/member/debate'
+      fullPath: '/member/debate'
+      preLoaderRoute: typeof MemberDebateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/dashboard': {
+      id: '/member/dashboard'
+      path: '/member/dashboard'
+      fullPath: '/member/dashboard'
+      preLoaderRoute: typeof MemberDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/challenge': {
+      id: '/member/challenge'
+      path: '/member/challenge'
+      fullPath: '/member/challenge'
+      preLoaderRoute: typeof MemberChallengeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/debate/$topicId': {
+      id: '/debate/$topicId'
+      path: '/debate/$topicId'
+      fullPath: '/debate/$topicId'
+      preLoaderRoute: typeof DebateTopicIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/books/$bookId': {
+      id: '/books/$bookId'
+      path: '/books/$bookId'
+      fullPath: '/books/$bookId'
+      preLoaderRoute: typeof BooksBookIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/winners': {
+      id: '/admin/winners'
+      path: '/admin/winners'
+      fullPath: '/admin/winners'
+      preLoaderRoute: typeof AdminWinnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/videos': {
+      id: '/admin/videos'
+      path: '/admin/videos'
+      fullPath: '/admin/videos'
+      preLoaderRoute: typeof AdminVideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/testimonials': {
+      id: '/admin/testimonials'
+      path: '/admin/testimonials'
+      fullPath: '/admin/testimonials'
+      preLoaderRoute: typeof AdminTestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/setup': {
+      id: '/admin/setup'
+      path: '/admin/setup'
+      fullPath: '/admin/setup'
+      preLoaderRoute: typeof AdminSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/profile': {
+      id: '/admin/profile'
+      path: '/admin/profile'
+      fullPath: '/admin/profile'
+      preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/press': {
+      id: '/admin/press'
+      path: '/admin/press'
+      fullPath: '/admin/press'
+      preLoaderRoute: typeof AdminPressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/page-media': {
+      id: '/admin/page-media'
+      path: '/admin/page-media'
+      fullPath: '/admin/page-media'
+      preLoaderRoute: typeof AdminPageMediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/news': {
+      id: '/admin/news'
+      path: '/admin/news'
+      fullPath: '/admin/news'
+      preLoaderRoute: typeof AdminNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/members': {
+      id: '/admin/members'
+      path: '/admin/members'
+      fullPath: '/admin/members'
+      preLoaderRoute: typeof AdminMembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/homepage': {
+      id: '/admin/homepage'
+      path: '/admin/homepage'
+      fullPath: '/admin/homepage'
+      preLoaderRoute: typeof AdminHomepageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/debates': {
+      id: '/admin/debates'
+      path: '/admin/debates'
+      fullPath: '/admin/debates'
+      preLoaderRoute: typeof AdminDebatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/contact-links': {
+      id: '/admin/contact-links'
+      path: '/admin/contact-links'
+      fullPath: '/admin/contact-links'
+      preLoaderRoute: typeof AdminContactLinksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/characters': {
+      id: '/admin/characters'
+      path: '/admin/characters'
+      fullPath: '/admin/characters'
+      preLoaderRoute: typeof AdminCharactersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/challenges': {
+      id: '/admin/challenges'
+      path: '/admin/challenges'
+      fullPath: '/admin/challenges'
+      preLoaderRoute: typeof AdminChallengesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/books': {
+      id: '/admin/books'
+      path: '/admin/books'
+      fullPath: '/admin/books'
+      preLoaderRoute: typeof AdminBooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/news_/$postId': {
+      id: '/member/news_/$postId'
+      path: '/member/news/$postId'
+      fullPath: '/member/news/$postId'
+      preLoaderRoute: typeof MemberNewsPostIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member/debate_/$topicId': {
+      id: '/member/debate_/$topicId'
+      path: '/member/debate/$topicId'
+      fullPath: '/member/debate/$topicId'
+      preLoaderRoute: typeof MemberDebateTopicIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/challenges_/$challengeId/questions': {
@@ -804,8 +884,10 @@ const rootRouteChildren: RootRouteChildren = {
   DebateTopicIdRoute: DebateTopicIdRoute,
   MemberChallengeRoute: MemberChallengeRoute,
   MemberDashboardRoute: MemberDashboardRoute,
+  MemberDebateRoute: MemberDebateRoute,
   MemberLeaderboardRoute: MemberLeaderboardRoute,
   MemberLoginRoute: MemberLoginRoute,
+  MemberNewsRoute: MemberNewsRoute,
   MemberProfileRoute: MemberProfileRoute,
   MemberSignupRoute: MemberSignupRoute,
   NewsPostIdRoute: NewsPostIdRoute,
@@ -813,6 +895,8 @@ const rootRouteChildren: RootRouteChildren = {
   BooksIndexRoute: BooksIndexRoute,
   DebateIndexRoute: DebateIndexRoute,
   NewsIndexRoute: NewsIndexRoute,
+  MemberDebateTopicIdRoute: MemberDebateTopicIdRoute,
+  MemberNewsPostIdRoute: MemberNewsPostIdRoute,
   AdminChallengesChallengeIdQuestionsRoute:
     AdminChallengesChallengeIdQuestionsRoute,
 }

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import type { Session } from "@supabase/supabase-js";
 import {
   BookOpen,
+  ChevronDown,
   Crown,
   Drama,
   Film,
@@ -19,21 +20,46 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const ADMIN_NAV = [
-  { to: "/admin/homepage", label: "Homepage", icon: Home },
-  { to: "/admin/page-media", label: "Page Media", icon: Image },
-  { to: "/admin/profile", label: "Author Profile", icon: User },
-  { to: "/admin/books", label: "Books", icon: BookOpen },
-  { to: "/admin/characters", label: "Characters", icon: Drama },
-  { to: "/admin/press", label: "Press", icon: Megaphone },
-  { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
-  { to: "/admin/contact-links", label: "Contact Links", icon: Link2 },
-  { to: "/admin/videos", label: "Cinematic", icon: Film },
-  { to: "/admin/challenges", label: "Challenges", icon: Trophy },
-  { to: "/admin/members", label: "Members", icon: Users },
-  { to: "/admin/debates", label: "Debates", icon: MessageSquare },
-  { to: "/admin/news", label: "News", icon: Newspaper },
-  { to: "/admin/winners", label: "Winners", icon: Crown },
+export const ADMIN_NAV_GROUPS = [
+  {
+    label: "Site",
+    items: [
+      { to: "/admin/homepage", label: "Homepage", icon: Home },
+      { to: "/admin/page-media", label: "Page Media", icon: Image },
+      { to: "/admin/profile", label: "Author Profile", icon: User },
+    ],
+  },
+  {
+    label: "Catalog",
+    items: [
+      { to: "/admin/books", label: "Books", icon: BookOpen },
+      { to: "/admin/characters", label: "Characters", icon: Drama },
+      { to: "/admin/videos", label: "Cinematic", icon: Film },
+    ],
+  },
+  {
+    label: "Reception",
+    items: [
+      { to: "/admin/press", label: "Press", icon: Megaphone },
+      { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
+      { to: "/admin/contact-links", label: "Contact Links", icon: Link2 },
+    ],
+  },
+  {
+    label: "Challenge",
+    items: [
+      { to: "/admin/challenges", label: "Challenges", icon: Trophy },
+      { to: "/admin/winners", label: "Winners", icon: Crown },
+    ],
+  },
+  {
+    label: "Community",
+    items: [
+      { to: "/admin/members", label: "Members", icon: Users },
+      { to: "/admin/debates", label: "Debates", icon: MessageSquare },
+      { to: "/admin/news", label: "News", icon: Newspaper },
+    ],
+  },
 ] as const;
 
 export function AdminShell({ children, title }: { children: ReactNode; title: string }) {
@@ -78,17 +104,31 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
             <Link to="/admin" className="font-serif text-lg text-primary">
               Admin
             </Link>
-            <nav className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              {ADMIN_NAV.map((n) => (
-                <Link
-                  key={n.to}
-                  to={n.to}
-                  activeProps={{ className: "text-primary" }}
-                  className="inline-flex items-center gap-1.5 hover:text-primary transition-colors"
-                >
-                  <n.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                  {n.label}
-                </Link>
+            {/* Grouped menus: fourteen flat links were impossible to scan. */}
+            <nav className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
+              {ADMIN_NAV_GROUPS.map((group) => (
+                <div key={group.label} className="group relative">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1 px-3 py-2 transition-colors hover:text-primary group-hover:text-primary"
+                  >
+                    {group.label}
+                    <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+                  </button>
+                  <div className="pointer-events-none absolute left-0 top-full z-50 w-56 border border-border bg-card p-1 opacity-0 shadow-xl transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
+                    {group.items.map((n) => (
+                      <Link
+                        key={n.to}
+                        to={n.to}
+                        activeProps={{ className: "text-primary bg-primary/10" }}
+                        className="flex items-center gap-2 px-3 py-2 transition-colors hover:bg-secondary/60 hover:text-primary"
+                      >
+                        <n.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                        {n.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               ))}
             </nav>
           </div>
