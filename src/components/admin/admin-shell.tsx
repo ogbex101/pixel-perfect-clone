@@ -19,21 +19,46 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const ADMIN_NAV = [
-  { to: "/admin/homepage", label: "Homepage", icon: Home },
-  { to: "/admin/page-media", label: "Page Media", icon: Image },
-  { to: "/admin/profile", label: "Author Profile", icon: User },
-  { to: "/admin/books", label: "Books", icon: BookOpen },
-  { to: "/admin/characters", label: "Characters", icon: Drama },
-  { to: "/admin/press", label: "Press", icon: Megaphone },
-  { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
-  { to: "/admin/contact-links", label: "Contact Links", icon: Link2 },
-  { to: "/admin/videos", label: "Cinematic", icon: Film },
-  { to: "/admin/challenges", label: "Challenges", icon: Trophy },
-  { to: "/admin/members", label: "Members", icon: Users },
-  { to: "/admin/debates", label: "Debates", icon: MessageSquare },
-  { to: "/admin/news", label: "News", icon: Newspaper },
-  { to: "/admin/winners", label: "Winners", icon: Crown },
+export const ADMIN_NAV_GROUPS = [
+  {
+    label: "Site",
+    items: [
+      { to: "/admin/homepage", label: "Homepage", icon: Home },
+      { to: "/admin/page-media", label: "Page Media", icon: Image },
+      { to: "/admin/profile", label: "Author Profile", icon: User },
+    ],
+  },
+  {
+    label: "Catalog",
+    items: [
+      { to: "/admin/books", label: "Books", icon: BookOpen },
+      { to: "/admin/characters", label: "Characters", icon: Drama },
+      { to: "/admin/videos", label: "Cinematic", icon: Film },
+    ],
+  },
+  {
+    label: "Reception",
+    items: [
+      { to: "/admin/press", label: "Press", icon: Megaphone },
+      { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
+      { to: "/admin/contact-links", label: "Contact Links", icon: Link2 },
+    ],
+  },
+  {
+    label: "Challenge",
+    items: [
+      { to: "/admin/challenges", label: "Challenges", icon: Trophy },
+      { to: "/admin/winners", label: "Winners", icon: Crown },
+    ],
+  },
+  {
+    label: "Community",
+    items: [
+      { to: "/admin/members", label: "Members", icon: Users },
+      { to: "/admin/debates", label: "Debates", icon: MessageSquare },
+      { to: "/admin/news", label: "News", icon: Newspaper },
+    ],
+  },
 ] as const;
 
 export function AdminShell({ children, title }: { children: ReactNode; title: string }) {
