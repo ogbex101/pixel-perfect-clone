@@ -510,7 +510,9 @@ export const getMemberProgress = createServerFn({ method: "POST" })
             ? ("correct" as const)
             : ("incorrect" as const)
           : isQuestionOpen(q, day)
-            ? ("missed" as const)
+            ? q.day_number >= day
+              ? ("open" as const)
+              : ("missed" as const)
             : ("locked" as const),
       };
     });
