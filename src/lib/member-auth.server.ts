@@ -6,7 +6,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 
 // The day rule is shared with the admin panel; see lib/challenge-day.ts.
-export { currentDayNumber } from "./challenge-day";
+export { currentDayNumber, isQuestionOpen } from "./challenge-day";
 
 const PBKDF2_ITERATIONS = 100_000;
 const SESSION_DAYS = 30;

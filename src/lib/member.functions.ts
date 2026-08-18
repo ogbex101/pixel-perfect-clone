@@ -6,6 +6,7 @@ import {
   createSession,
   currentDayNumber,
   hashPassword,
+  isQuestionOpen,
   requireMember,
   stripMember,
   uploadDataUrl,
@@ -134,12 +135,13 @@ export const getTodayQuestion = createServerFn({ method: "POST" })
     // late, or who miss a day, work through the backlog oldest-first rather
     // than hitting a dead end — a question is only out of reach if its day
     // hasn't arrived yet.
-    const { data: openDays } = await db
+    // An admin can also unlock a future day early; `published_at` records that.
+    const { data: allQuestions } = await db
       .from("questions")
       .select("*")
       .eq("challenge_id", challenge.id)
-      .lte("day_number", day)
       .order("day_number", { ascending: true });
+    const openDays = (allQuestions ?? []).filter((q) => isQuestionOpen(q, day));
 
     const { data: answers } = await db
       .from("answers")
@@ -214,7 +216,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
         .select("start_date")
         .eq("id", question.challenge_id)
         .maybeSingle();
-      if (parent && question.day_number > currentDayNumber(parent.start_date)) {
+      if (parent && !isQuestionOpen(question, currentDayNumber(parent.start_date))) {
         throw new Error("That question hasn't opened yet.");
       }
     }
