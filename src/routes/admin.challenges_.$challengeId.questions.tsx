@@ -7,7 +7,7 @@ import { AdminShell } from "@/components/admin/admin-shell";
 import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 import { deleteMedia, uploadMedia } from "@/lib/media-upload";
-import { CHALLENGE_DAYS, currentDayNumber, hasStarted } from "@/lib/challenge-day";
+import { CHALLENGE_DAYS, currentDayNumber, hasStarted, isQuestionOpen } from "@/lib/challenge-day";
 import {
   Dialog,
   DialogContent,
@@ -102,6 +102,25 @@ function QuestionsManager({ challengeId }: { challengeId: string }) {
   const questions = data.questions;
   const atCapacity = questions.length >= MAX_QUESTIONS;
   const usedDays = questions.map((q) => q.day_number);
+  const liveDay = currentDayNumber(data.challenge.start_date);
+
+  /** Unlocks a question ahead of its day, or puts it back on schedule. */
+  async function toggleUnlock(q: Question, unlock: boolean) {
+    const { error } = await supabase
+      .from("questions")
+      .update({ published_at: unlock ? new Date().toISOString() : null })
+      .eq("id", q.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(
+      unlock
+        ? `Day ${q.day_number} is now open to members.`
+        : `Day ${q.day_number} is back on schedule.`,
+    );
+    queryClient.invalidateQueries({ queryKey });
+  }
 
   return (
     <div>
@@ -144,6 +163,7 @@ function QuestionsManager({ challengeId }: { challengeId: string }) {
             <thead>
               <tr className="bg-secondary/50 text-left">
                 <th className="px-4 py-3 font-medium text-primary">Day</th>
+                <th className="px-4 py-3 font-medium text-primary">Status</th>
                 <th className="px-4 py-3 font-medium text-primary">Question</th>
                 <th className="px-4 py-3 font-medium text-primary">Options</th>
                 <th className="px-4 py-3 font-medium text-primary">Correct</th>
