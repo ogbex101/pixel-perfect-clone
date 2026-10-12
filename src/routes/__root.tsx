@@ -387,12 +387,9 @@ function RootComponent() {
           >
             <Link
               to="/"
-              className="flex items-center gap-3 font-serif text-xl tracking-tight text-gradient-gold transition-opacity hover:opacity-85"
+              className="font-serif text-xl tracking-tight text-gradient-gold transition-opacity hover:opacity-80"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-[color:var(--brand-gold-bright)]/40 bg-card/90 font-serif text-xs font-bold tracking-wider text-primary shadow-[0_0_12px_-3px_oklch(0.79_0.115_85/0.4)]">
-                NN
-              </span>
-              <span>Nik Nanoski</span>
+              Nik Nanoski
             </Link>
             {/* Grouped desktop nav: two direct links plus three hover/focus
                 menus, so the header stays scannable at five items. */}
@@ -483,12 +480,7 @@ function RootComponent() {
                 rather than a second flat list of every page. */}
             <div className="mt-10 grid gap-12 md:grid-cols-12">
               <div className="md:col-span-4">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[color:var(--brand-gold-bright)]/40 bg-card/90 font-serif text-xs font-bold tracking-wider text-primary shadow-[0_0_12px_-3px_oklch(0.79_0.115_85/0.4)]">
-                    NN
-                  </span>
-                  <p className="font-serif text-2xl text-gradient-gold">Nik Nanoski</p>
-                </div>
+                <p className="font-serif text-2xl text-gradient-gold">Nik Nanoski</p>
                 <p className="mt-2 font-serif text-sm italic text-muted-foreground">
                   Stories from after the end.
                 </p>
