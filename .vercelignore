@@ -1,0 +1,4 @@
+backup_media/
+source_db_dump.json
+auth_tables_dump.json
+supabase/.temp/

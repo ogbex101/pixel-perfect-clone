@@ -37,3 +37,4 @@ source_db_dump.json
 auth_tables_dump.json
 supabase/.temp/
 .vercel/
+.env.local
