@@ -24,10 +24,12 @@ export const Route = createFileRoute("/testimonials")({
       { title: "Testimonials — Nik Nanoski" },
       { name: "description", content: "What readers are saying about Nik Nanoski's novels." },
       { property: "og:title", content: "Testimonials — Nik Nanoski" },
-      { property: "og:description", content: "Reader testimonials." },
+      { property: "og:description", content: "Reader testimonials for novels by Nik Nanoski." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:url", content: "https://niknanoski.com/testimonials" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/testimonials" }],
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(testimonialsQuery);

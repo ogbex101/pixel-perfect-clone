@@ -26,8 +26,10 @@ export const Route = createFileRoute("/press")({
       { property: "og:title", content: "Press — Nik Nanoski" },
       { property: "og:description", content: "Press mentions and reviews." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:url", content: "https://niknanoski.com/press" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/press" }],
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(pressQuery);

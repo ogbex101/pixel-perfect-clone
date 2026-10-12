@@ -1,0 +1,10 @@
+# robots.txt for https://niknanoski.com
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /member/*
+
+# Sitemaps
+Sitemap: https://niknanoski.com/sitemap.xml
+Host: https://niknanoski.com

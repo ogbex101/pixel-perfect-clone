@@ -39,8 +39,10 @@ export const Route = createFileRoute("/books/")({
       { property: "og:title", content: "Books — Nik Nanoski" },
       { property: "og:description", content: "Sci-fi novels by Nik Nanoski." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:url", content: "https://niknanoski.com/books" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/books" }],
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(booksQuery);

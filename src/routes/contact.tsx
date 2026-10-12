@@ -23,15 +23,17 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Nik Nanoski" },
-      { name: "description", content: "Get in touch with author Nik Nanoski." },
+      { name: "description", content: "Get in touch with science fiction author Nik Nanoski." },
       { property: "og:title", content: "Contact — Nik Nanoski" },
       {
         property: "og:description",
-        content: "Contact information and social links for Nik Nanoski.",
+        content: "Contact information and official channels for author Nik Nanoski.",
       },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:url", content: "https://niknanoski.com/contact" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/contact" }],
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(contactQuery);

@@ -24,6 +24,7 @@ const bookQuery = (bookId: string) =>
 
 export const Route = createFileRoute("/books/$bookId")({
   head: (ctx: {
+    params: { bookId: string };
     loaderData?: {
       book: {
         title: string;
@@ -34,6 +35,7 @@ export const Route = createFileRoute("/books/$bookId")({
   }) => {
     const book = ctx.loaderData?.book;
     const title = book?.title ?? "Book";
+    const bookUrl = `https://niknanoski.com/books/${ctx.params.bookId}`;
     return {
       meta: [
         { title: `${title} — Nik Nanoski` },
@@ -44,6 +46,7 @@ export const Route = createFileRoute("/books/$bookId")({
           content: book?.short_description ?? "A novel by Nik Nanoski.",
         },
         { property: "og:type", content: "book" },
+        { property: "og:url", content: bookUrl },
         { name: "twitter:card", content: "summary_large_image" },
         ...(book?.cover_image_url
           ? [
@@ -52,6 +55,7 @@ export const Route = createFileRoute("/books/$bookId")({
             ]
           : []),
       ],
+      links: [{ rel: "canonical", href: bookUrl }],
     };
   },
   loader: async ({ context, params }) => {

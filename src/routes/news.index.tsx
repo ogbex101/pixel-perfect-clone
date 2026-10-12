@@ -20,8 +20,10 @@ export const Route = createFileRoute("/news/")({
         content: "Challenge announcements, lore drops, and author updates from DUMB 31.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://niknanoski.com/news" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/news" }],
   }),
   component: NewsIndex,
 });

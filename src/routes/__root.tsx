@@ -110,6 +110,53 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const SCHEMA_ORG_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://niknanoski.com/#website",
+      "url": "https://niknanoski.com",
+      "name": "Nik Nanoski",
+      "description":
+        "Official website of science fiction author Nik Nanoski, author of DUMB 31.",
+      "publisher": {
+        "@id": "https://niknanoski.com/#author",
+      },
+      "inLanguage": "en-US",
+    },
+    {
+      "@type": "Person",
+      "@id": "https://niknanoski.com/#author",
+      "name": "Nik Nanoski",
+      "url": "https://niknanoski.com",
+      "jobTitle": "Science Fiction Author",
+      "description":
+        "Science fiction novelist known for DUMB 31 and gritty post-apocalyptic speculative fiction.",
+      "knowsAbout": [
+        "Science Fiction",
+        "Post-apocalyptic Literature",
+        "Creative Writing",
+        "Worldbuilding",
+      ],
+    },
+    {
+      "@type": "Book",
+      "@id": "https://niknanoski.com/books/ded4a34a-4490-4803-8f5c-5750f7cab7fa#book",
+      "name": "DUMB 31",
+      "headline": "A Post-Apocalyptic Novel by Nik Nanoski",
+      "author": {
+        "@id": "https://niknanoski.com/#author",
+      },
+      "genre": ["Science Fiction", "Post-Apocalyptic", "Dystopian Thriller"],
+      "image": "https://niknanoski.com/art/DUMB_31_COVER.jpeg",
+      "description":
+        "Beneath the scorched earth in Deep Underground Military Base 31, survivors question the truth of what lies above.",
+      "url": "https://niknanoski.com/books/ded4a34a-4490-4803-8f5c-5750f7cab7fa",
+    },
+  ],
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -119,34 +166,71 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies.",
+          "Official website of science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival, deep underground military bases, and inherited lies.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Nik Nanoski, DUMB 31, science fiction author, sci-fi novelist, post-apocalyptic fiction, deep underground military base, dystopian thriller, speculative fiction",
       },
       { name: "author", content: "Nik Nanoski" },
+      { name: "publisher", content: "Nik Nanoski" },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      {
+        name: "googlebot",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      { name: "theme-color", content: "#0a0a0c" },
+      { property: "og:site_name", content: "Nik Nanoski" },
       { property: "og:title", content: "Nik Nanoski — Science Fiction Author" },
       {
         property: "og:description",
         content:
-          "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies.",
+          "Official website of science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival, deep underground military bases, and inherited lies.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://niknanoski.com" },
+      { property: "og:locale", content: "en_US" },
+      {
+        property: "og:image",
+        content: "https://niknanoski.com/art/DUMB_31_COVER.jpeg",
+      },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "DUMB 31 by Nik Nanoski" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@niknanoski" },
+      { name: "twitter:creator", content: "@niknanoski" },
       { name: "twitter:title", content: "Nik Nanoski — Science Fiction Author" },
       {
         name: "twitter:description",
         content:
-          "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies.",
-      },
-      {
-        property: "og:image",
-        content: "https://niknanoski.com/art/DUMB_31_COVER.jpeg",
+          "Official website of science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival, deep underground military bases, and inherited lies.",
       },
       {
         name: "twitter:image",
         content: "https://niknanoski.com/art/DUMB_31_COVER.jpeg",
       },
+      { name: "twitter:image:alt", content: "DUMB 31 by Nik Nanoski" },
     ],
     links: [
+      {
+        rel: "canonical",
+        href: "https://niknanoski.com",
+      },
+      {
+        rel: "alternate",
+        href: "https://niknanoski.com",
+        hrefLang: "x-default",
+      },
+      {
+        rel: "sitemap",
+        type: "application/xml",
+        href: "/sitemap.xml",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -173,6 +257,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="dark">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA_ORG_DATA) }}
+        />
       </head>
       <body>
         {children}

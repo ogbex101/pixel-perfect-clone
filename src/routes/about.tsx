@@ -26,8 +26,10 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About — Nik Nanoski" },
       { property: "og:description", content: "The story behind the author of DUMB 31." },
       { property: "og:type", content: "profile" },
+      { property: "og:url", content: "https://niknanoski.com/about" },
       { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/about" }],
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(aboutQuery);

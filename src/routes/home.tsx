@@ -11,20 +11,22 @@ export const Route = createFileRoute("/home")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Join the DUMB 31 Community" },
+      { title: "Join the DUMB 31 Community — Nik Nanoski" },
       {
         name: "description",
         content:
           "Take the seven-day DUMB 31 challenge, climb the leaderboard, join the debate, and win prizes. Create your free member account.",
       },
-      { property: "og:title", content: "Join the DUMB 31 Community" },
+      { property: "og:title", content: "Join the DUMB 31 Community — Nik Nanoski" },
       {
         property: "og:description",
         content: "Seven days. Seven questions. One survivor at the top of the board.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://niknanoski.com/home" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/home" }],
   }),
   component: CommunityLanding,
 });

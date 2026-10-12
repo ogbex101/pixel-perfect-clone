@@ -22,12 +22,14 @@ export const Route = createFileRoute("/cinematic")({
   head: () => ({
     meta: [
       { title: "Cinematic — Nik Nanoski" },
-      { name: "description", content: "Video content from author Nik Nanoski." },
+      { name: "description", content: "Video content and trailers from science fiction author Nik Nanoski." },
       { property: "og:title", content: "Cinematic — Nik Nanoski" },
-      { property: "og:description", content: "Video content and trailers." },
+      { property: "og:description", content: "Video content and trailers from science fiction author Nik Nanoski." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:url", content: "https://niknanoski.com/cinematic" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/cinematic" }],
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(videosQuery);

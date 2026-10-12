@@ -5,7 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/admin/login")({
   ssr: false,
   head: () => ({
-    meta: [{ title: "Admin Sign In — Nik Nanoski" }],
+    meta: [
+      { title: "Admin Sign In — Nik Nanoski" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
   }),
   component: AdminLogin,
 });

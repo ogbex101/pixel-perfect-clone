@@ -20,8 +20,10 @@ export const Route = createFileRoute("/debate/")({
         content: "Reader debates on survival, secrecy, and the doors of DUMB 31.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://niknanoski.com/debate" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://niknanoski.com/debate" }],
   }),
   component: DebateIndex,
 });
