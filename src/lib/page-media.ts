@@ -2,13 +2,6 @@ import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
-import coverAsset from "@/assets/DUMB_31_COVER.jpeg.asset.json";
-import beteraudsAsset from "@/assets/DUMB_31_BETTERAUDS.png.asset.json";
-import doorAsset from "@/assets/DUMB31_Day5_ReaderDilemma_Final.jpg.asset.json";
-import opieAsset from "@/assets/DUMB31_Opie_Scene4_CloseUp.jpg.asset.json";
-import corridorVideo from "@/assets/corridor.mp4.asset.json";
-import bookOpensVideo from "@/assets/book-cover-opens.mp4.asset.json";
-
 export type PageMedia = Tables<"page_media">;
 
 /** Slide shown by the cinematic slideshow. */
@@ -21,12 +14,12 @@ export type Slide = {
 
 /** Artwork shipped with the site, reused for page heroes and fallback slides. */
 export const SITE_ART = {
-  cover: coverAsset.url,
-  betterauds: beteraudsAsset.url,
-  door: doorAsset.url,
-  opie: opieAsset.url,
-  corridorVideo: corridorVideo.url,
-  bookOpensVideo: bookOpensVideo.url,
+  cover: "/art/DUMB_31_COVER.jpeg",
+  betterauds: "/art/DUMB_31_BETTERAUDS.png",
+  door: "/art/DUMB31_Day5_ReaderDilemma_Final.jpg",
+  opie: "/art/DUMB31_Opie_Scene4_CloseUp.jpg",
+  corridorVideo: "/art/corridor.mp4",
+  bookOpensVideo: "/art/book-cover-opens.mp4",
 } as const;
 
 /** Pages that can hold their own media gallery. */
