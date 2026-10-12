@@ -121,7 +121,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Science fiction author Nik Nanoski. Author of DUMB 31, a post-apocalyptic novel about survival and inherited lies.",
       },
-      { name: "author", content: "Lovable" },
+      { name: "author", content: "Nik Nanoski" },
       { property: "og:title", content: "Nik Nanoski — Science Fiction Author" },
       {
         property: "og:description",
@@ -130,7 +130,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@niknanoski" },
       { name: "twitter:title", content: "Nik Nanoski — Science Fiction Author" },
       {
         name: "twitter:description",
@@ -139,13 +139,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9bffbe67-534f-4a54-a7df-2b4bb6bffc5f/id-preview-3e0d4bf8--244f4434-b112-46fa-96bb-ad217080780b.lovable.app-1784835524505.png",
+        content: "https://niknanoski.com/art/DUMB_31_COVER.jpeg",
       },
       {
         name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9bffbe67-534f-4a54-a7df-2b4bb6bffc5f/id-preview-3e0d4bf8--244f4434-b112-46fa-96bb-ad217080780b.lovable.app-1784835524505.png",
+        content: "https://niknanoski.com/art/DUMB_31_COVER.jpeg",
       },
     ],
     links: [
@@ -159,7 +157,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
       },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -387,9 +387,12 @@ function RootComponent() {
           >
             <Link
               to="/"
-              className="font-serif text-xl tracking-tight text-gradient-gold transition-opacity hover:opacity-80"
+              className="flex items-center gap-3 font-serif text-xl tracking-tight text-gradient-gold transition-opacity hover:opacity-85"
             >
-              Nik Nanoski
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-[color:var(--brand-gold-bright)]/40 bg-card/90 font-serif text-xs font-bold tracking-wider text-primary shadow-[0_0_12px_-3px_oklch(0.79_0.115_85/0.4)]">
+                NN
+              </span>
+              <span>Nik Nanoski</span>
             </Link>
             {/* Grouped desktop nav: two direct links plus three hover/focus
                 menus, so the header stays scannable at five items. */}
@@ -480,7 +483,12 @@ function RootComponent() {
                 rather than a second flat list of every page. */}
             <div className="mt-10 grid gap-12 md:grid-cols-12">
               <div className="md:col-span-4">
-                <p className="font-serif text-2xl text-gradient-gold">Nik Nanoski</p>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[color:var(--brand-gold-bright)]/40 bg-card/90 font-serif text-xs font-bold tracking-wider text-primary shadow-[0_0_12px_-3px_oklch(0.79_0.115_85/0.4)]">
+                    NN
+                  </span>
+                  <p className="font-serif text-2xl text-gradient-gold">Nik Nanoski</p>
+                </div>
                 <p className="mt-2 font-serif text-sm italic text-muted-foreground">
                   Stories from after the end.
                 </p>
