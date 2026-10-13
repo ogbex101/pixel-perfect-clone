@@ -5,6 +5,9 @@ Disallow: /admin
 Disallow: /admin/*
 Disallow: /member/*
 
+User-agent: Googlebot-Image
+Allow: /
+
 # Sitemaps
 Sitemap: https://niknanoski.com/sitemap.xml
 Host: https://niknanoski.com
