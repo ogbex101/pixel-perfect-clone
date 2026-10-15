@@ -218,15 +218,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       {
-        rel: "canonical",
-        href: "https://niknanoski.com",
-      },
-      {
-        rel: "alternate",
-        href: "https://niknanoski.com",
-        hrefLang: "x-default",
-      },
-      {
         rel: "sitemap",
         type: "application/xml",
         href: "/sitemap.xml",

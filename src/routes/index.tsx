@@ -67,6 +67,10 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      { rel: "canonical", href: "https://niknanoski.com" },
+      { rel: "alternate", href: "https://niknanoski.com", hrefLang: "x-default" },
+    ],
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(homeQuery);

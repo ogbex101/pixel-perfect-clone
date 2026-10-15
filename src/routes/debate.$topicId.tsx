@@ -3,7 +3,7 @@ import { DebateThread } from "@/components/debate/debate-thread";
 
 export const Route = createFileRoute("/debate/$topicId")({
   ssr: false,
-  head: () => ({
+  head: ({ params }) => ({
     meta: [
       { title: "Debate Topic — DUMB 31 Community" },
       {
@@ -14,6 +14,9 @@ export const Route = createFileRoute("/debate/$topicId")({
       { property: "og:description", content: "Join the discussion on this DUMB 31 debate topic." },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "canonical", href: `https://niknanoski.com/debate/${params.topicId}` },
     ],
   }),
   component: DebateTopicPage,
